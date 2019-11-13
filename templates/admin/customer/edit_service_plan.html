@@ -1,0 +1,79 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% block content %}
+<style>
+    .input_fields_wrap{
+    max-width: 350px;
+    }
+    .input_fields_wrap input[type=text]{
+     width:100%;
+     margin:2px 0;
+    }
+</style>
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">EDit Customer Service Plan</h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" class="form-horizontal" action="{% url 'edit_customer_service_plan' data.0.id %}" enctype="multipart/form-data">
+
+                     {% csrf_token %}
+                      <div class="box-body">
+
+                      <p class="margin">Service Provider Name</p>
+                      <div class="input-group">
+                         <input type="text" class="form-control" value="{{ data.0.service_provider_id__service_provider_name }}" disabled="">
+                      </div>
+
+                      <p class="margin">Service Plan Title</p>
+                      <div class="input-group">
+                         <input type="text" class="form-control" value="{{ data.0.service_plan_id__title }}" disabled="">
+                      </div>
+
+
+                      <p class="margin">Service Price Actual</p>
+                      <div class="input-group">
+                         <input type="number" class="form-control" name="service_price_actual" value="{{ data.0.service_price_actual }}" required>
+                      </div>
+
+                      <p class="margin">Service Price Retail</p>
+                      <div class="input-group">
+                         <input type="number" class="form-control" min="0" step="0.01" name="service_price_retail" value="{{ data.0.service_price_retail }}" required>
+                      </div>
+
+                      <p class="margin">Service Price qty</p>
+                      <div class="input-group">
+                         <input type="number" class="form-control" min="0" step="0.01" name="service_price_qty" value="{{ data.0.service_price_qty }}" required>
+                      </div>
+
+
+                      <p class="margin">Status</p>
+                      <div class="input-group">
+                         <select name="plan_paid_status" class="form-control" required style="width: 588px!important;" >
+                         <option>Select status</option>
+                         <option value="Monthly"  {%  if  data.0.plan_paid_status == 'Monthly' %}selected{%  endif %}>Monthly</option>
+                         <option value="One Time" {%  if  data.0.plan_paid_status == 'One Time' %}selected{%  endif %}>One Time</option>
+                        </select>
+                      </div>
+
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Update</button>
+                       </div>
+                </form>
+
+          </div>
+          <!-- /.box -->
+    </div>
+{% endblock %}
+
+
+

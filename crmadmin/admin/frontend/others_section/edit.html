@@ -1,0 +1,108 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% block content %}
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Section Edit for Frontend</h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" id="" class="form-horizontal" action="{% url 'edit_others_details' details.0.id %}" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                      <div class="box-body">
+
+                      <div class="input-group">
+                        <input type="hidden" name="key" class="form-control" value="{{ details.0.key }}"  style="width: 588px!important;">
+                      </div>
+
+                      {% if details.0.key == 'About' or details.0.key == 'Terms&Conditions' or details.0.key == 'PrivacyPolicy'  %}
+
+                      <p class="margin">Section Content</p>
+                      <div class="input-group">
+                        <textarea id="summernote" name="editordata">{{ details.0.value }}</textarea>
+                      </div>
+
+                      {%  endif %}
+
+                      {% if details.0.key == 'Contact' %}
+
+                      <p class="margin">Address</p>
+                      <div class="input-group">
+                        <input type="text" name="address" class="form-control" value="{{ details.0.address }}"  required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">City</p>
+                      <div class="input-group">
+                        <input type="text" name="city" class="form-control" value="{{ details.0.city }}"  required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Province</p>
+                      <div class="input-group">
+                        <input type="text" name="province" class="form-control" value="{{ details.0.province }}"  required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Country</p>
+                      <div class="input-group">
+                        <input type="text" name="country" class="form-control" value="{{ details.0.country }}"  required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Zip</p>
+                      <div class="input-group">
+                        <input type="text" name="zip" class="form-control" value="{{ details.0.zip }}"  required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Email</p>
+                      <div class="input-group">
+                        <input type="text" name="email" class="form-control" value="{{ details.0.email }}"  required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Fax</p>
+                      <div class="input-group">
+                        <input type="text" name="fax" class="form-control" value="{{ details.0.fax }}"  required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Phone</p>
+                      <div class="input-group">
+                        <input type="text" name="phone" class="form-control" value="{{ details.0.phone }}"  required style="width: 588px!important;">
+                      </div>
+
+                      {%  endif %}
+
+
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Update</button>
+                       </div>
+                </form>
+
+          </div>
+          <!-- /.box -->
+    </div>
+{% endblock %}
+{% block scripts %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.js"></script>
+<script>
+  $('#summernote').summernote({
+       placeholder: 'Enter Content',
+       tabsize: 2,
+       height: 500,
+       width: 1500,
+  });
+</script>
+{% endblock %}
+
+
+

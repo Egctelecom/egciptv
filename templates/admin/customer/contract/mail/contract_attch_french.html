@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% load contract_functions %}
+{% load l10n %}
+
+{% localize on %}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>:- Service Agreement -:</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,700,700i" rel="stylesheet">
+
+    <!-- Bootstrap -->
+<style>
+    body{font-family: 'Roboto Condensed', sans-serif;padding: 0;margin: 0;}
+</style>
+</head>
+<body>
+<div class="table-border" style="text-align: center;border: 1px ;margin: 0 auto;">
+    <h1 style="margin: 0;padding: 10px;font-size: 15px;font-weight: normal;text-align: left;border-bottom: 1px;background-color: #dbe8f2;">
+        Contrat de service : {{ customer_plan_data.0.user_id__account_id }}{{ n }}
+    <span style="float: right;">Date : {{ customer_plan_data.0.created_at}}</span>
+    </h1>
+    <div class="table-inner" style="width: 700px">
+    <table style="width: 330px;margin: 10px;border:1px;float: left;">
+        <thead>
+        <tr style="background-color: #cfd0cd;">
+            <th style="text-align: left;font-weight:300;padding: 5px;">informations concernant le client</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr style="width: 100%;float: left;padding: 5px 0;">
+            <td style="font-size: 14px;text-align: left;">
+                {{ customer_plan_data.0.user_id__first_name}}{{ customer_plan_data.0.user_id__last_name}}<br>
+                {{ customer_plan_data.0.user_id__account_id }},{{ customer_plan_data.0.user_id__phone }}
+            </td>
+        </tr>
+        <tr style="width: 100%;float: left;padding: 5px 0;">
+            <td style="font-size: 14px;text-align: left;">
+                <strong>Adresse</strong><br>
+                {{ address.0.address_1}},{{ address.0.address_2}},{{ address.0.city__city_name}},{{ address.0.province__province_name}},{{ address.0.country__country_name}}
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table style="width: 330px;margin: 10px;border:1px;float: right;">
+        <thead>
+        <tr style="background-color: #cfd0cd;">
+            <th style="text-align: left;font-weight:300;padding: 5px;">Détails de paiement :</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr style="width: 100%;float: left;padding: 5px 0;">
+            <td style="font-size: 14px;text-align: left;">
+                &nbsp;<br>&nbsp;
+                Paiement via Paypal
+            </td>
+        </tr>
+        <tr style="width: 100%;float: left;padding: 5px 0;">
+            <td style="font-size: 14px;text-align: left;">
+                <strong>&nbsp;</strong><br>
+                &nbsp;
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table style="width: 680px;margin: 10px;border:1px;">
+        <thead>
+        <tr style="background-color: #cfd0cd;">
+            <th style="text-align: left;font-weight:300;padding: 5px;">Détails bancaires Internet</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr style="text-align: left;width: 100%;float: left;">
+            <td style="padding: 5px 0;font-size: 14px;">Pour payer des services bancaires en ligne, des guichets automatiques, des services bancaires téléphoniques ou des lettres bancaires, veuillez effectuer un paiement au vendeur
+"CRONOMAGIC" ou "CRONOMAGIC Canada Inc" (Gemstelecom est une société Cronomagic
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: left;padding-bottom: 20px;font-size: 14px">
+                                Pour votre premier paiement anticipé Gemestelecom Acc #{{ customer_plan_data.0.user_id__account_id }}- $
+            {% for contract in contractData %}
+            {% get_contract_title_details contract as CONTRACT_TITLE %}
+            {% get_contract_price_details contract as CONTRACT_PRICE %}
+            {% get_contract_qty_details contract as CONTRACT_OTY %}
+            <p style="text-align: left;font-size: 14px;">{{ CONTRACT_TITLE }} ({{ CONTRACT_PRICE }} x {{ CONTRACT_OTY }})
+                <span style="float: right;">$ {% subtotal_contract_price CONTRACT_PRICE CONTRACT_OTY %} </span>
+            </p>
+            {% endfor %}
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+        <div class="summary" style="width: 680px;float: left;padding: 0 10px;border-bottom: 1px;">
+           <h3 style="text-align: left;font-weight: 100;">Résumé</h3>
+            <p style="text-align: left;text-transform: capitalize;font-size: 14px;">Total Des Charges Mensuelles
+                <span style="float: right;">$ {{ customerwithservicetotal }}</span>
+            </p>
+            <p style="text-align: left;font-size: 14px;">Frais ponctuels (voir détails à la page suivante)
+                <span style="float: right;">$ {{ hw_total }}</span>
+            </p>
+{#            <p style="text-align: left;border-bottom: 1px solid #000;font-size: 14px;">G.S.T#}
+{#                <span style="float: right;">$8.45</span>#}
+{#            </p>#}
+{#            <p style="text-align: left;font-size: 14px;">P.S.T#}
+{#                <span style="float: right;">$16.88</span>#}
+{#            </p>#}
+            <p style="text-align: left;font-size: 14px;border-bottom: 1px solid #000;">Premiers frais mensuels (Total des frais mensuels + frais ponctuels)
+{#                <span style="float: right;">$ {% fulltotal customerwithservicetotal hw_total %}</span>#}
+            </p>
+        </div>
+        <div class="summary" style="width: 680px;float: left;padding:10px;border-bottom: 1px solid #000;">
+            <h3 style="text-align: left;font-weight: 100;">Frais mensuels</h3>
+            <p style="text-align: left;text-transform: capitalize;font-size: 14px;border-bottom: 1px solid #000;">Nom Du Plan
+                <span style="float: right;">Total des charges mensuelles</span>
+            </p>
+
+            {% for contract in contractData %}
+            {% get_contract_title_details contract as CONTRACT_TITLE %}
+            {% get_contract_price_details contract as CONTRACT_PRICE %}
+            {% get_contract_qty_details contract as CONTRACT_OTY %}
+            <p style="text-align: left;font-size: 14px;">{{ CONTRACT_TITLE }} ({{ CONTRACT_PRICE }} x {{ CONTRACT_OTY }})
+                <span style="float: right;">$ {% subtotal_contract_price CONTRACT_PRICE CONTRACT_OTY %} </span>
+            </p>
+            {% endfor %}
+
+            <p style="text-align: left;border-bottom: 1px solid #000;font-size: 14px;">Total des charges mensuelles
+                <span style="float: right;">$ {{ customerwithservicetotal }}</span>
+            </p>
+        </div>
+       <table style="width: 680px;float: left;padding: 0 10px;">
+           <caption style="text-align: left;margin-top: 20px;padding: 0 10px;font-size: 20px;margin-bottom: 10px;">Frais ponctuels et matériel</caption>
+           <thead>
+           <tr style="width: 100%;border-bottom: 2px solid #000;">
+               <th colspan="6" style="text-align: left;font-weight: 600;">Nom du plan</th>
+               <th colspan="1" style="text-align: right;font-weight: 600;"></th>
+               <th colspan="1" style="text-align: right;font-weight: 600;"> Prix</th>
+           </tr>
+           </thead>
+           <tbody>
+           {%  for hw in hwDtata %}
+           {%  get_hw_title_details hw as hw_title %}
+           {%  get_hw_qty_details hw as hw_qty %}
+           {%  get_hw_price_details hw as hw_price %}
+           <tr>
+               <td colspan="6" style="text-align: left;">
+                   {{ hw_title }} x {{ hw_qty }}
+               </td>
+               <th colspan="1" style="text-align: right;font-weight: 100;"></th>
+               <th colspan="1" style="text-align: right;font-weight: 100;">{% subtotal_hw_price hw_price hw_qty %}</th>
+           </tr>
+           {% endfor %}
+           <tr style="margin: 5px 0;">
+               <td colspan="6" style="text-align: left;">
+                   <strong>Total des frais ponctuels</strong>
+               </td>
+               <th colspan="1" style="text-align: right;font-weight: 100;"><strong></strong></th>
+               <th colspan="1" style="text-align: right;font-weight: 100;"><strong>$ {{ hw_total }}</strong></th>
+           </tr>
+           </tbody>
+       </table>
+        <table style="float: left;padding: 0 10px;border-bottom: 1px;">
+            <caption style="text-align: left;margin-top: 20px;padding: 0 10px;font-size: 20px;margin-bottom: 10px;">Service Agreement Savings</caption>
+            <thead>
+            <tr style="width: 100%;">
+               <th colspan="6" style="text-align: left;font-weight: 600;">Détails</th>
+                <th colspan="1" style="text-align: right;font-weight: 600;">Prix ​​en détail	</th>
+                <th colspan="1" style="text-align: right;font-weight: 600;">Prix ​​réduit	</th>
+                <th colspan="1" style="text-align: right;font-weight: 600;">Des économies
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td colspan="6" style="text-align: left;">
+                     Économies totales
+                </td>
+                <td>
+                  &nbsp;
+                </td>
+                <td>
+                  &nbsp;
+                </td>
+                <td style="text-align: right;">
+                  $0.00
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text" style="width: 680px;padding: 10px 10px;">
+          <p style="text-align: left;padding-top: 20px;">* À la fin des termes ou au moment de l'annulation, tous les appareils doivent être retournés à la propre expertise du client
+dans les 15 jours suivant la cessation du service. Tous les appareils non entièrement payés par le client dans la propriété de ..</p>
+    </div>
+</div>
+<div class="table-border" style="text-align: center;border: 1px;margin: 20px auto;">
+    <h1 style="margin: 0;padding: 10px;font-size: 15px;font-weight:bold;text-align: left;border-bottom: 1px solid #000;background-color: #dbe8f2;">Détails</h1>
+    <p style="margin: 0;padding: 10px;font-size: 15px;text-align: left;font-weight: bold;">Remarques</p>
+    {% for contract in contractData %}
+    {% get_contract_title_details contract as CONTRACT_TITLE %}
+    {% get_contract_price_details contract as CONTRACT_PRICE %}
+    {% get_contract_qty_details contract as CONTRACT_OTY %}
+        <p style="margin: 0;padding: 0 10px;font-size: 15px;text-align: left;">{{ CONTRACT_TITLE }} ({{ CONTRACT_PRICE }} x {{ CONTRACT_OTY }})</p>
+    {% endfor %}
+    <p style="margin: 0;padding: 0 10px;font-size: 15px;text-align: left;">lorem ipsum dummyb text</p>
+    <p style="margin: 0;padding: 20px 10px;font-size: 15px;text-align: left;">Selon les conditions générales figurant à l <a href="https://gowebbi-egciptv.herokuapp.com/egciptv/">https://gowebbi-egciptv.herokuapp.com/egciptv/</a> </p>
+    <p style="margin: 0;padding: 0 10px 10px 10px;font-size: 15px;text-align: left;"><input type="checkbox">J'ai lu les conditions générales et accepté de participer au plan </p>
+    <p style="margin: 0;padding: 0 10px 0 10px;font-size: 15px;text-align: left;"><input type="checkbox">Je reconnais avoir lu et compris les limitations du service 9-1-1 décrites dans le document ci-joint.
+    </p>
+    <p style="padding: 0 10px 10px 30px;margin: 0;text-align: left;">Viloation des termes et conditions peut mettre fin à ce service à tout moment sans préavis</p>
+    <p style="margin: 0;padding: 0 10px 0 10px;font-size: 15px;text-align: left;"><input type="checkbox">Par la présente, j'autorise EGC Technologies, ses agents ou ses mandants, en cas de retard de paiement, à
+obtenir des informations sur mon historique de crédit et d'autres informations personnelles me concernant auprès des agences d'évaluation du crédit et à les communiquer auxdites agences.
+    </p>
+    <p style="font-weight: bold;text-transform: uppercase;text-align: left;padding: 0 10px;color: #1700ee;">VEUILLEZ ACCEPTER OU REJETER LE CONTRAT DE SERVICE DANS LES 48 HEURES SUIVANT LE PREMIER AFFICHAGE.<br>
+        EGC TECHNOLOGIE CONSIDÉRERA AUTOMATIQUEMENT LE CONTRAT DE SERVICE ACCEPTÉ. <br>
+        APRÈS 48 HEURES SI LE CONTRAT DE SERVICE N’EST PAS REJETÉ ET QUE VOTRE COMMANDE PROGRESSERA.
+    </p>
+    <p style="text-align: left;padding: 0 10px;">
+        <strong>Signature :</strong>         ______________________________
+    </p>
+    <p style="text-align: left;padding: 0 10px;">
+        <strong>Contrat de service: </strong> mensuel
+    </p>
+    <p style="text-align: left;padding: 0 10px;">
+        <strong>Type :</strong>           _____________________________________
+    </p>
+    <p style="text-align: left;padding: 0 10px;">
+        <strong>Date de début du service :</strong>             _____________________________
+    </p>
+</div>
+</body>
+{% endlocalize %}
+</html>

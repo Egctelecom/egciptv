@@ -1,0 +1,121 @@
+{% extends 'egciptv/layouts.html' %}
+{% load static %}
+{% load other_section %}
+{% load special_offers_functions %}
+{% load special_offer_category_service %}
+{% block content %}
+<section id="inner-banner-area">
+    <div class="overlay"></div>
+    <div class="container">
+        <h2>Special offers Plan Package Details</h2>
+       <ol class="breadcrumb">
+           <li class="breadcrumb-item"><a href="">Home</a></li>
+           <li class="breadcrumb-item  active">Special Offers</li>
+<!--           <li class="breadcrumb-item  active">{{ sp.0.special_offers_combo_name }}</li>-->
+<!--           <li class="breadcrumb-item  active">{{ sp.0.special_offers_type_name }}</li>-->
+       </ol>
+    </div>
+</section>
+
+<div class="resident-details">
+    <div class="container">
+         <div class="row">
+             <div class="heading-new-part">
+
+                 <div class="col-md-12">
+                     <div class="right-part-new">
+                              {% getOffersPlans sp.0.special_offers_id as SPECIALOFFERS %}
+                                              <h4>  {%  for sp in SPECIALOFFERS %}
+                                                    {%  if forloop.counter|add:"-1" %}
+                                                      +
+                                                    {% endif %}
+                                                    {{ sp.service_price_id__service_name }}
+                                                    {%  endfor %}
+                                              </h4>
+                         <div class="offer-part-price">
+                       <span class="actual-price">{{ sp.0.special_offers_id__actual_price }}<small>(Month)</small></span>
+                       <span class="offer-price">{{ sp.0.special_offers_id__offers_price }}<small>(Month)</small><span class="">Offer Price</span></span>
+                </div>
+                         <p> {% autoescape off %}{{ sp.0.special_offers_id__details }}{%  endautoescape %}</p>
+
+                     </div>
+
+                     <div class="agreement">
+                         <div class="agreement-new">
+                             <ul>
+                                 {%  get_hardwares_details_according_to_special_offers_plan sp.0.special_offers_id as HARDWARES %}
+                                 {%  for hd in HARDWARES %}
+                                 <li>
+                                 <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+                                 {{ hd.hw_id__hw_title }}
+                                 <span class="side_price" style="float: right;">
+                                  <span class="actual-price">{{ hd.device_buy }}<small>(Month)</small></span>
+                                  <span class="offer-price">{{ hd.offer_price }}<small>(Month)</small>
+                                  <span class="">Offer Price</span></span>
+                                 </span>
+                                 </li>
+                                 {%  endfor %}
+                             </ul>
+                         </div>
+                     </div>
+                   <div class="download_btn" download>
+                       {% get_special_offers_doc sp.0.special_offers_id as DOC %}
+
+                       <div class="modal fade" id="myModal" role="dialog">
+                        <div class="modal-dialog">
+
+                          <!-- Modal content-->
+                          <div class="modal-content">
+                                <div class="modal-header">
+                                    Document For {%  for sp in SPECIALOFFERS %}
+                                                    {%  if forloop.counter|add:"-1" %}
+                                                      +
+                                                    {% endif %}
+                                                    {{ sp.service_price_id__service_name }}
+                                                    {%  endfor %}
+                                </div>
+                                <div class="modal-body">
+                                  {% get_special_offers_doc sp.0.special_offers_id as PLANDOC %}
+                                  {%  if PLANDOC %}
+                                    {%  for pl in PLANDOC %}
+                                       {% if pl.status == 'active' %}
+                                          <p>
+                                              {{ pl.special_offers_doc_name }}
+                                              &nbsp;&nbsp;
+                                              <a href="{{ pl.special_offers_doc }}" download="">
+                                                 <i class="fa fa-download" aria-hidden="true"></i>
+                                              </a>
+                                          </p>
+                                        {%  else %}
+                                           <p> Currently document is not approved </p>
+                                        {%  endif %}
+                                    {% endfor %}
+                                  {% else %}
+                                     <p>No Document Available</p>
+                                  {% endif %}
+                                </div>
+
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                          </div>
+
+                        </div>
+                      </div>
+
+
+                 </div>
+                     <div class="register-part" style="margin-top: 0;">
+                         <a href="{% url 'apply_for_registrations_special_offers' sp.0.special_offers_id %}"> <button>Register now</button></a>
+                     </div>
+                         <div style="float: right;margin-top: -53px">
+                            <a data-toggle="modal" data-target="#myModal" >
+                             <button class="btn btn-warning"> Document of Plans</button>
+                            </a>
+                         </div>
+                 </div>
+            </div>
+          </div>
+    </div>
+</div>
+{% endblock %}

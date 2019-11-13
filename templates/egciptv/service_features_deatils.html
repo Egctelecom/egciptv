@@ -1,0 +1,81 @@
+{% extends 'egciptv/layouts.html' %}
+{% load static %}
+{% load special_offer_category_service %}
+{% load other_section %}
+{% load get_service_list %}
+{% block content %}
+<section id="inner-banner-area">
+    <div class="overlay"></div>
+    <div class="container">
+        <h2>Service and Features Details</h2>
+       <ol class="breadcrumb">
+           <li class="breadcrumb-item"><a href="#">Home</a></li>
+           <li class="breadcrumb-item  active">{{ service_feature.0.service_parent_category_id__service_parent_category_name }}</li>
+           <!--<li class="breadcrumb-item  active">{{ service_feature.0.service_sub_parent_category_name_id__service_sub_parent_category_name }}</li>-->
+           <!--<li class="breadcrumb-item  active">{{ service_feature.0.service_category_id__service_category_name }}</li>-->
+       </ol>
+    </div>
+</section>
+
+
+
+<section id="internet-page">
+    <div class="container">
+            <div class="headline-area">
+                <h1>{{ service_feature.0.service_category_id__service_category_name }}</h1>
+            </div>
+
+
+            <div class="internet-area">
+                <div class="col-md-8">
+                   <p>{{ service_feature.0.details| safe }}</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel-group" id="accordion">
+                        {% get_service_category_data as parent_category %}
+                        {% for menu_of_parent_category in parent_category %}
+                        <div class="panel panel-default no-padding">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}">
+                                        {{ menu_of_parent_category.service_parent_category_name }}<i class="more-less fa fa-angle-down"></i></a>
+                                </h4>
+                            </div>
+                            <div id="collapse{{ forloop.counter }}" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    {% get_sub_service_category_list menu_of_parent_category.id as MenuSubList %}
+                                    {% for submenu in MenuSubList %}
+                                    <div class="panel-group accordion2">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent=".accordion2" href="#collapseOne-{{ forloop.counter }}">
+                                                        {{ submenu.service_sub_parent_category_name }}<i class="more-less fa fa-angle-down"></i></a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseOne-{{ forloop.counter }}" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    <ul>
+                                                        {% get_service_category_menu_list submenu.id menu_of_parent_category.id as MenuCategoryList %}
+                                                        {% for categorymenu in MenuCategoryList %}
+                                                        <li><a href="{% url 'plans_according_city'  menu_of_parent_category.id submenu.id categorymenu.service_category_id %}">{{ categorymenu.service_category_id__service_category_name }}</a></li>
+                                                        {%  endfor %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {%  endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {%  endfor %}
+                    </div>
+                </div>
+            </div>
+
+    </div>
+</section>
+
+{% endblock %}
+

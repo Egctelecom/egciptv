@@ -1,0 +1,352 @@
+{% extends 'admin/layout.html' %}
+{%  load static %}
+{%  load usernumber_functions %}
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.bootstrap.min.css" />
+    <link rel="stylesheet" href="{% static 'admin/fancybox/jquery.fancybox.css'%}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static 'admin/custom.css'%}" type="text/css" media="screen" />
+{% endblock %}
+{% block content %}
+
+<section class="content-header">
+   <a href="{% url 'add_customer' %}" class="fancybox fancybox.iframe btn btn-info" id="customer_add">Add Users Account</a>
+</section>
+
+<section class="content">
+      <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">Users</h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-2">
+{#              <div class="form-group">#}
+{#                <label>Account</label>#}
+{#                <select class="form-control select2 select2-hidden-accessible" id="account"  onclick="add_user()">#}
+{#                  <option value="0" selected="selected">Select </option>#}
+{#                  <option value="add_user_account">Add Users account</option>#}
+{#                </select>#}
+{#              </div>#}
+
+            </div>
+            <!-- /.col -->
+            <div class="col-md-6">
+
+            </div>
+            <!-- /.col -->
+            <div class="col-xs-12">
+              <table id="myTable" class="table table-bordered table-striped" >
+                        <thead>
+                        <tr>
+                          <th>Account Id</th>
+                          <th>Status</th>
+                          <th>Phone</th>
+                          <th>Name</th>
+                          <th>Monthly</th>
+                          <th>Balance</th>
+                          <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                          {% for customer_list in customer %}
+                          <tr>
+                            <td>
+                              {{customer_list.customer_id__account_id}}<br>
+                              <span class="label label-info">{{customer_list.customer_id__created_at}}</span>
+                            </td>
+                            <td id="status"
+                              {% if customer_list.customer_id__status == '100%'  %}
+                                style="color: green"
+                                {% elif customer_list.customer_id__status == '0%'%}
+                                style="color: red"
+                                {% else %}
+                                style="color: orange"
+                            {% endif  %}>
+
+                                {% if customer_list.customer_id__status == '100%'  %}
+                                    Completed
+                                    {% else %}
+                                    {{customer_list.customer_id__status}}
+                                {% endif  %}
+                            </td>
+                            <td>{% get_phone_number customer_list.customer_id__id %}</td>
+                            <td>
+                              <a href="{% url 'comment' customer_list.user_id %}" class="fancybox fancybox.iframe"><img src="https://png.icons8.com/office/40/000000/sms.png"></a>
+                              <img src="https://png.icons8.com/office/30/000000/administrator-male.png">
+                              <a href="{% url 'change_password' customer_list.user_id %}" class="fancybox fancybox.iframe"><img src="https://png.icons8.com/color/48/000000/key.png"></a>
+                              <a href="{% url 'customer_details' customer_list.customer_id__id %}">{{customer_list.customer_id__first_name}} {{customer_list.customer_id__last_name}}</a>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <a href="{% url 'edit_customer' customer_list.customer_id__id %}" class="fancybox fancybox.iframe btn btn-info btn-xs"><i class="fa fa-pencil"></i></a>
+                                <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal{{ customer_list.customer_id__id }}"><i class="fa fa-trash"></i></button>
+                                <a href="{% url 'rate_customer_billing_cdr' customer_list.customer_id__id %}" class="btn btn-success btn-xs"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Invoice</a>
+                                  <div class="modal fade" id="myModal{{ customer_list.customer_id__id }}" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                          <h4 class="modal-title">Are you sure ? </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                         <a href="{% url 'customer_delete' customer_list.customer_id__id %}" class="btn btn-success btn-xs">Delete</a>
+                                         <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal">Cancle</button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                <button type="button" class="btn btn-warning btn-xs" data-toggle="modal"  data-target="#myModalstatus{{ customer_list.customer_id__id }}">Set Status</button>
+                                <div class="modal fade" id="myModalstatus{{ customer_list.customer_id__id }}" role="dialog">
+                                    <div class="modal-dialog">
+
+                                      <!-- Modal content-->
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                          <h4 class="modal-title">Set Accout Status according to steps</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                         <input type="checkbox" class="form-check-input" id="contract_sent" {% if customer_list.customer_id__status == '12.5%' or customer_list.customer_id__status == '25%' or customer_list.customer_id__status == '37.5%' or customer_list.customer_id__status == '50%' or customer_list.customer_id__status == '62.5%' or customer_list.customer_id__status == '75%' or customer_list.customer_id__status == '87.5%' or customer_list.customer_id__status == '100%'%}checked{% endif %} onchange="setStatus({{ customer_list.customer_id__id }})">
+                                         <label class="form-check-label" for="contract_sent">Contract Sent</label>
+
+                                         <br>
+
+                                         <input type="checkbox" class="form-check-input" id="contract_accepted" {% if customer_list.customer_id__status == '25%' or customer_list.customer_id__status == '37.5%'  or customer_list.customer_id__status == '50%' or customer_list.customer_id__status == '62.5%' or customer_list.customer_id__status == '75%' or customer_list.customer_id__status == '87.5%' or customer_list.customer_id__status == '100%'%}checked{% endif %} onchange="setStatus({{ customer_list.customer_id__id }})">
+                                         <label class="form-check-label" for="contract_accepted">Contract Accepted</label>
+
+                                         <br>
+
+
+                                         <input type="checkbox" class="form-check-input" id="first_payment_done"  {% if customer_list.customer_id__status == '37.5%' or customer_list.customer_id__status == '50%' or customer_list.customer_id__status == '62.5%' or customer_list.customer_id__status == '75%' or customer_list.customer_id__status == '87.5%' or customer_list.customer_id__status == '100%'%}checked{% endif %} onchange="setStatus({{ customer_list.customer_id__id }})">
+                                         <label class="form-check-label" for="first_payment_done">First Payment Done</label>
+
+                                         <br>
+
+
+                                         <input type="checkbox" class="form-check-input" id="req_has_been_sent" {% if customer_list.customer_id__status == '50%' or customer_list.customer_id__status == '62.5%' or customer_list.customer_id__status == '75%' or customer_list.customer_id__status == '87.5%' or customer_list.customer_id__status == '100%'%}checked{% endif %} onchange="setStatus({{ customer_list.customer_id__id }})">
+                                         <label class="form-check-label" for="req_has_been_sent">Req has been sent</label>
+
+                                         <br>
+
+
+                                         <input type="checkbox" class="form-check-input" id="devices_shipped"  {% if customer_list.customer_id__status == '62.5%' or customer_list.customer_id__status == '75%' or customer_list.customer_id__status == '87.5%' or customer_list.customer_id__status == '100%'%}checked{% endif %} onchange="setStatus({{ customer_list.customer_id__id }})">
+                                         <label class="form-check-label" for="devices_shipped">Devices Shipped</label>
+
+
+                                         <br>
+
+
+                                         <input type="checkbox" class="form-check-input" id="devices_received"  {% if customer_list.customer_id__status == '75%' or customer_list.customer_id__status == '87.5%' or customer_list.customer_id__status == '100%'%}checked{% endif %}onchange="setStatus({{ customer_list.customer_id__id }})">
+                                         <label class="form-check-label" for="devices_received">Devices Received</label>
+
+
+                                         <br>
+
+                                         <input type="checkbox" class="form-check-input" id="installation_date"  {% if customer_list.customer_id__status == '87.5%' or customer_list.customer_id__status == '100%'%}checked{% endif %}onchange="setStatus({{ customer_list.customer_id__id }})">
+                                         <label class="form-check-label" for="installation_date">Installation Date</label>
+
+
+                                        <br>
+
+                                         <input type="checkbox" class="form-check-input" id="installation_done" {% if customer_list.customer_id__status == '100%' %}checked{% endif %} onchange="setStatus({{ customer_list.customer_id__id }})">
+                                         <label class="form-check-label" for="installation_done">Installation Done</label>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                      </div>
+
+                                    </div>
+                                </div>
+
+                            </td>
+                          </tr>
+                         {% endfor %}
+                        </tbody>
+               </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+<a href="{% url 'add_customer' %}" class="fancybox fancybox.iframe btn btn-default" id="customer_add" style="display:none;"></a>
+
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'admin/plugins/jQuery/jQuery-2.2.0.min.js'%}"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
+<script type="text/javascript" src="{% static 'admin/fancybox/jquery.fancybox.pack.js'%}"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<script>
+    $(document).ready( function () {
+        $('#myTable').DataTable();
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".fancybox").fancybox({
+            "width":"100%",
+            "height":"100%",
+            'autoSize' : false,
+            afterClose: function () {
+                location.reload();
+            }
+
+        });
+    });
+
+    function add_user(){
+      var account  = document.getElementById('account').value;
+      if(account == 'add_user_account') {
+          $('#customer_add').click();
+      }
+    }
+
+    function setStatus(id){
+
+         var contract_sent = $('#contract_sent').is(':checked');
+         var contract_accepted = $('#contract_accepted').is(':checked');
+         var first_payment_done = $('#first_payment_done').is(':checked');
+         var req_has_been_sent = $('#req_has_been_sent').is(':checked');
+         var devices_shipped = $('#devices_shipped').is(':checked');
+         var devices_received = $('#devices_received').is(':checked');
+         var installation_date = $('#installation_date').is(':checked');
+         var installation_done = $('#installation_done').is(':checked');
+
+         console.log(contract_sent,contract_accepted);
+
+         if (contract_sent == true && contract_accepted==false && first_payment_done ==false && req_has_been_sent ==false && devices_shipped==false && devices_received==false && installation_date==false && installation_done==false) {
+
+             var contract_sent1 = 'True';
+             var contract_accepted1 = 'False';
+             var first_payment_done1 = 'False';
+             var req_has_been_sent1 = 'False';
+             var devices_shipped1 = 'False';
+             var devices_received1 = 'False';
+             var installation_date1 = 'False';
+             var installation_done1 = 'False';
+
+         }else if(contract_sent == true && contract_accepted==true && first_payment_done ==false && req_has_been_sent ==false && devices_shipped==false && devices_received==false && installation_date==false && installation_done==false){
+
+             var contract_sent1 = 'True';
+             var contract_accepted1 = 'True';
+             var first_payment_done1 = 'False';
+             var req_has_been_sent1 = 'False';
+             var devices_shipped1 = 'False';
+             var devices_received1 = 'False';
+             var installation_date1 = 'False';
+             var installation_done1 = 'False';
+
+         }else if(contract_sent == true && contract_accepted==true && first_payment_done ==true && req_has_been_sent ==false && devices_shipped==false && devices_received==false && installation_date==false && installation_done==false){
+
+             var contract_sent1 = 'True';
+             var contract_accepted1 = 'True';
+             var first_payment_done1 = 'True';
+             var req_has_been_sent1 = 'False';
+             var devices_shipped1 = 'False';
+             var devices_received1 = 'False';
+             var installation_date1 = 'False';
+             var installation_done1 = 'False';
+
+         }else if(req_has_been_sent==true && devices_shipped==false && devices_received==false && installation_date==false && installation_done==false){
+
+             var contract_sent1 = 'True';
+             var contract_accepted1 = 'True';
+             var first_payment_done1 = 'True';
+             var req_has_been_sent1 = 'True';
+             var devices_shipped1 = 'False';
+             var devices_received1 = 'False';
+             var installation_date1 = 'False';
+             var installation_done1 = 'False';
+
+         }else if(contract_sent == true && contract_accepted==true && first_payment_done ==true && devices_shipped==true && devices_received==false && installation_date==false && installation_done==false){
+
+             var contract_sent1 = 'True';
+             var contract_accepted1 = 'True';
+             var first_payment_done1 = 'True';
+             var req_has_been_sent1 = 'True';
+             var devices_shipped1 = 'True';
+             var devices_received1 = 'False';
+             var installation_date1 = 'False';
+             var installation_done1 = 'False';
+
+         }else if(contract_sent == true && contract_accepted==true && first_payment_done ==true && devices_shipped==true && devices_received==true && installation_date==false && installation_done==false){
+
+             var contract_sent1 = 'True';
+             var contract_accepted1 = 'True';
+             var first_payment_done1 = 'True';
+             var req_has_been_sent1 = 'True';
+             var devices_shipped1 = 'True';
+             var devices_received1 = 'True';
+             var installation_date1 = 'False';
+             var installation_done1 = 'False';
+
+         }else if(contract_sent == true && contract_accepted==true && first_payment_done ==true && devices_shipped==true && devices_received==true && installation_date==true && installation_done==false){
+
+             var contract_sent1 = 'True';
+             var contract_accepted1 = 'True';
+             var first_payment_done1 = 'True';
+             var req_has_been_sent1 = 'True';
+             var devices_shipped1 = 'True';
+             var devices_received1 = 'True';
+             var installation_date1 = 'True';
+             var installation_done1 = 'False';
+
+         }else if(contract_sent == true && contract_accepted==true && first_payment_done ==true && devices_shipped==true && devices_received==true && installation_date==true && installation_done==true){
+
+             var contract_sent1 = 'True';
+             var contract_accepted1 = 'True';
+             var first_payment_done1 = 'True';
+             var req_has_been_sent1 = 'True';
+             var devices_shipped1 = 'True';
+             var devices_received1 = 'True';
+             var installation_date1 = 'True';
+             var installation_done1 = 'True';
+         }
+
+
+              $.ajax({
+                    type: "post",
+                    url: "{% url 'change_account_status_of_customer' %}",
+                    data: { csrfmiddlewaretoken:"{{csrf_token}}",
+                            id:id,
+                            contract_sent:contract_sent1,
+                            contract_accepted:contract_accepted1,
+                            first_payment_done:first_payment_done1,
+                            req_has_been_sent:req_has_been_sent1,
+                            devices_shipped:devices_shipped1,
+                            devices_received:devices_received1,
+                            installation_date:installation_date1,
+                            installation_done:installation_done1,
+                    },
+                    success:function (success){
+                        console.log(success);
+                        if(success['data']=='success'){
+
+                            $('#status').empty().append(success['account_status']);
+                        }
+                    }
+                })
+
+    }
+
+
+
+</script>
+{% endblock %}

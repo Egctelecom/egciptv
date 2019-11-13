@@ -1,0 +1,17 @@
+{% load static %}
+<div class="user-block">
+ <img class="img-circle img-bordered-sm" src="{% static 'admin/dist/img/usr.png'%}" alt="User Image">
+ <span class="username">
+  <a href="#">
+  {% if comments.0.user_id__is_superuser == True %}
+      Admin
+  {% else %}
+   {{ comments.0.user_id__first_name }}
+   {% endif %}
+  </a>
+ </span>
+ <span class="description">Sent you a message - {{ comments.0.created_at }}</span>
+ </div>
+ <p>
+ {{ comments.0.comment }}
+ </p>

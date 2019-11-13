@@ -1,0 +1,127 @@
+{% extends 'egciptv/layouts.html' %}
+{% load static %}
+{% block content %}
+    <section id="inner-banner-area">
+    <div class="overlay"></div>
+    <div class="container">
+        <h2>Profile</h2>
+       <ol class="breadcrumb">
+           <li class="breadcrumb-item"><a href="#">Home</a></li>
+           <li class="breadcrumb-item  active">Profile</li>
+       </ol>
+    </div>
+</section>
+
+
+     <div class="account">
+      <div class="container">
+        <div class="col-md-4">
+            <div class="left-part">
+            <h3>Choose a topic</h3>
+                <ul>
+                    <ul id="accordion" class="accordion">
+      <li>
+        <div class="link"><i class="fa fa-database"></i>Web Design</div>
+        <ul class="submenu">
+          <li class="active"><a href="#">Photoshop</a></li>
+          <li><a href="#">HTML</a></li>
+          <li><a href="#">CSS</a></li>
+        </ul>
+      </li>
+      <li>
+        <div class="link"><i class="fa fa-code"></i>Coding<i class="fa fa-chevron-down"></i></div>
+        <ul class="submenu">
+          <li><a href="#">Javascript</a></li>
+          <li><a href="#">jQuery</a></li>
+          <li><a href="#">Ruby</a></li>
+        </ul>
+      </li>
+      <li>
+        <div class="link">Devices</div>
+
+       <!--- <ul class="submenu">
+          <li><a href="#">Tablet</a></li>
+          <li><a href="#">Mobile</a></li>
+          <li><a href="#">Desktop</a></li>
+        </ul>-->
+      </li>
+
+    </ul>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-8">
+
+          <div class="profile_page">
+
+        <div class="panel panel-default">
+      <div class="panel-heading">  <h4 >User Profile</h4></div>
+       <div class="panel-body">
+
+        <div class="box box-info">
+
+                <div class="box-body">
+
+                <div class="col-md-12">
+
+
+
+              <h4> {{ customer.0.customer_id__first_name }} {{ customer.0.customer_id__last_name }} </h4>
+
+
+               <table>
+        <tr>
+            <td>First Name:</td>
+            <td>{{ customer.0.customer_id__first_name }}</td>
+        </tr>
+
+        <tr>
+            <td>Last Name:</td>
+            <td>{{ customer.0.customer_id__last_name }}</td>
+        </tr>
+
+         <tr>
+            <td>Date Of Birth:</td>
+            <td>{{ customer.0.customer_id__dob }}</td>
+        </tr>
+
+        <tr>
+            <td>Email:</td>
+            <td>{{ customer.0.customer_id__email_address }}</td>
+        </tr>
+
+
+            <td>Phone :Phone :</td>
+            <td>{{ customer.0.customer_id__phone }}</td>
+        </tr>
+
+      </table>
+
+    </div>
+
+
+
+
+
+                <!-- /.box-body -->
+              </div>
+
+             <div class="col-md-12"> <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p></div>
+              <!-- /.box -->
+
+            </div>
+
+
+        </div>
+        </div>
+
+
+
+
+
+
+        </div>
+      </div>
+     </div>
+     </div>
+{% endblock %}

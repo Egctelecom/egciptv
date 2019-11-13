@@ -1,0 +1,110 @@
+{% extends 'egciptv/layouts.html' %}
+{% load static %}
+{% block content %}
+    <style>
+      #map {
+
+        width:100% !important;
+        float:left !important;
+        {#position: static !important;#}
+        padding: 500px 0 20px !important;
+
+      }
+    </style>
+    <section id="inner-banner-area">
+    <div class="overlay"></div>
+    <div class="container">
+        <h2>Contact Us</h2>
+       <ol class="breadcrumb">
+           <li class="breadcrumb-item"><a href="#">Home</a></li>
+           <li class="breadcrumb-item  active">Contact Us</li>
+       </ol>
+    </div>
+</section>
+
+
+    <section id="contact-us-page">
+        <div class="container">
+
+            <div class="col-md-6">
+                <h2>Send us a message </h2>
+                <p>NOTE: All fields are mandatory</p>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <form method="post" action="{%  url 'send_contact_to_admin' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="name" value="" placeholder="Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" name="email" value="" placeholder="E-mail">
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" class="form-control" name="phone" value="" placeholder="Phone">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" name="content" rows="3" placeholder="Message"></textarea>
+                    </div>
+
+                    <button type="submit">Read more</button>
+
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h2>Contact details and locations</h2>
+                <address>
+                    <p>Address - {{ other_details.0.address }}</p>
+                    <p>City - {{ other_details.0.city }}</p>
+                    <p>Province - {{ other_details.0.province }} , {{ other_details.0.country }}</p>
+                    <p>Zip- {{ other_details.0.zip }}</p>
+                    <p>Fax: {{ other_details.0.fax }} </p>
+                    <p>Tel : {{ other_details.0.phone }}</p>
+                    <p>E- mail: {{ other_details.0.email }}</p>
+                </address>
+            </div>
+
+            <div class="col-md-12">
+                 <div id="map"></div>
+            </div>
+
+
+        </div>
+    </section>
+
+{% endblock %}
+{% block scripts %}
+	 <script>
+
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 8,
+          center: {lat:55.3781, lng:3.4360}
+        });
+        var geocoder = new google.maps.Geocoder();
+
+        geocodeAddress(geocoder, map);
+
+      }
+
+      function geocodeAddress(geocoder, resultsMap) {
+        var address = '{{ other_details.0.address }}';
+        geocoder.geocode({'address': address}, function(results, status) {
+          if (status === 'OK') {
+            resultsMap.setCenter(results[0].geometry.location);
+            var marker = new google.maps.Marker({
+              map: resultsMap,
+              position: results[0].geometry.location
+            });
+          } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+          }
+        });
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABQ8h9v6a5SaqoEo7VbzTZaWtvo5J0Hi8&callback=initMap"></script>
+{%  endblock %}

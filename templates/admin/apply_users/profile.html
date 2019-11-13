@@ -1,0 +1,447 @@
+{% extends 'admin/layout.html' %}
+{%  load static %}
+{%  load get_service_list %}
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.bootstrap.min.css" />
+    <link rel="stylesheet" href="{% static 'admin/fancybox/jquery.fancybox.css'%}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static 'admin/custom.css'%}" type="text/css" media="screen" />
+{% endblock %}
+{% block content %}
+<section class="content">
+
+      <div class="row">
+        <div class="col-md-3">
+
+          <!-- Profile Image -->
+          <div class="box box-primary">
+            <div class="box-body box-profile">
+              <img class="profile-user-img img-responsive img-circle" src="{% static 'avatar/users_avatar.png' %}" alt="User profile picture">
+
+              <h3 class="profile-username text-center">{{ new_apply_service_user.0.first_name }} {{ new_apply_service_user.0.last_name }}</h3>
+
+              <p class="text-muted text-center">Created on {{ new_apply_service_user.0.created_at }}</p>
+
+              <a class="fancybox fancybox.iframe btn btn-primary btn-block" id="preview2"><b>Activate as User</b></a>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+
+          <!-- About Me Box -->
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">About Me</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <strong><i class="fa fa-envelope margin-r-5"></i> Email</strong>
+
+              <p class="text-muted">
+                {{ new_apply_service_user.0.email_address }}
+              </p>
+
+              <hr>
+
+              <strong><i class="fa fa-phone margin-r-5"></i> Phone</strong>
+
+              <p class="text-muted">
+                {{ new_apply_service_user.0.phone }}
+              </p>
+
+              <hr>
+
+              <strong><i class="fa fa-paper-plane margin-r-5"></i> Cell Number</strong>
+
+              <p class="text-muted">
+                {{ new_apply_service_user.0.cell_number }}
+              </p>
+
+              <hr>
+
+              <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
+
+              <p class="text-muted">
+                  {{ new_apply_service_user.0.service_address_1 }},
+                  {{ new_apply_service_user.0.service_address_2 }},
+                  {{ new_apply_service_user.0.service_city_id__city_name }},
+                  {{ new_apply_service_user.0.service_province_id__province_name }} ,
+                  {{ new_apply_service_user.0.service_country_id__country_name }},
+                  {{ new_apply_service_user.0.service_postcode }}
+              </p>
+
+              <hr>
+
+              <strong><i class="fa fa-map-signs" aria-hidden="true"></i> IP Address</strong>
+
+              <p class="text-muted">
+                 {{ new_apply_service_user.0.applied_ip_address }}
+              </p>
+
+              <hr>
+
+              <strong><i class="fa fa-calendar" aria-hidden="true"></i> Registered Date&Time</strong>
+
+              <p class="text-muted">
+                   {{ new_apply_service_user.0.created_at }}
+              </p>
+
+              <hr>
+
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#activity" data-toggle="tab">Activity</a></li>
+              <li><a href="#timeline" data-toggle="tab">Timeline</a></li>
+              <li><a href="#settings" data-toggle="tab">Reply To User </a></li>
+              <li><a href="#previous_invoice" data-toggle="tab">Previous Invoice </a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="active tab-pane" id="activity">
+                <!-- Post -->
+                {% get_menu_data new_apply_service_user.0.menu_category_id as MENU %}
+                <div class="post">
+                  <div class="user-block">
+                    <img class="img-circle img-bordered-sm" src="{% static 'admin/clipboard-flat.png' %}" alt="user image">
+                        <span class="username">
+                          <a href="#">{{ MENU.0.service_parent_category_id__service_parent_category_name }}/
+                              {{ MENU.0.service_sub_parent_category_name_id__service_sub_parent_category_name }}/
+                              {{ MENU.0.service_category_id__service_category_name}}
+                          </a>
+                        </span>
+                  </div>
+                  <!-- /.user-block -->
+                  <p>
+                   <table id="myTable" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                              <th>Plan Name</th>
+                              <td>Plan Retail Price</td>
+                              <th>Plan Actual Price</th>
+                              <th>Plan Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% get_plan_data new_apply_service_user.0.plan_id as PLAN %}
+                        {% for foo in PLAN  %}
+                            <tr>
+                              <td>{{foo.title}}</td>
+                              <td>{{foo.retail}}</td>
+                              <td>{{foo.actual}}</td>
+                              <td>{{foo.qty}}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                  </p>
+                </div>
+
+                <!-- /.post -->
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="timeline">
+                          <div class="box box-solid">
+                            <div class="box-header with-border">
+                              <i class="fa fa-university" aria-hidden="true"></i>
+                                <h3 class="box-title">Other Details</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                              <dl class="dl-horizontal">
+                                <dt>Call Time</dt>
+                                <dd> {{ new_apply_service_user.0.call_time }}</dd>
+                                <dt>Installation Time</dt>
+                                <dd>{{ new_apply_service_user.0.installation_time }}</dd>
+                                <dt>Hear About Us</dt>
+                                <dd>{{ new_apply_service_user.0.hear_about_us }}</dd>
+                                <dt>Service Date Time</dt>
+                                <dd>{{ new_apply_service_user.0.service_date_time }}</dd>
+                                <dt>Cancellation Date with Current Provider</dt>
+                                <dd>{{ new_apply_service_user.0.cancellation_date_with_current_provider }}</dd>
+                                <dt>Terms Of Service</dt>
+                                <dd>{{ new_apply_service_user.0.terms_of_service }}</dd>
+                                <dt>Referred Ac No</dt>
+                                <dd>{{ new_apply_service_user.0.referred_ac_no }}</dd>
+                                <dt>Referred By</dt>
+                                <dd>{{ new_apply_service_user.0.referred_by }}</dd>
+                                <dt>Message</dt>
+                                <dd>{{ new_apply_service_user.0.message }}</dd>
+                              </dl>
+                            </div>
+                            <!-- /.box-body -->
+                          </div>
+                          <!-- /.box -->
+                          <div class="box box-solid">
+                                    <div class="box-header with-border">
+                                      <i class="fa fa-leanpub" aria-hidden="true"></i>
+                                        <h3 class="box-title">Service Address</h3>
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <div class="box-body">
+                                      <dl class="dl-horizontal">
+                                        <dt>Service Address 1</dt>
+                                        <dd> {{ new_apply_service_user.0.service_address_1 }}</dd>
+                                        <dt>Service Address 2</dt>
+                                        <dd>{{ new_apply_service_user.0.service_address_2 }}</dd>
+                                        <dt>Service Apt Suite</dt>
+                                        <dd>{{ new_apply_service_user.0.service_apt_suite }}</dd>
+                                        <dt>Service City Name</dt>
+                                        <dd>{{ new_apply_service_user.0.service_city_id__city_name }}</dd>
+                                        <dt>Service Province Name</dt>
+                                        <dd>{{ new_apply_service_user.0.service_province_id__province_name }}</dd>
+                                        <dt>Service Country Name</dt>
+                                        <dd>{{ new_apply_service_user.0.service_country_id__country_name }}</dd>
+                                        <dt>Service Post Code</dt>
+                                         <dd>{{ new_apply_service_user.0.service_postcode }}</dd>
+                                      </dl>
+                                    </div>
+                                    <!-- /.box-body -->
+                          </div>
+
+                          <div class="box box-solid">
+                                            <div class="box-header with-border">
+                                              <i class="fa fa-leanpub" aria-hidden="true"></i>
+                                                <h3 class="box-title">Billing Address</h3>
+                                            </div>
+                                            <!-- /.box-header -->
+                                            <div class="box-body">
+                                              <dl class="dl-horizontal">
+                                                <dt>Billing Address 1</dt>
+                                                <dd> {{ new_apply_service_user_billing.0.billing_address_1 }}</dd>
+                                                <dt>Billing Address 2</dt>
+                                                <dd>{{ new_apply_service_user_billing.0.billing_address_2 }}</dd>
+                                                <dt>Billing Apt Suite</dt>
+                                                <dd>{{ new_apply_service_user_billing.0.billing_apt_suite }}</dd>
+                                                <dt>Billing City Name</dt>
+                                                <dd>{{ new_apply_service_user_billing.0.billing_city_id__city_name }}</dd>
+                                                <dt>Billing Province Name</dt>
+                                                <dd>{{ new_apply_service_user_billing.0.billing_province_id__province_name }}</dd>
+                                                <dt>Billing Country Name</dt>
+                                                <dd>{{ new_apply_service_user_billing.0.billing_country_id__country_name }}</dd>
+                                                <dt>Billing Post Code</dt>
+                                                 <dd>{{ new_apply_service_user_billing.0.billing_postcode }}</dd>
+                                              </dl>
+                                            </div>
+                                            <!-- /.box-body -->
+                                  </div>
+              </div>
+              <!-- /.tab-pane -->
+
+              <div class="tab-pane" id="settings">
+                {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <form class="form-horizontal" action="{%  url "send_mail_to_apply_user" %}" method="post">
+                  {%  csrf_token %}
+                  <input type="hidden" name="id" value="{{ new_apply_service_user.0.id }}">
+                  <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">First Name</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputName" name="first_name" placeholder="First Name" value="{{ new_apply_service_user.0.first_name }}">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">Last Name</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputName" name="last_name" placeholder="Last Name" value="{{ new_apply_service_user.0.last_name }}">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+                    <div class="col-sm-10">
+                      <input type="email" class="form-control" id="inputEmail" name="email_address" placeholder="Email" value="{{ new_apply_service_user.0.email_address }}">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2 control-label">Message</label>
+                    <div class="col-sm-10">
+                      <textarea class="form-control" id="inputEmail" name="message" placeholder="Enter A new Reply Message" >
+                      </textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <button type="submit" class="btn btn-danger">Submit</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="tab-pane" id="previous_invoice">
+                        <div class="box box-solid">
+                            <div class="box-header with-border">
+                              <i class="fa fa-university" aria-hidden="true"></i>
+                                <h3 class="box-title">Previous Invoice</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                              <dl class="dl-horizontal">
+                                  <dt><img src="{% static 'admin/invoice_t.png' %}" style="height:50px;width: 50px;"><a href="/{{ new_apply_service_user.0.previous_invoice }}" target="_blank"> Click to view </a> </dt>
+                              </dl>
+                            </div>
+                            <!-- /.box-body -->
+                          </div>
+              </div>
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+<div id="foo" style="display: none;"></div>
+    </section>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'admin/plugins/jQuery/jQuery-2.2.0.min.js'%}"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
+<script type="text/javascript" src="{% static 'admin/fancybox/jquery.fancybox.pack.js'%}"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<script>
+    $(document).ready( function () {
+        $('#myTable').DataTable();
+         $(".fancybox").fancybox({
+            "width":"100%",
+            "height":"100%",
+            'autoSize' : false,
+            afterClose: function () {
+                location.reload();
+            }
+
+        });
+    });
+</script>
+<script type="text/javascript">
+
+     $(document).ready(function() {
+
+             var plan = "{{ new_apply_service_user.0.plan }}";
+
+             var first_name = "{{ new_apply_service_user.0.first_name }}";
+             var last_name = "{{ new_apply_service_user.0.last_name }}";
+             var email = "{{ new_apply_service_user.0.email_address }}";
+             var phone = "{{ new_apply_service_user.0.phone }}";
+             var cell_number = "{{ new_apply_service_user.0.cell_number }}";
+             var company_name = "{{ new_apply_service_user.0.company_name }}";
+
+
+             var account_address_1 = "{{ new_apply_service_user.0.service_address_1 }}";
+             var account_address_2 = "{{ new_apply_service_user.0.service_address_2 }}";
+             var account_city_id = "{{ new_apply_service_user.0.service_city_id }}";
+             var account_province_id = "{{ new_apply_service_user.0.service_province_id}}";
+             var account_country_id = "{{ new_apply_service_user.0.service_country_id}}";
+             var account_postcode = "{{ new_apply_service_user.0.service_postcode }}";
+
+             var account_city_name = "{{ new_apply_service_user.0.service_city_id__city_name }}";
+             var account_province_name = "{{ new_apply_service_user.0.service_province_id__province_name}}";
+             var account_country_name = "{{ new_apply_service_user.0.service_country_id__country_name}}";
+
+
+             var billing_address_1 = "{{ new_apply_service_user_billing.0.billing_address_1 }}";
+             var billing_address_2 = "{{ new_apply_service_user_billing.0.billing_address_2 }}";
+             var billing_city_id = "{{ new_apply_service_user_billing.0.billing_city_id }}";
+             var billing_province_id = "{{ new_apply_service_user_billing.0.billing_province_id}}";
+             var billing_country_id = "{{ new_apply_service_user_billing.0.billing_country_id}}";
+             var billing_postcode = "{{ new_apply_service_user_billing.0.billing_postcode }}";
+
+             var billing_city_name = "{{ new_apply_service_user_billing.0.billing_city_id__city_name }}";
+             var billing_province_name = "{{ new_apply_service_user_billing.0.billing_province_id__province_name}}";
+             var billing_country_name = "{{ new_apply_service_user_billing.0.billing_country_id__country_name}}";
+
+             console.log(account_address_1);
+             console.log(account_address_2);
+             console.log(account_city_id);
+             console.log(account_province_id);
+             console.log(account_country_id);
+             console.log(account_postcode);
+
+             console.log(billing_address_1);
+             console.log(billing_address_2);
+             console.log(billing_city_id);
+             console.log(billing_province_id);
+             console.log(billing_country_id);
+             console.log(billing_postcode);
+
+
+             $.ajax({
+                 url: "{% url 'set_to_user' %}",
+                 type: "post",
+                 data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                     email: email,
+                     first_name: first_name,
+                     last_name: last_name,
+                     phone: phone,
+                     cell_number: cell_number,
+                     account_address_1: account_address_1,
+                     account_address_2: account_address_2,
+                     account_city_id: account_city_id,
+                     account_province_id: account_province_id,
+                     account_country_id: account_country_id,
+                     account_postcode: account_postcode,
+                     billing_address_1: billing_address_1,
+                     billing_address_2: billing_address_2,
+                     billing_city_id: billing_city_id,
+                     billing_province_id: billing_province_id,
+                     billing_country_id: billing_country_id,
+                     billing_postcode: billing_postcode,
+                     plan: plan,
+                     company_name: company_name,
+                     account_city_name: account_city_name,
+                     account_province_name: account_province_name,
+                     account_country_name: account_country_name,
+                     billing_city_name: billing_city_name,
+                     billing_province_name: billing_province_name,
+                     billing_country_name: billing_country_name
+                 },
+                 success: function (data) {
+                     if (data['data'] == 'success') {
+                        var element = document.getElementById('preview2');
+                        element.setAttribute("href",'{% url 'set_to_activated_users' %}' +
+                        '?first_name=' + first_name + '&' +
+                        'last_name=' + last_name + '&' +
+                        'company_name=' + company_name + '&' +
+                        'phone=' + phone + '&' +
+                        'cell_number=' + cell_number + '&' +
+                        'email=' + email + '&' +
+                        'address_1=' + account_address_1 + '&' +
+                        'address_2=' + account_address_2 + '&' +
+                        'account_country_id=' + account_country_id + '&' +
+                        'account_country_name=' + account_country_name + '&' +
+                        'account_province_id=' + account_province_id + '&' +
+                        'account_province_name=' + account_province_name + '&' +
+                        'account_city_id=' + account_city_id + '&' +
+                        'account_city_name=' + account_city_name + '&' +
+                        'account_postcode=' + account_postcode + '&' +
+                        'billing_address_1=' + billing_address_1 + '&' +
+                        'billing_address_2=' + billing_address_2 + '&' +
+                        'billing_country_id=' + billing_country_id + '&' +
+                        'billing_country_name=' + billing_country_name + '&' +
+                        'billing_province_id=' + billing_province_id + '&' +
+                        'billing_province_name=' + billing_province_name + '&' +
+                        'billing_city_id=' + billing_city_id + '&' +
+                        'billing_city_name=' + billing_city_name + '&' +
+                        'billing_postcode=' + billing_postcode + '&' +
+                        'plan=' + plan+'');
+                     }
+                 }
+             })
+         })
+
+
+
+</script>
+{% endblock %}

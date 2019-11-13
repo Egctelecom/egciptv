@@ -1,0 +1,6 @@
+    <select name="billing_province" class="form-control" id="billing_province" required style="width: 208px!important;" onchange="get_billing_city()">
+        <option>Select Province</option>
+        {% for provinces in province %}
+        <option value="{{ provinces.id }}">{{ provinces.province_name }}</option>
+        {% endfor %}
+    </select>

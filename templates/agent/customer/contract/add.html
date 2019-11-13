@@ -1,0 +1,104 @@
+{% extends 'agent/fancybox.html' %}
+{% load static %}
+{% block content %}
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Create New Contract</h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" id="" class="form-horizontal" action="{% url 'agent_create_new_contract' id %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                       <div class="box-body">
+                            <ul class="todo-list ui-sortable">
+                            {% for customer_services_plans in customer_services_plan %}
+                            <li>
+                                  <span class="handle ui-sortable-handle">
+                                    <i class="fa fa-ellipsis-v"></i>
+                                    <i class="fa fa-ellipsis-v"></i>
+                                  </span>
+                              <input type="checkbox" id="data{{ customer_services_plans.service_plan_id }}" value="{{ customer_services_plans.service_plan_id }}" onchange="set_provider({{ customer_services_plans.service_plan_id }})">
+                              <span class="text">{{ customer_services_plans.service_plan_id__title }}</span>
+                            </li>
+                            {% endfor %}
+                            <input type="hidden" name="customerwithservice" id="customerwithservice">
+                            <input type="hidden" name="service_plan_hardware" id="service_plan_hardware">
+                          </ul>
+
+                       </div>
+                       <h3 class="box-title">Available H/W according to Service Plan</h3>
+                       <div class="box-body">
+                          <ul id="service_with_hardware" class="todo-list ui-sortable">
+
+                          </ul>
+                       </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Add</button>
+                       </div>
+                </form>
+
+          </div>
+          <!-- /.box -->
+    </div>
+{% endblock %}
+{% block scripts %}
+<script>
+var arrt =[];
+var hw_arrt =[];
+function set_provider(plan_id) {
+    var lt = $('#data' + plan_id).is(':checked');
+    if (lt == true) {
+        $.ajax({
+            type:"post",
+            url:"{% url 'get_hw_service_plan' %}",
+            data: {
+                csrfmiddlewaretoken:"{{csrf_token}}",
+                service_plan:plan_id
+            },
+            success:function (success) {
+                console.log(success);
+                arrt.push(plan_id);
+                console.log(arrt);
+                document.getElementById('customerwithservice').value = JSON.stringify(arrt);
+                $('#service_with_hardware').empty().append(success.data);
+                var ary = success.arraylist;
+                ary.forEach(function(element) {
+                   hw_arrt.push(element);
+                });
+                document.getElementById('service_plan_hardware').value = JSON.stringify(hw_arrt);
+                console.log(hw_arrt);
+            }
+        });
+    }else{
+        arrt.pop();
+        console.log(arrt);
+        document.getElementById('customerwithservice').value = JSON.stringify(arrt);
+    }
+
+}
+
+
+function set_hw(id) {
+     var lt = $('#hw_data' + id).is(':checked');
+     if (lt == true) {
+          hw_arrt.push(id);
+          console.log(hw_arrt);
+          document.getElementById('service_plan_hardware').value = JSON.stringify(hw_arrt);
+     }else{
+          hw_arrt.pop();
+          console.log(hw_arrt);
+          document.getElementById('service_plan_hardware').value = JSON.stringify(hw_arrt);
+     }
+}
+</script>
+{%  endblock %}
+
+
+

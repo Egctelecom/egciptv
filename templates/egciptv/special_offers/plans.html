@@ -1,0 +1,51 @@
+{% extends 'egciptv/layouts.html' %}
+{% load static %}
+{% load special_offer_category_service %}
+{% load special_offers_functions %}
+{% block content %}
+<section id="inner-banner-area">
+    <div class="overlay"></div>
+    <div class="container">
+        <h2>Special Offers</h2>
+       <ol class="breadcrumb">
+           <li class="breadcrumb-item"><a href="#">Home</a></li>
+           <li class="breadcrumb-item"><a href="#">Special Offers</a></li>
+<!--           <li class="breadcrumb-item  active">{{  special_offers_plans_list.0.special_offers_parent_category_id__special_offers_parent_category_name }}</li>-->
+<!--           <li class="breadcrumb-item  active">{{ special_offers_plans_list.0.special_offers_sub_parent_category_id__special_offers_sub_parent_category_name }}</li>-->
+       </ol>
+    </div>
+</section>
+<section id="Residential-page">
+    <div class="container">
+
+        {% for sp in special_offers_plans_list %}
+        <div class="col-md-4">
+            <div class="headline-area">
+                {% getOffersPlans sp.special_offers_id as SPECIALOFFERS %}
+                <h1>       {%  for sp in SPECIALOFFERS %}
+                           {%  if forloop.counter|add:"-1" %}
+                               +
+                           {% endif %}
+                           {{ sp.service_price_id__service_name }}
+                           {%  endfor %}
+                </h1>
+            </div>
+            <div class="content-area">
+            <ul>
+                <li><img class="img-compress" src="/{{ sp.telecom_logo }}"></li>
+                <li><p>Special Offer:</p>
+                        <p>$ {{ sp.special_offers_id__offers_price }}/month</p>
+                        <p>$ {{ sp.special_offers_id__actual_price }}/month</p>
+                </li>
+            </ul>
+
+            <p class="product-name">{{ sp.special_offers_id__details | safe }}</p>
+            <a href="{%  url 'special_offers_plans_details' sp.id %}"><button>Read Details</button></a>
+
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

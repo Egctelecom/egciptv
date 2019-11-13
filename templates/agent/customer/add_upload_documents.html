@@ -1,0 +1,75 @@
+{% extends 'agent/fancybox.html' %}
+{% load static %}
+{% block content %}
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Account Documents / Files </h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" id="" class="form-horizontal" action="{% url 'agent_upload_documents' id %}" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                      <div class="box-body">
+
+                      <p class="margin">File Name</p>
+                      <div class="input-group">
+                        <input type="text" name="file_name" class="form-control" value="" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">File</p>
+                      <div class="input-group">
+                        <input type="file" name="filedata" id="file" class="form-control" value="" onchange="GetFileSizeNameAndType()" required style="width: 588px!important;">
+                      </div>
+
+                      <input type="hidden" name="file_type" id="file_type" class="form-control" value="" required style="width: 588px!important;">
+                      <input type="hidden" name="customer" class="form-control" value="{{ id }}" required style="width: 588px!important;">
+
+
+
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Add</button>
+                       </div>
+                </form>
+
+          </div>
+          <!-- /.box -->
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+     function GetFileSizeNameAndType()
+        {
+        var fi = document.getElementById('file'); // GET THE FILE INPUT AS VARIABLE.
+
+        var totalFileSize = 0;
+        var fileName, fileExtension;
+        // VALIDATE OR CHECK IF ANY FILE IS SELECTED.
+        if (fi.files.length > 0)
+        {
+            // RUN A LOOP TO CHECK EACH SELECTED FILE.
+            for (var i = 0; i <= fi.files.length - 1; i++)
+            {
+                //ACCESS THE SIZE PROPERTY OF THE ITEM OBJECT IN FILES COLLECTION. IN THIS WAY ALSO GET OTHER PROPERTIES LIKE FILENAME AND FILETYPE
+                var fsize = fi.files.item(i).size;
+                totalFileSize = totalFileSize + fsize;
+                fileName = fi.files.item(i).name;
+                fileExtension = fileName.split('.').pop();
+                document.getElementById('file_type').value = fileExtension;
+
+            }
+        }
+    }
+    </script>
+{% endblock %}
+
+
+

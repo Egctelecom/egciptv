@@ -1,0 +1,86 @@
+{% extends 'egciptv/layouts.html' %}
+{% load  other_section %}
+{% block content %}
+<section id="inner-banner-area">
+    <div class="overlay"></div>
+    <div class="container">
+        <h2>Voip long distance rate</h2>
+       <ol class="breadcrumb">
+           <li class="breadcrumb-item"><a href="#">Home</a></li>
+           <li class="breadcrumb-item  active">Voip long distance rate</li>
+       </ol>
+    </div>
+</section>
+<section id="tab-main-area">
+    <div class="container">
+        <!-- Tab links -->
+        <div class="tab">
+            {%  for ar  in arr %}
+            <button {%  if forloop.counter == 1 %} class="tablinks active" {%  else %} class="tablinks" {% endif %}onclick="openCity(event,'{{ ar }}')"> {{ ar }} </button>
+            {%  endfor %}
+
+        </div>
+
+        <!-- Tab content -->
+       {%  for ar  in arr %}
+        <div id="{{ ar }}" {%  if forloop.counter == 1 %} class="tabcontent active" style="display:block;" {%  else %} class="tabcontent" {%  endif %}>
+            <table class="table-responsive">
+                <table class="table" id="myTable">
+                    <thead>
+                    <tr>
+                        <th>Country</th>
+                        <th>Prefix</th>
+                        <th>Rate</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {%  get_voip_distence ar as DATA %}
+                    {%  for voip_rate in DATA  %}
+                    {%  if voip_rate.prefix == null and voip_rate.rate == null  %}
+                    <tr class="table-header">
+                        <td>{{voip_rate.country}}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    {%  else %}
+                    <tr class="table-header-content">
+                        <td>{{voip_rate.country}}</td>
+                        <td>{{voip_rate.prefix}}</td>
+                        <td>{{voip_rate.rate}}</td>
+                    </tr>
+                    {%  endif %}
+                    {%  endfor %}
+                    </tbody>
+                </table>
+            </table>
+        </div>
+       {%  endfor %}
+
+
+    </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+    function openCity(evt, cityName) {
+        // Declare all variables
+        var i, tabcontent, tablinks;
+
+        // Get all elements with class="tabcontent" and hide them
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        // Show the current tab, and add an "active" class to the button that opened the tab
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+</script>
+{% endblock %}

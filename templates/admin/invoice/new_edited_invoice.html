@@ -1,0 +1,353 @@
+{% load static %}
+{% load unicode %}
+<style>
+    body {
+        padding: 0;
+        margin: 0;
+    }
+
+    html { -webkit-text-size-adjust:none; -ms-text-size-adjust: none;}
+    @media only screen and (max-device-width: 680px), only screen and (max-width: 680px) {
+        *[class="table_width_100"] {
+            width: 96% !important;
+        }
+        *[class="border-right_mob"] {
+            border-right: 1px solid #dddddd;
+        }
+        *[class="mob_100"] {
+            width: 100% !important;
+        }
+        *[class="mob_center"] {
+            text-align: center !important;
+        }
+        *[class="mob_center_bl"] {
+            float: none !important;
+            display: block !important;
+            margin: 0px auto;
+        }
+        .iage_footer a {
+            text-decoration: none;
+            color: #929ca8;
+        }
+    }
+    .table_width_100 {
+        width: 680px;
+    }
+</style>
+
+
+<div id="mailsub" class="notification" align="center">
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="min-width: 320px;">
+        <tr>
+            <td align="center" bgcolor="#eff3f8">
+                <table border="0" cellspacing="0" cellpadding="0" class="table_width_100" width="100%" style="max-width: 600px; min-width: 300px;">
+                    <tr>
+                        <td align="center" bgcolor="#ffffff">
+                              <table width="90%" border="0" cellspacing="0" cellpadding="0">
+                                    <!-- header -->
+                                    <tr>
+                                        <td style="width: 50%;">
+                                            <a href="#" target="_blank" style="color: #1ca9ef; font-family: Arial, Helvetica, sans-serif; float:left; width:100%; padding: 26px 0 40px; text-align:left; font-size: 35px; text-decoration: none; font-weight: 600;">
+                                                <font face="Arial, Helvetica, sans-seri;">
+                                                   EGCIPTV
+                                                </font>
+                                            </a>
+                                            <h4 style="margin: 5px 0; padding-left: 3px; text-transform: capitalize;">Bill to:
+                                                <span style="padding-left: 5px;">
+                                                {{ customer_first_name }} {{ customer_last_name }}
+
+                                                </span>
+                                            </h4>
+                                            <p style="margin: 7px 0; font-size: 14px; padding-left: 3px;">
+                                                {{ customer_address.0.address_1 }},
+                                                {{ customer_address.0.address_2 }},
+                                                {{ customer_address.0.city__city_name }},
+                                                {{ customer_address.0.province__province_name }},
+                                                {{ customer_address.0.country__country_name }}
+                                            </p>
+                                        </td>
+                                        <td style="width: 50%;">
+                                            <div style="padding-top: 14px; float: right;">
+                                                <h3 style="margin-bottom: 0;">Invoice:<span style="color: #1eb90d; padding-left: 5px;">#EG67134</span></h3>
+                                                <h4 style="font-weight: 100; margin: 3px 0; font-size: 14px;">Date :<span style="font-weight: 600; padding-left: 5px;">{{ billing_created_at }}</span></h4>
+                                                <h4 style="font-weight: 100; margin: 3px 0; font-size: 14px;">Account No :<span style="font-weight: 600; padding-left: 5px;">{{ customer_account_id }}</span></h4>
+                                                <h4 style="font-weight: 100; margin: 3px 0; font-size: 14px;">Amount Due :<span style="font-weight: 600; padding-left: 5px;">{%  decode_json billing_details.0.due_amount %}</span></h4>
+                                                <h4 style="font-weight: 100; margin: 3px 0; font-size: 14px;">Contract :<span style="font-weight: 600; padding-left: 5px;">1 years</span></h4>
+                                                <h4 style="font-weight: 100; margin: 3px 0; font-size: 14px;">Due Date :<span style="font-weight: 600; padding-left: 5px;">24-01-19</span></h4>
+                                                <h4 style="font-weight: 100; margin: 3px 0; font-size: 14px;">Customer Service :<span style="font-weight: 600; padding-left: 5px;">556-765-787-991</span></h4>
+                                            </div>
+                                        </td>
+                                     </tr>
+                                    <!-- /header -->
+
+                                    <!-- content -->
+                                     <tr>
+                                         <td colspan="2">
+                                              <ul style="padding: 20px 0; border: 2px dashed #cecaca; margin: 40px 0 0;">
+                                                     <li style="list-style-type: none; display: inline-block; width: 12%; font-size: 14px;">
+                                                         Previous Balance
+                                                         <span style="width: 100%; float: left; padding-top: 7px; font-size: 17px; font-weight: 700; color: #d80a0a;">
+
+                                                             {%  decode_json billing_details.0.previous_balance %}
+
+                                                         </span>
+                                                     </li>
+                                                     <li style="list-style-type: none; display: inline-block; width: 4%; position: relative; top: 16px; font-size: 20px; left: 8px;">+</li>
+                                                     <li style="list-style-type: none; display: inline-block; width: 12%; font-size: 14px;">
+                                                         Payments
+                                                         <span style="width: 100%; float: left; padding-top: 7px; font-size: 17px; font-weight: 700; color: #d80a0a;"> {%  decode_json billing_details.0.current_balance %}</span>
+                                                     </li>
+                                                     <li style="list-style-type: none; display: inline-block; width: 4%; position: relative; top: 16px; font-size: 20px; left: -7px;">+</li>
+                                                     <li style="list-style-type: none; display: inline-block; width: 12%; font-size: 14px;">
+                                                         Balance Forward
+                                                         <span style="width: 100%; float: left; padding-top: 7px; font-size: 17px; font-weight: 700; color: #d80a0a;">$0.00</span>
+                                                     </li>
+                                                     <li style="list-style-type: none; display: inline-block; width: 4%; position: relative; top: 16px; font-size: 20px; left: 8px;">+</li>
+                                                     <li style="list-style-type: none; display: inline-block; width: 12%; font-size: 14px;">
+                                                         Current
+                                                         <span style="width: 100%; float: left; padding-top: 7px; font-size: 17px; font-weight: 700; color: #d80a0a;">{%  decode_json billing_details.0.current_balance %}</span>
+                                                     </li>
+                                                     <li style="list-style-type: none; display: inline-block; width: 5%; position: relative; top: 16px; font-size: 20px; left: 8px;">=</li>
+                                                     <li style="list-style-type: none; display: inline-block; width: 12%; font-size: 14px;">
+                                                         Amount Due
+                                                         <span style="width: 100%; float: left; padding-top: 7px; font-size: 17px; font-weight: 700; color: #d80a0a;">{%  decode_json billing_details.0.due_amount %}</span>
+                                                     </li>
+                                                 </ul>
+                                         </td>
+                                     </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <table width="100%" style="padding-top: 30px;">
+                                                 <h2 style="text-align: left; padding-bottom: 25px; color: #323333; margin: 0;">Summary:</h2>
+                                                 <tr>
+                                                     <th style="background: #d0d0d0; padding: 7px 0 7px 12px; text-align: left;">Description</th>
+                                                     <th style="background: #d0d0d0; padding: 7px 0;">Qty</th>
+                                                     <th style="background: #d0d0d0; padding: 7px 0;">Unit Price</th>
+                                                     <th style="background: #d0d0d0; padding: 7px 0;">Amount</th>
+                                                 </tr>
+                                                 <tr>
+                                                     <td style="font-size: 14px; text-align: left; padding: 7px 0 7px 12px;">Product Name</td>
+                                                     <td style="font-size: 14px; text-align: center; padding: 7px 0;">1</td>
+                                                     <td style="font-size: 14px; text-align: center; padding: 7px 0;">$7</td>
+                                                     <td style="font-size: 14px; text-align: center; padding: 7px 0;">$10</td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td style="font-size: 14px;text-align: left; padding: 7px 0 7px 12px;">Monthly Services</td>
+                                                     <td style="font-size: 14px; text-align: center; padding: 7px 0;">-</td>
+                                                     <td style="font-size: 14px; text-align: center; padding: 7px 0;">$5</td>
+                                                     <td style="font-size: 14px; text-align: center; padding: 7px 0;">$9</td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td style="font-size: 14px; text-align: left; padding: 7px 0 7px 12px;">Other Charges</td>
+                                                     <td style="font-size: 14px; text-align: center; padding: 7px 0;">2</td>
+                                                     <td style="font-size: 14px; text-align: center; padding: 7px 0;">$7</td>
+                                                     <td style="font-size: 14px; text-align: center; padding: 7px 0;">$11</td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td style="font-size: 14px; text-align: left; padding: 7px 0 7px 12px;">Long Distance Charges</td>
+                                                     <td style="font-size: 14px; text-align: center; padding: 7px 0;">-</td>
+                                                     <td style="font-size: 14px; text-align: center; padding: 7px 0;">$8</td>
+                                                     <td style="font-size: 14px; text-align: center; padding: 7px 0;">$16</td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td style="font-size: 14px; text-align: left; padding: 7px 0 7px 12px;">municipal tax ($0.46x1)</td>
+                                                     <td style="font-size: 14px; text-align: center; padding: 7px 0;">-</td>
+                                                     <td style="font-size: 14px; text-align: center; padding: 7px 0;">$3</td>
+                                                     <td style="font-size: 14px; text-align: center; padding: 7px 0;">$1</td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td style="font-size: 14px; text-align: left; padding: 7px 0 7px 12px;">G.S.T # 886557453</td>
+                                                     <td style="font-size: 14px; text-align: center; padding: 7px 0;">-</td>
+                                                     <td style="font-size: 14px; text-align: center; padding: 7px 0;">$1</td>
+                                                     <td style="font-size: 14px; text-align: center; padding: 7px 0;">$6</td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td colspan="3" style="border-top: 1px solid #9c9c9c; font-weight: 600; font-size: 14px; text-align: right; padding: 7px 0 7px 12px;">Sub total</td>
+                                                     <td style="border-top: 1px solid #9c9c9c; font-size: 14px; text-align: center; padding: 7px 0; font-weight: 600;">{%  decode_json billing_details.0.previous_balance %}</td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td colspan="3" style="font-weight: 600; font-size: 14px; text-align: right; padding: 7px 0 7px 12px;">Current Balance</td>
+                                                     <td style="font-size: 14px; text-align: center; padding: 7px 0; font-weight: 600;">{%  decode_json billing_details.0.current_balance %}</td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td colspan="3" style="border-bottom: 1px solid #9c9c9c;font-weight: 600; font-size: 17px; text-align: right; padding: 7px 0 7px 12px; color: #d80a0a;">Amount Due</td>
+                                                     <td style="border-bottom: 1px solid #9c9c9c;font-size: 17px; text-align: center; padding: 7px 0; font-weight: 600; color: #d80a0a;">{%  decode_json billing_details.0.due_amount %}</td>
+                                                 </tr>
+                                             </table>
+                                         </td>
+                                    </tr>
+                                  <tr>
+                                        <td colspan="2">
+                                             <div style="padding: 1px 0; margin: 45px 0 0;">
+                                                     <p style="text-align: left; margin: 5px auto; font-size: 14px;">You can view your invoices, account summary and edit your account information from the online portal.</p>
+                                                     <p style="text-align: left; margin: 5px auto; font-size: 14px;">IMPORTANT INFORMATION ABOUT VOIP 9-1-1 SERVICES, please visit
+                                                     </p>
+                                                     <p style="text-align: left; margin: 5px auto; font-size: 14px;">
+                                                         <a href="#">https://www.lorem.com/99_2.html</a>
+                                                     </p>
+                                                     <p style="text-align: left; margin: 5px auto; font-size: 14px;">
+                                                         <a href="#">https://www.lorem.com</a>
+                                                     </p>
+                                                     <p style="text-align: right; margin: 5px auto; font-size: 15px; font-weight: 600;">
+                                                         User ID: 565RFV902
+                                                     </p>
+                                                 </div>
+                                                 <div style="padding: 1px 0;">
+                                                     <p style="text-align: center; padding: 8px 0; margin: 15px auto; font-size: 15px; font-weight: 600; border-bottom: 2px dashed #716f6f; border-top: 2px dashed #716f6f;">Please detach this section and include with your payment</p>
+                                                 </div>
+                                        </td>
+                                  </tr>
+                                  <tr>
+                                      <td colspan="2">
+                                          <table width="100%">
+                                             <tr>
+                                                 <td style="width: 40%; text-align: left;">
+                                                     <h4 style="font-weight: 100; margin: 3px 0; font-size: 14px;">Account No :<span style="font-weight: 600; padding-left: 5px;">565RTWI767</span></h4>
+                                                     <h4 style="font-weight: 600; margin: 5px 0 7px; font-size: 15px;">Person Name</h4>
+                                                     <p style="font-size: 13px; margin: 3px 0;">EGCIPTV about company</p>
+                                                     <p style="font-size: 13px; margin: 18px 0 6px;"><b>Please make cheques payable to EGCIPTV</b></p>
+                                                     <p style="font-size: 14px; margin: 6px 0;">8992 Talbot Street Coraopolis, PA 15108</p>
+                                                 </td>
+                                                 <td style="width: 80%;">
+
+                                                     <div style="float: right;">
+                                                         <table style="border: 2px solid #21a6e4; padding: 4px 30px;">
+                                                             <tr>
+                                                                 <td style="font-size: 14px; font-weight: 600;">Invoice :</td>
+                                                                 <td style="padding: 4px 20px; font-size: 13px; font-weight: 600; border: 2px solid #21a6e4; ">EG67134</td>
+                                                             </tr>
+                                                             <tr>
+                                                                 <td style="font-size: 14px; font-weight: 600;">Amount Paid :</td>
+                                                                 <td style="font-size: 13px; padding: 4px 20px; font-weight: 600; border: 2px solid #21a6e4;">{%  decode_json billing_details.0.previous_balance %}</td>
+                                                             </tr>
+                                                             <tr>
+                                                                 <td style="font-size: 14px; font-weight: 600;">Amount Due :</td>
+                                                                 <td style="height: 28px; font-size: 13px; padding: 4px 20px; font-weight: 600; border: 2px solid #21a6e4;">{%  decode_json billing_details.0.due_amount %}</td>
+                                                             </tr>
+                                                             <tr>
+                                                                 <td style="font-size: 14px; font-weight: 600;">Due Date :</td>
+                                                                 <td style="font-size: 13px; padding: 4px 20px; font-weight: 600; border: 2px solid #21a6e4;">24-01-19</td>
+                                                             </tr>
+                                                         </table>
+                                                     </div>
+                                                 </td>
+                                             </tr>
+                                         </table>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td colspan="2">
+                                          <table width="100%" style="padding-top: 12px; border-top: 2px dashed #777373; margin: 50px 0 0;">
+                                             <tr>
+                                                 <td style="width: 50%;">
+                                                     <a href="#" target="_blank" style="color: #1ca9ef; font-family: Arial, Helvetica, sans-serif; float:left; width:100%; padding: 20px 0 10px; text-align:left; font-size: 30px; text-decoration: none; font-weight: 600;">
+                                                         <font face="Arial, Helvetica, sans-seri;">
+                                                             EGCIPTV
+                                                         </font>
+                                                     </a>
+                                                     <h4 style="margin: 2px 0 5px; padding-left: 3px; text-transform: capitalize; font-weight: 100;">Bill For:<span style="padding-left: 5px; font-weight: 600;">Person Name</span></h4>
+                                                 </td>
+                                                 <td style="width: 50%;">
+                                                     <div style="float: right;">
+                                                         <h3 style="margin-bottom: 0;">Invoice:<span style="color: #1eb90d; padding-left: 5px;">#EG67134</span></h3>
+                                                         <h4 style="font-weight: 100; margin: 3px 0; font-size: 14px;">Account No :<span style="font-weight: 600; padding-left: 5px;">565RTWI767</span></h4>
+                                                         <h4 style="font-weight: 100; margin: 3px 0; font-size: 14px;">Amount Due :<span style="font-weight: 600; padding-left: 5px;">$76</span></h4>
+                                                     </div>
+                                                 </td>
+                                             </tr>
+                                         </table>
+
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td colspan="2">
+                                           <div style="padding: 1px 12px; border: 2px dashed #a09e9e; margin: 15px 0 0;">
+                                                 <p style="color: #d40606; font-size: 12px; text-align: left;">
+                                                         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto dignissimos ducimus et libero magnam similique ut
+                                                         voluptas. Alias aliquid amet architecto assumenda atque beatae blanditiis consectetur, corporis culpa delectus dicta
+                                                         distinctio dolor eaque enim est eveniet exercitationem facere impedit iste molestiae nam nisi nostrum numquam officiis
+                                                         pariatur, perspiciatis possimus quaerat quasi quia quis repellendus reprehenderit repudiandae sit, soluta velit
+                                                         voluptatem. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi aspernatur culpa cupiditate delectus deleniti incidunt ipsam magnam, modi molestias odio
+                                                         odit provident quisquam recusandae repudiandae sint soluta temporibus voluptas.
+                                                  </p>
+                                          </div>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td colspan="2">
+                                         <table width="100%" style="padding-top: 30px;">
+                                             <h2 style="margin: 0; text-align: left; padding-bottom: 25px; color: #323333;">Details:</h2>
+                                             <tr>
+                                                 <th style="background: #d0d0d0; padding: 7px 0 7px 12px; text-align: left;">Description</th>
+                                                 <th style="background: #d0d0d0; padding: 7px 0;">Amount</th>
+                                             </tr>
+                                             <tr>
+                                                 <td style="font-size: 14px; text-align: left; padding: 7px 0 7px 12px;">Product Name</td>
+                                                 <td style="font-size: 14px; text-align: center; padding: 7px 0;">$10</td>
+                                             </tr>
+                                             <tr>
+                                                 <td style="font-size: 14px;text-align: left; padding: 7px 0 7px 12px;">Monthly Services</td>
+                                                 <td style="font-size: 14px; text-align: center; padding: 7px 0;">$9</td>
+                                             </tr>
+                                             <tr>
+                                                 <td style="font-size: 14px; text-align: left; padding: 7px 0 7px 12px;">Other Charges</td>
+                                                 <td style="font-size: 14px; text-align: center; padding: 7px 0;">$11</td>
+                                             </tr>
+                                             <tr>
+                                                 <td style="font-size: 14px; text-align: left; padding: 7px 0 7px 12px;">Long Distance Charges</td>
+                                                 <td style="font-size: 14px; text-align: center; padding: 7px 0;">$16</td>
+                                             </tr>
+                                             <tr>
+                                                 <td style="font-size: 14px; text-align: left; padding: 7px 0 7px 12px;">municipal tax ($0.46x1)</td>
+                                                 <td style="font-size: 14px; text-align: center; padding: 7px 0;">$1</td>
+                                             </tr>
+                                             <tr>
+                                                 <td style="font-size: 14px; text-align: left; padding: 7px 0 7px 12px;">G.S.T # 886557453</td>
+                                                 <td style="font-size: 14px; text-align: center; padding: 7px 0;">$6</td>
+                                             </tr>
+                                             <tr>
+                                                 <td style="font-weight: 600; font-size: 14px; text-align: left; padding: 7px 0 7px 12px;">Sub total</td>
+                                                 <td style="font-size: 14px; text-align: center; padding: 7px 0; font-weight: 600;">$6</td>
+                                             </tr>
+                                             <tr>
+                                                 <td style="font-weight: 600; font-size: 15px; text-align: left; padding: 7px 0 7px 12px;">Total for January, 2019</td>
+                                                 <td style="font-size: 16px; text-align: center; padding: 7px 0; font-weight: 600;">$6</td>
+                                             </tr>
+                                             <tr>
+                                                 <td style="font-weight: 600; font-size: 14px; text-align: left; padding: 7px 0 7px 12px;">Outstanding Balance</td>
+                                                 <td style="font-size: 14px; text-align: center; padding: 7px 0; font-weight: 600;">$6</td>
+                                             </tr>
+                                             <tr>
+                                                 <td style="border-top: 1px solid #9c9c9c; border-bottom: 1px solid #9c9c9c;font-weight: 600; font-size: 17px; text-align: left; padding: 7px 0 7px 12px; color: #d80a0a;">Amount Due</td>
+                                                 <td style="border-top: 1px solid #9c9c9c; border-bottom: 1px solid #9c9c9c;font-size: 17px; text-align: center; padding: 7px 0; font-weight: 600; color: #d80a0a;">{%  decode_json billing_details.0.due_amount %}</td>
+                                             </tr>
+                                         </table>
+                                      </td>
+                                  </tr>
+                                    <!-- /content -->
+
+                                    <!-- footer -->
+                                    <tr>
+                                        <td colspan="2" class="iage_footer" align="center" bgcolor="#ffffff">
+
+                                        <table width="100%">
+                                            <tr><td align="center" style="padding:20px;flaot:left;width:100%; text-align:center;">
+                                                <font face="Arial, Helvetica, sans-serif" size="3" color="#96a5b5" style="font-size: 13px; margin-top: 30px; width: 100%; float: left;">
+                                                    <span style="font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #96a5b5;">
+                                                         ALL Rights Reserved.
+                                                    </span>
+                                                </font>
+                                            </td></tr>
+                                        </table>
+                                       </td>
+                                    </tr>
+                                    <!-- /footer-->
+                              </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>

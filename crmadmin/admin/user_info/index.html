@@ -1,0 +1,60 @@
+{% extends 'admin/layout.html' %}
+{% block content %}
+{% load static %}
+<!-- Content Header (Page header) -->
+    <section class="content">
+
+      <div class="row">
+        <div class="col-md-3">
+            <div class="box box-primary">
+            <div class="box-body box-profile">
+               <img class="profile-user-img img-responsive img-circle" src="/media/{{ request.session.avatar  }}" alt="User profile picture">
+
+              <h3 class="profile-username text-center">{{ request.session.username  }}</h3>
+
+              <p class="text-muted text-center">Admin</p>
+               {% if request.session.adminemail %}
+                <p><input type="email" class="form-control" id="emailadds" value="{{ request.session.adminemail }}" onchange="saveprofile()" ></p>
+                {% endif %}
+               <form enctype="multipart/form-data" action="{%  url 'save_avatar' %}" method="post">
+                 {% csrf_token %}
+                   <input type="hidden" name="user" value="{{ request.session.user_id }}">
+                   <input type="file" name="avatardata" onchange="this.form.submit()">
+               </form>
+              <br>
+            <br>
+              <p  id="msg" style="color: green"></p>
+            </div>
+            <!-- /.box-body -->
+          </div>
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+    </section>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'admin/plugins/jQuery/jQuery-2.2.0.min.js'%}"></script>
+<script>
+    function saveprofile(){
+        var email = document.getElementById('emailadds').value;
+        $.ajax({
+            type: "post",
+            url: "{% url 'saveprofile' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                email:email
+            },
+            success:function (success){
+                console.log(success);
+                $('#msg').empty().append(success);
+            }
+        })
+    }
+</script>
+{% endblock %}
+
+    <!-- /.content -->

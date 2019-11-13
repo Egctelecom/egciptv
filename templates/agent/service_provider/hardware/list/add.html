@@ -1,0 +1,169 @@
+{% extends 'agent/fancybox.html' %}
+{% load static %}
+{% block content %}
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Hardware Add</h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" id="" class="form-horizontal" action="{% url 'agent_add_hw_list' %}" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                      <div class="box-body">
+
+                      <p class="margin">Title</p>
+                      <div class="input-group">
+                        <input type="text" name="hw_title" class="form-control" required style="width: 588px!important;">
+                      </div>
+                       <p class="margin">Type</p>
+                      <div class="input-group">
+                        <input type="text" name="type" class="form-control" required style="width: 588px!important;">
+                      </div>
+                        <p class="margin">Model</p>
+                      <div class="input-group">
+                        <input type="text" name="model" class="form-control" required style="width: 588px!important;">
+                      </div>
+                        <p class="margin">Mac</p>
+                      <div class="input-group">
+                        <input type="text" name="mac" class="form-control" required style="width: 588px!important;">
+                      </div>
+                        <p class="margin">SN</p>
+                      <div class="input-group">
+                        <input type="text" name="sn" class="form-control" required style="width: 588px!important;">
+                      </div>
+                       <p class="margin">Ver</p>
+                      <div class="input-group">
+                        <input type="text" name="ver" class="form-control" required style="width: 588px!important;">
+                      </div>
+                           <p class="margin">Usrn</p>
+                      <div class="input-group">
+                        <input type="text" name="usrn" class="form-control" required style="width: 588px!important;">
+                      </div>
+                           <p class="margin">Passu</p>
+                      <div class="input-group">
+                        <input type="text" name="passu" class="form-control" required style="width: 588px!important;">
+                      </div>
+                           <p class="margin">Adusr</p>
+                      <div class="input-group">
+                        <input type="text" name="adusr" class="form-control" required style="width: 588px!important;">
+                      </div>
+                           <p class="margin">Adpass</p>
+                      <div class="input-group">
+                        <input type="text" name="adpass" class="form-control" required style="width: 588px!important;">
+                      </div>
+                           <p class="margin">Dslusr</p>
+                      <div class="input-group">
+                        <input type="text" name="dslusr" class="form-control" required style="width: 588px!important;">
+                      </div>
+                           <p class="margin">Dslpass</p>
+                      <div class="input-group">
+                        <input type="text" name="dslpass" class="form-control" required style="width: 588px!important;">
+                      </div>
+                           <p class="margin">Date Start</p>
+                      <div class="input-group">
+                        <input type="text" name="date_start" id="datepicker" class="form-control" required style="width: 588px!important;">
+                      </div>
+                      <p class="margin">Date End</p>
+                      <div class="input-group">
+                        <input type="text" id="datepicker2" name="date_end" class="form-control" required style="width: 588px!important;">
+                      </div>
+                       <p class="margin">Still In Service</p>
+                      <div class="input-group">
+                        <input type="text" name="still_in_service" class="form-control" required style="width: 588px!important;">
+                      </div>
+                        <p class="margin">Device Buy</p>
+                      <div class="input-group">
+                        <input type="number" name="device_buy" class="form-control"  min="0" step="0.01" required style="width: 588px!important;">
+                      </div>
+
+                          <p class="margin">Device Rental</p>
+                      <div class="input-group">
+                        <input type="number" name="device_rental" class="form-control"  min="0" step="0.01" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Montly Rent</p>
+                      <div class="input-group">
+                        <input type="number" name="montly_rent" min="0" step="0.01" class="form-control" required style="width: 588px!important;">
+                      </div>
+
+
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Add</button>
+                       </div>
+                </form>
+
+          </div>
+          <!-- /.box -->
+    </div>
+{% endblock %}
+{% block scripts %}
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  });
+
+  $( function() {
+    $( "#datepicker2" ).datepicker();
+  });
+  </script>
+<script>
+function get_province(){
+     var country = document.getElementById('country').value;
+      $.ajax({
+            type: "post",
+            url: "{% url 'get_province_via' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                country:country,
+            },
+            success:function (success){
+                console.log(success.data);
+                 $('#select_province').empty().append(success.data);
+            }
+        })
+ }
+
+ function get_ratecenters(){
+     var province = document.getElementById('province').value;
+      $.ajax({
+            type: "post",
+            url: "{% url 'get_ratecenters' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                province:province,
+            },
+            success:function (success){
+                console.log(success.data);
+                 $('#select_ratecenter').empty().append(success.data);
+            }
+        })
+ }
+
+  function get_number(){
+     var ratecenter = document.getElementById('ratecenter').value;
+      $.ajax({
+            type: "post",
+            url: "{% url 'get_number' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                ratecenter:ratecenter,
+            },
+            success:function (success){
+                console.log(success.data);
+                 $('#select_number').empty().append(success.data);
+            }
+        })
+ }
+ </script>
+{% endblock %}
+
+

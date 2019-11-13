@@ -1,0 +1,106 @@
+{% extends 'admin/layout.html' %}
+{%  load static %}
+{%  load number_functions %}
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.bootstrap.min.css" />
+    <link rel="stylesheet" href="{% static 'admin/fancybox/jquery.fancybox.css'%}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static 'admin/custom.css'%}" type="text/css" media="screen" />
+{% endblock %}
+{% block content %}
+
+<section class="content-header">
+   <a href="{% url 'special_offers_parent_sub_category_add' %}" class="fancybox fancybox.iframe btn btn-info  btn-xs"> Add Sub Special Offers Category Menu </a>
+</section>
+
+<section class="content">
+      <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">Sub Parent Category of Special Offers Section</h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-2">
+            </div>
+            <!-- /.col -->
+            <div class="col-md-6">
+
+            </div>
+            <!-- /.col -->
+            <div class="col-xs-12">
+              <table id="myTable" class="table table-bordered table-striped" >
+                        <thead>
+                        <tr>
+                          <th>Special Offers Parent Category Name</th>
+                          <th>Special Offers Sub Parent Category Name</th>
+                          <th>Action </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for menus in special_offers_list %}
+                          <tr>
+                            <td>{{menus.special_offers_parent_category_id__special_offers_parent_category_name}}</td>
+                            <td>{{menus.special_offers_sub_parent_category_name}}</td>
+                            <td><a href="{% url 'special_offers_parent_sub_category_edit' menus.id %}" class="fancybox fancybox.iframe btn btn-info  btn-xs"><i class="fa fa-edit"></i> Edit </a></td>
+
+                          </tr>
+                         {% endfor %}
+
+                        </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- /.row -->
+        </div>
+      </div>
+      <!-- /.box -->
+
+    </section>
+
+
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'admin/plugins/jQuery/jQuery-2.2.0.min.js'%}"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
+<script type="text/javascript" src="{% static 'admin/fancybox/jquery.fancybox.pack.js'%}"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<script>
+    $(document).ready( function () {
+        $('#myTable').DataTable();
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".fancybox").fancybox({
+            "width":"50%",
+            "height":"50%",
+            'autoSize' : false,
+            afterClose: function () {
+                location.reload();
+            }
+
+        });
+    });
+
+    function add_user(){
+      var account  = document.getElementById('account').value;
+      if(account == 'add_user_account'){
+        $('#customer_add').click();
+      }else{
+
+      }
+    }
+
+</script>
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% block content %}
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title"> Update Ticket Status </h3>
+            </div>
+
+                <div class="alert alert-success alert-dismissible" id="ms" style="display: none;">
+                    <div id="msg" ></div>
+                </div>
+                     <div class="box-body">
+
+                     <p class="margin">TR# : {{ ticketlist.0.id }}</p>
+                     <p class="margin">Category : {{ ticketlist.0.ticketCategory_id__category_title }}</p>
+                     <p class="margin">Priority : {{ ticketlist.0.priority }}</p>
+                     <p class="margin">Phone : {{ ticketlist.0.customer_id__phone }}</p>
+
+
+                     <div class="box-body">
+
+                     <p class="margin">Details</p>
+                     <div class="input-group">
+                         <textarea id="updatedetails" class="form-control" required style="width: 588px!important;">{{ ticketlist.0.updatedetails }}</textarea>
+                     </div>
+
+                     <p class="margin">Transfer To Category</p>
+                     <div class="input-group">
+                         <select id="ticketCategory" class="form-control" required style="width: 588px!important;">
+                             <option>Select</option>
+                             {% for dt in data %}
+                             <option {% if dt.id == ticketlist.0.ticketCategory_id %}selected{% endif %}  value="{{ dt.id }}">{{ dt.category_title }}</option>
+                             {% endfor %}
+                         </select>
+                     </div>
+
+                     <p class="margin">Change Priority</p>
+                     <div class="input-group">
+                         <select id="priority" class="form-control" required style="width: 588px!important;">
+                             <option {% if ticketlist.0.priority == 'low' %} selected{% endif %}  value="low">Low</option>
+                             <option {% if ticketlist.0.priority == 'medium' %} selected{% endif %}  value="medium">Medium</option>
+                             <option {% if ticketlist.0.priority == 'high' %} selected{% endif %}  value="high">High</option>
+                         </select>
+                     </div>
+
+                     <br>
+
+                     <div class="form-group">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" id="complete_tickets" {% if ticketlist.0.working_status == 'Complete' %}checked{% endif %}>
+                          Complete this tickets
+                        </label>
+                      </div>
+
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" id="issue_resolve" {% if ticketlist.0.working_status == 'In Progress' or ticketlist.0.working_status == 'Complete' %}checked{% endif %}>
+                          Issue resolved : close ticket thread
+                        </label>
+                      </div>
+
+                    </div>
+
+                     </div>
+                     <div class="box-footer">
+                     <button type="submit" class="btn btn-primary" name="Submit" onclick="update_customer_ticket_data({{ ticketlist.0.id }})"> Save Status</button>
+                     </div>
+
+          </div>
+          <!-- /.box -->
+    </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+<script>
+function update_customer_ticket_data(id){
+
+     var id = id;
+     var updatedetails = document.getElementById('updatedetails').value;
+     var ticketCategory = document.getElementById('ticketCategory').value;
+     var priority = document.getElementById('priority').value;
+
+     var complete_tickets = $('#complete_tickets').is(':checked');
+     var issue_resolve = $('#issue_resolve').is(':checked');
+
+
+     $.ajax({
+            type: "post",
+            url: "{% url 'update_customer_ticket_data' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                id:id,
+                updatedetails:updatedetails,
+                ticketCategory:ticketCategory,
+                priority:priority,
+                complete_tickets:complete_tickets,
+                issue_resolve:issue_resolve
+
+            },
+            success:function (success){
+                console.log(success);
+                 $('#ms').show();
+                 $('#msg').empty().append(success['msg']);
+            }
+        })
+ }
+</script>
+{% endblock %}
+
+
+
+

@@ -1,0 +1,29 @@
+{% load provider_functions %}
+<table class="table table-bordered">
+                <tbody>
+                    <tr>
+                      <th colspan="2">Service Title</th>
+                      <th>Retail</th>
+                      <th>Actual</th>
+                      <th>Qty</th>
+                      <th>Monthly/OneTime</th>
+                      <th>Total</th>
+                    </tr>
+                    {% for list in services_provider_with_plan %}
+                    <tr>
+                      <td><input type="checkbox"  id="data{{ list.id }}" value="{{ list.id }}" onclick="set_provider({{ list.id }})"></td>
+                      <td>{{ list.title }}</td>
+                      <td><input type="hidden" id="retail{{ list.id }}"  value="{{ list.retail }}" >{{ list.retail }}</td>
+                      <td><input type="text" id="actual{{ list.id }}" value="{{ list.actual }}" onchange="changevalue({{ list.id }})"></td>
+                      <td><input type="text" id="qty{{ list.id }}" value="{{ list.qty }}" onchange="changevalue({{ list.id }})"></td>
+                      <td>
+                          <select id="paid_st{{ list.plan_paid_status }}">
+                              <option value="Monthly">Monthly</option>
+                              <option value="One Time">One Time</option>
+                          </select>
+                      </td>
+                      <td id="total{{ list.id }}">{%  multipy list.qty list.actual %}</td>
+                    </tr>
+                   {% endfor %}
+                </tbody>
+              </table>

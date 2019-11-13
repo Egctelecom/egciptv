@@ -1,0 +1,5 @@
+{% load service_provider_functions %}
+<option> Select </option>
+{% for  ticket in result %}
+  <option value="{{ ticket }}">{% get_service_provider_hw ticket %}</option>
+{% endfor %}

@@ -1,0 +1,61 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% block content %}
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Services Document Upload</h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" id="" class="form-horizontal" action="{% url 'special_offers_doc_add' id %}" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                      <div class="box-body">
+                          <div class="form-group">
+                            <label  for="City Name">Special Offers Document Name</label>
+                            <input type="text" name="special_offers_doc_name" class="form-control">
+                            <input type="hidden" name="special_offers" value="{{ id }}" class="form-control">
+                          </div>
+                          <div class="form-group">
+                            <label  for="City Name">Special Offers  Document File</label>
+                            <input type="file" name="special_offers_doc" class="form-control" required>
+                          </div>
+                          <div class="form-group">
+                            <label  for="City Name">Status</label>
+                              <select name="status" class="form-control" required>
+                                  <option value="active">Active</option>
+                                  <option value="inactive">Inactive</option>
+                              </select>
+                          </div>
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Add</button>
+                       </div>
+                </form>
+
+          </div>
+          <!-- /.box -->
+    </div>
+{% endblock %}
+{% block scripts %}
+  <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote.css" rel="stylesheet">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote.js"></script>
+   <script>
+        $(document).ready(function() {
+          $('#summernote').summernote();
+       });
+
+    </script>
+{% endblock %}
+
+

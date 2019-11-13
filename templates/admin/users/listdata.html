@@ -1,0 +1,18 @@
+              <p class="margin">Province</p>
+              <di class="input-group" id="select_billing_province">
+                 <select name="billing_province" class="form-control" id="billing_province" required style="width: 208px!important;" onchange="get_billing_city()">
+                    <option>Select Province </option>
+                    {% for provinces in province %}
+                    <option value="{{ provinces.id }}" {%  if provinces.id == province_id %}selected{% endif %}>{{ provinces.province_name }}</option>
+                    {% endfor %}
+                </select>
+              </di>
+              <p class="margin">City</p>
+              <div class="input-group" id="select_billing_city">
+                    <select name="billing_city" class="form-control" id="billing_city" required style="width: 208px!important;" onchange="get_billing_city()">
+                        <option>Select City </option>
+                        {% for cities in city %}
+                        <option value="{{ cities.id }}" {%  if cities.id == city_id %}selected{% endif %}>{{ cities.city_name }}</option>
+                        {% endfor %}
+                    </select>
+              </div>

@@ -1,0 +1,7 @@
+
+                        <select name="special_offers_sub_parent_category" class="form-control" required style="width: 588px!important;">
+                         <option>Select Manage Sub Parent Special Offers Category</option>
+                         {% for category in manage_service_price %}
+                         <option value="{{ category.id }}">{{ category.special_offers_sub_parent_category_name }}</option>
+                         {% endfor %}
+                        </select>

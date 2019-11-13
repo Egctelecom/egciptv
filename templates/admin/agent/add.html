@@ -1,0 +1,56 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% block content %}
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Agent Add</h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" id="" class="form-horizontal" action="{% url 'agent_add' %}" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                      <div class="box-body">
+
+                      <p class="margin">First name</p>
+                      <div class="input-group">
+                         <input type="text" name="first_name" class="form-control" value="" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Last name</p>
+                      <div class="input-group">
+                         <input type="text" name="last_name" class="form-control" value="" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Email</p>
+                      <div class="input-group">
+                         <input type="email" name="email" class="form-control" value="" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Phone</p>
+                      <div class="input-group">
+                         <input type="number" name="phone" class="form-control" min="0" value="" required style="width: 588px!important;">
+                      </div>
+
+
+
+                      </div>
+                      <div class="box-footer">
+                        <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Add</button>
+                      </div>
+                </form>
+
+          </div>
+          <!-- /.box -->
+    </div>
+{% endblock %}
+
+
+

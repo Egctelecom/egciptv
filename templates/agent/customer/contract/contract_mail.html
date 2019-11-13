@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>:- Service Agreement -:</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,700,700i" rel="stylesheet">
+
+    <!-- Bootstrap -->
+<style>
+    body{font-family: 'Roboto Condensed', sans-serif;padding: 0;margin: 0;}
+</style>
+</head>
+<body>
+
+<div class="table-border" style="width: 700px;text-align: center;border: 1px solid #000;margin: 0 auto;height: 1050px;">
+                <h1 style="margin: 0;padding: 10px;font-size: 15px;font-weight: normal;text-align: left;border-bottom: 1px solid #000;background-color: #dbe8f2;">
+                    Service agreement :  {{ customer_plan_data.0.user_id__account_id }}{{ random_no }}
+                <span style="float: right;">Date : {{ customer_plan_data.0.created_at }}</span>
+                </h1>
+                <div class="table-inner" style="width: 700px">
+                <table style="width: 330px;margin: 10px;border:1px solid #000;float: left;">
+                    <thead>
+                    <tr style="background-color: #cfd0cd;">
+                        <th style="text-align: left;font-weight:300;padding: 5px;">Customer Info</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr style="width: 100%;float: left;padding: 5px 10px;">
+                        <td style="font-size: 14px;text-align: left;">
+                            {{ customer_plan_data.0.user_id__first_name }} {{ customer_plan_data.0.user_id__last_name }} <br>
+                            {{ customer_plan_data.0.user_id__account_id }}
+                        </td>
+                    </tr>
+                    <tr style="width: 100%;float: left;padding: 5px 10px;">
+                        <td style="font-size: 14px;text-align: left;">
+                            <strong>Address</strong><br>
+                            {{ address.0.address_1}},
+                            {{ address.0.address_2}},
+                            {{ address.0.city__city_name}},
+                            {{ address.0.province__province_name}},
+                            {{ address.0.country__country_name}},
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table style="width: 330px;margin: 10px;border:1px solid #000;float: right;">
+                    <thead>
+                    <tr style="background-color: #cfd0cd;">
+                        <th style="text-align: left;font-weight:300;padding: 5px;">Payment Details :</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr style="width: 100%;float: left;padding: 5px 0;">
+                        <td style="font-size: 14px;text-align: left;">
+                            &nbsp;<br>&nbsp;
+                        </td>
+                    </tr>
+                    <tr style="width: 100%;float: left;padding: 5px 0;">
+                        <td style="font-size: 14px;text-align: left;">
+                            <strong>&nbsp;</strong><br>
+                            &nbsp;
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table style="width: 680px;margin: 10px;border:1px solid #000;">
+                    <thead>
+                    <tr style="background-color: #cfd0cd;">
+                        <th style="text-align: left;font-weight:300;padding: 5px;">Internet Banking Details</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr style="text-align: left;width: 100%;float: left;">
+                        <td style="padding: 5px 0;font-size: 14px;">To pay online banking, ATM, Telephone Banking or Bank Letter, please make a payment to seller<br>
+                        "CRONOMAGIC" or "CRONOMAGIC Canada Inc" (Gemstelecom is Cronomagic Company
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;padding-bottom: 20px;font-size: 14px">
+                            For your first Gemestelecom prepayment Acc#67767788383- $194 28
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                    <div class="summary" style="width: 680px;float: left;padding: 0 10px;border-bottom: 1px solid #000;">
+                       <h3 style="text-align: left;font-weight: 100;">Summary</h3>
+                        <p style="text-align: left;text-transform: capitalize;font-size: 14px;">Total monthly charges
+                            <span style="float: right;">$28.89</span>
+                        </p>
+                        <p style="text-align: left;font-size: 14px;">One Time Charges (see details on next page)
+                            <span style="float: right;">$139.99</span>
+                        </p>
+                        <p style="text-align: left;border-bottom: 1px solid #000;font-size: 14px;">G.S.T
+                            <span style="float: right;">$8.45</span>
+                        </p>
+                        <p style="text-align: left;font-size: 14px;">P.S.T
+                            <span style="float: right;">$16.88</span>
+                        </p>
+                        <p style="text-align: left;font-size: 14px;border-bottom: 1px solid #000;">First Monthly Charges(Total monthly + Onetime charges)
+                            <span style="float: right;">$194.28</span>
+                        </p>
+                    </div>
+                    <div class="summary" style="width: 680px;float: left;padding:10px;border-bottom: 1px solid #000;">
+                        <h3 style="text-align: left;font-weight: 100;">Monthly Charges</h3>
+                        <p style="text-align: left;text-transform: capitalize;font-size: 14px;border-bottom: 1px solid #000;">Plan Name
+                            <span style="float: right;">Total</span>
+                        </p>
+                        <p style="text-align: left;font-size: 14px;">Internet Basic Speed 5MBPs (15GB) (28.99 x 1)
+                            <span style="float: right;">$20.99</span>
+                        </p>
+                        <p style="text-align: left;border-bottom: 1px solid #000;font-size: 14px;">Total Monthly Charges
+                            <span style="float: right;">$28.99</span>
+                        </p>
+                    </div>
+                   <table style="width: 680px;float: left;padding: 0 10px;">
+                       <caption style="text-align: left;margin-top: 20px;padding: 0 10px;font-size: 20px;margin-bottom: 10px;">Onetime Charges & Hardware</caption>
+                       <thead>
+                       <tr style="width: 100%;border-bottom: 2px solid #000;">
+                           <th colspan="6" style="text-align: left;font-weight: 600;">Plan Name</th>
+                           <th colspan="1" style="text-align: right;font-weight: 600;">Retail Price</th>
+                           <th colspan="1" style="text-align: right;font-weight: 600;">Discounted Price</th>
+                       </tr>
+                       </thead>
+                       <tbody>
+                       <tr>
+                           <td colspan="6" style="text-align: left;">
+                               Preparation and delivery charge x 1
+                           </td>
+                           <th colspan="1" style="text-align: right;font-weight: 100;">$15.00</th>
+                           <th colspan="1" style="text-align: right;font-weight: 100;">$10.00</th>
+                       </tr>
+                       <tr>
+                           <td colspan="6" style="text-align: left;">
+                               Themon Cable Modem DCM 476 x 1
+                           </td>
+                           <th colspan="1" style="text-align: right;font-weight: 100;">$15.00</th>
+                           <th colspan="1" style="text-align: right;font-weight: 100;">$10.00</th>
+                       </tr>
+                       <tr>
+                           <td colspan="6" style="text-align: left;">
+                               ATA setup x 1
+                           </td>
+                           <th colspan="1" style="text-align: right;font-weight: 100;">$25.00</th>
+                           <th colspan="1" style="text-align: right;font-weight: 100;">$25.00</th>
+                       </tr>
+                       <tr style="margin: 5px 0;">
+                           <td colspan="6" style="text-align: left;">
+                               <strong>Total Onetime Charges</strong>
+                           </td>
+                           <th colspan="1" style="text-align: right;font-weight: 100;"><strong>$139.99</strong></th>
+                           <th colspan="1" style="text-align: right;font-weight: 100;"><strong>$139.99</strong></th>
+                       </tr>
+                       </tbody>
+                   </table>
+                    <table style="width: 680px;float: left;padding: 0 10px;border-bottom: 1px solid #000;">
+                        <caption style="text-align: left;margin-top: 20px;padding: 0 10px;font-size: 20px;margin-bottom: 10px;">Service Agreement Savings</caption>
+                        <thead>
+                        <tr style="width: 100%;">
+                            <th colspan="6" style="text-align: left;font-weight: 600;">Details</th>
+                            <th colspan="1" style="text-align: right;font-weight: 600;">Retail Price</th>
+                            <th colspan="1" style="text-align: right;font-weight: 600;">Discounted Price</th>
+                            <th colspan="1" style="text-align: right;font-weight: 600;">Savings</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td colspan="6" style="text-align: left;">
+                                Total Savings
+                            </td>
+                            <td>
+                              &nbsp;
+                            </td>
+                            <td>
+                              &nbsp;
+                            </td>
+                            <td style="text-align: right;">
+                              $0.00
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text" style="width: 680px;padding: 10px 10px;">
+                    <p style="text-align: left;padding-top: 20px;">*At the end of terms or at the time of cancellation, all devices must be returned at the client's own expertise<br> within
+                        15days following the termination of service. All devices not paid fully by the client in the property of ..</p>
+                </div>
+            </div>
+<div class="table-border" style="width: 700px;text-align: center;border: 1px solid #000;margin: 20px auto;height: 550px;">
+                <h1 style="margin: 0;padding: 10px;font-size: 15px;font-weight:bold;text-align: left;border-bottom: 1px solid #000;background-color: #dbe8f2;">Details</h1>
+                <p style="margin: 0;padding: 10px;font-size: 15px;text-align: left;font-weight: bold;">Notes</p>
+                <p style="margin: 0;padding: 0 10px;font-size: 15px;text-align: left;">Internet Basic Speed : Cable 5MBPs (15GB) (21.99 x 1)</p>
+                <p style="margin: 0;padding: 0 10px;font-size: 15px;text-align: left;">lorem ipsum dummyb text</p>
+                <p style="margin: 0;padding: 20px 10px;font-size: 15px;text-align: left;">As per Terms and Conditions located on <a href="#">http://www.egictech.net</a> </p>
+                <p style="margin: 0;padding: 0 10px 10px 10px;font-size: 15px;text-align: left;"><input type="checkbox">I have read the terms and conditions and agreed to join the plan </p>
+                <p style="margin: 0;padding: 0 10px 0 10px;font-size: 15px;text-align: left;"><input type="checkbox">I agree that i have read and understand the 9-1-1 service limitations described in the document attached
+                </p>
+                <p style="padding: 0 10px 10px 30px;margin: 0;text-align: left;">Viloation of terms and conditions may terminate this service any time without notice</p>
+                <p style="margin: 0;padding: 0 10px 0 10px;font-size: 15px;text-align: left;"><input type="checkbox">Hereby I authorize EGC Technologies, its agents or constituents, in the case of overdue payment, to<br>
+                obtain information about my credit history and other personal information about me from the credit reporting agencies and to communicate such information to the agencies
+                </p>
+                <p style="font-weight: bold;text-transform: uppercase;text-align: left;padding: 0 10px;color: #1700ee;">please accept or reject the service agreement within 48 hours from the first view.<br>
+                    egc technologie will automatically consider the service agreement accepted.<br>
+                    After 48 hours if the service agreement is not rejected and we will progress your order.
+                </p>
+                <p style="text-align: left;padding: 0 10px;">
+                    <strong>Signature :</strong>         ______________________________
+                </p>
+                <p style="text-align: left;padding: 0 10px;">
+                    <strong>Service agreement : </strong> Monthly
+                </p>
+                <p style="text-align: left;padding: 0 10px;">
+                    <strong>Type :</strong>           _____________________________________
+                </p>
+                <p style="text-align: left;padding: 0 10px;">
+                    <strong>Service start date :</strong>             _____________________________
+                </p>
+            </div>
+
+
+</body>
+</html>

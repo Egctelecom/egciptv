@@ -1,0 +1,6 @@
+    <select name="number" class="form-control" id="number" required style="width: 588px!important;" onchange="get_number()">
+        <option>Select Number</option>
+        {% for numberarrlist in numberarr %}
+        <option value="{{ numberarrlist }}">{{ numberarrlist }}</option>
+        {% endfor %}
+    </select>

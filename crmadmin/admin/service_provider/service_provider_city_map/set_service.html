@@ -1,0 +1,77 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% load provider_functions %}
+{% load check_service_provider %}
+{% block content %}
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">service Provider Add</h3>
+            </div>
+                <div class="alert alert-success alert-dismissible" id="sh" style="display: none">
+                    <div id="msg"></div>
+                </div>
+                {% for service_providers in service_provider %}
+                   {% check_service_provider_func service_providers.id as SP %}
+                   <div class="form-group">
+                      <div class="col-sm-offset-2 col-sm-10">
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" id="data{{ service_providers.id }}" {%  if SP == 1 %}checked{%  endif  %} onclick="set_provider_to_cities({{ service_providers.id }})" value="{{ service_providers.id }}"> {{ service_providers.service_provider_name }}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                 {% endfor %}
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary" onclick="save_provider()">Submit</button>
+              </div>
+
+          </div>
+          <!-- /.box -->
+    </div>
+ {% block scripts %}
+    <script>
+        var arrt =[];
+        function set_provider_to_cities(service_providers_id) {
+            var lt = $('#data' + service_providers_id).is(':checked');
+            if (lt == true) {
+                var data = document.getElementById('data' + service_providers_id).value;
+                console.log(data);
+                arrt.push(data);
+            }else{
+                var data = document.getElementById('data' + service_providers_id).value;
+                arrt.pop();
+            }
+            console.log(arrt);
+        }
+        function save_provider(){
+            var province = '{{ plist.0.province_id }}';
+            var country = '{{ plist.0.province_id__country_id }}';
+            var city = '{{ id }}';
+            var data = JSON.stringify(arrt);
+        $.ajax({
+            type:"post",
+            url:"{% url 'save_service_provider_to_city' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",arrt:data,city:city,country:country,province:province},
+            success:function (success) {
+                console.log(success);
+                if(success['result']=='success') {
+                    $("#sh").hide();
+                    $("#sh").show();
+                    $("#msg").empty().append('Provider set');
+                }else{
+                    $("#sh").hide();
+                    $("#sh").show();
+                    $("#msg").empty().append('Already set');
+                }
+            }
+        })
+        }
+    </script>
+{% endblock %}
+{% endblock %}
+
+
+

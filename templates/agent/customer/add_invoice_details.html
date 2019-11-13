@@ -1,0 +1,151 @@
+{% extends 'agent/fancybox.html' %}
+{% load static %}
+{% load provider_functions %}
+{% block content %}
+ <div class="col-md-2">
+      <div class="form-group">
+        <label>Service Provider</label>
+        <select class="form-control select2 select2-hidden-accessible" id="service_id"  onclick="get_service_plan()">
+          <option value="not" selected="selected">Not Set</option>
+            {% for serviceslist in services %}
+             <option value="{{ serviceslist.id }}">{{ serviceslist.service_provider_name }}</option>
+            {% endfor %}
+        </select>
+      </div>
+
+    </div>
+    <div class="alert alert-success alert-dismissible" id="msgprent" style="display: none">
+        <div id="msg"></div>
+    </div>
+    <div class="alert alert-danger alert-dismissible" id="msgsmgsprent" style="display: none">
+        <div id="msgs"></div>
+    </div>
+   <div class="col-md-6">
+            <div class="box-header with-border">
+              <h3 class="box-title">Service Plan</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body" id="pricing-carousel">
+              <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                      <th colspan="2">Service Title</th>
+                      <th>Retail</th>
+                      <th>Actual</th>
+                      <th>Qty</th>
+                      <th>Total</th>
+                    </tr>
+                    {% for services_provider_with_plans in  services_provider_with_plan %}
+                    <tr>
+                      <td><input type="checkbox" id="data{{ services_provider_with_plans.id }}" value="{{ services_provider_with_plans.id }}" onclick="set_provider({{ services_provider_with_plans.id }})"></td>
+                      <td>{{ services_provider_with_plans.title }}</td>
+                      <td><input type="hidden" id="retail{{ services_provider_with_plans.id }}"  value="{{ services_provider_with_plans.retail }}" > {{ services_provider_with_plans.retail }}</td>
+                      <td><input type="text" id="actual{{ services_provider_with_plans.id }}" value="{{ services_provider_with_plans.actual }}" onchange="changevalue({{ services_provider_with_plans.id }})"></td>
+                      <td><input type="text" id="qty{{ services_provider_with_plans.id }}" value="{{ services_provider_with_plans.qty }}" onchange="changevalue({{ services_provider_with_plans.id }})"></td>
+                      <td id="total{{ services_provider_with_plans.id }}">{% multipy services_provider_with_plans.qty services_provider_with_plans.actual %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+            </div>
+{#             <div class="box-footer">#}
+{#                <button type="submit" class="btn btn-primary" name="Submit" onclick="save_plan()">#}
+{#                    <i class="fa fa-clipboard" aria-hidden="true"></i>#}
+{#                    Save#}
+{#                </button>#}
+{#             </div>#}
+            <!-- /.box-body -->
+   </div>
+{% endblock %}
+{% block scripts %}
+<script>
+var arrt =[];
+function set_provider(service_providers_id) {
+    var user = "{{ id }}";
+    var lt = $('#data' + service_providers_id).is(':checked');
+    if (lt == true) {
+        var data = document.getElementById('data' + service_providers_id).value;
+        var actual = document.getElementById('actual' + service_providers_id).value;
+        var qty = document.getElementById('qty' + service_providers_id).value;
+        var retail = document.getElementById('retail' + service_providers_id).value;
+         $.ajax({
+            type:"post",
+            url:"{% url 'agent_save_plan_to_user' %}",
+            data: {
+                csrfmiddlewaretoken:"{{csrf_token}}",
+                data:data,
+                user:user,
+                actual:actual,
+                qty:qty,
+                retail:retail
+            },
+            success:function (success) {
+                console.log(success);
+                if (success['success']=='true'){
+                    document.getElementById('data' + success['plan']).checked = true;
+                    $('#msgsmgsprent').hide();
+                    $('#msgprent').show();
+                    $('#msg').empty().append('Service Plan added');
+                }else {
+                    document.getElementById('data' + success['plan']).checked = false;
+                    $('#msgprent').hide();
+                    $('#msgsmgsprent').show();
+                    $('#msgs').empty().append('Already service plan add');
+                }
+            }
+        });
+        arrt.push(data);
+    }else{
+        var data = document.getElementById('data' + service_providers_id).value;
+         $.ajax({
+            type:"post",
+            url:"{% url 'agent_delete_plan_to_user' %}",
+            data: {
+                csrfmiddlewaretoken:"{{csrf_token}}",
+                data:data,
+            },
+            success:function (success) {
+                console.log(success);
+            }
+        });
+        arrt.pop();
+    }
+    console.log(arrt);
+}
+function changevalue(service_providers_id) {
+    var actual = document.getElementById('actual' + service_providers_id).value;
+    var qty = document.getElementById('qty' + service_providers_id).value;
+    $.ajax({
+            type: "post",
+            url: "{% url 'agent_changevalue' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                actual:actual,qty:qty
+            },
+            success:function (success){
+                console.log(success);
+                 $('#actual'+service_providers_id).empty().append(success['actual']);
+                 $('#qty'+service_providers_id).empty().append(success['qty']);
+                 $('#total'+service_providers_id).empty().append(success['data']);
+            }
+        })
+
+}
+function get_service_plan(){
+     var service = document.getElementById('service_id').value;
+      $.ajax({
+            type: "post",
+            url: "{% url 'agent_get_service_plan' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                service:service,
+            },
+            success:function (success){
+                console.log(success.data);
+                 $('#pricing-carousel').empty().append(success.data);
+            }
+        })
+ }
+
+</script>
+{% endblock %}
+
+

@@ -1,0 +1,140 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% block content %}
+<link href="{%  static 'summernote/summernote.css' %}">
+<style>
+    .input_fields_wrap{
+    max-width: 350px;
+    }
+    .input_fields_wrap input[type=text]{
+     width:100%;
+     margin:2px 0;
+    }
+</style>
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Add Special offers Plans </h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" class="form-horizontal" action="{% url 'special_offers_services_plan_add' %}" enctype="multipart/form-data">
+                     {% csrf_token %}
+
+                         <div class="container">
+                              <p>Select Service Plan to build Combo Pack</p>
+                              <table class="table table-striped">
+                                <thead>
+                                  <tr>
+                                    <th></th>
+                                    <th>Service Name</th>
+                                    <th>Service Price</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                 {%  for price in manage_service_price %}
+                                  <tr>
+                                    <td><input type="checkbox" id="plans{{ price.id }}" value="{{ price.id }}" onclick="setdata({{ price.id }})"></td>
+                                    <td>{{ price.service_name }}</td>
+                                    <td>{{ price.service_price }}</td>
+                                    <input type="hidden"  id="service_price{{ price.id }}" value="{{ price.service_price }}">
+                                    <input type="hidden"  id="service_name{{ price.id }}" value="{{ price.service_name }}">
+                                  </tr>
+                                 {%  endfor %}
+                                </tbody>
+                              </table>
+                         </div>
+
+                         <input type="hidden" name="service_plan" id="service_plans_array">
+
+                         <div class="container">
+                            <div class="form-group">
+                              <label for="usr">Actual Price</label>
+                              <input type="number" class="form-control" id="actual_price" step="0.01" value="0.00" name="actual_price">
+                            </div>
+                         </div>
+
+                         <div class="container">
+                            <div class="form-group">
+                              <label for="usr">Offers Price</label>
+                              <input type="number" class="form-control" id="offers_price" step="0.01" value="0.00" name="offers_price">
+                            </div>
+                         </div>
+
+                         <div class="container">
+                            <div class="form-group">
+                              <label for="usr">Details</label>
+                                <textarea class="form-control" id="summernote" name="details"></textarea>
+                            </div>
+                         </div>
+
+                         <div class="container">
+                            <div class="form-group">
+                              <label for="usr">Features</label>
+                                <textarea class="form-control" id="summernote2" name="features" rows="10" cols="5"></textarea>
+                            </div>
+                         </div>
+
+
+
+                         <div class="box-footer">
+                             <button type="submit" class="btn btn-primary" name="Submit" ><i class="fa fa-pencil" aria-hidden="true"></i> Add</button>
+                         </div>
+                </form>
+
+          </div>
+          <!-- /.box -->
+    </div>
+{% endblock %}
+{% block scripts %}
+  <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote.css" rel="stylesheet">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote.js"></script>
+     <script>
+       var array = [];
+       var total = document.getElementById('actual_price').value;
+       function setdata(id){
+            var lt = $('#plans'+id).is(':checked');
+            if(lt == true){
+               var price = document.getElementById('service_price'+id).value;
+               array.push(id);
+               total = parseFloat(total) + parseFloat(price);
+               document.getElementById('actual_price').value = total;
+
+            }else{
+
+              var index = array.indexOf(id);
+              if (index > -1) {
+                  var price = document.getElementById('service_price'+id).value;
+                  total = parseFloat(total) - parseFloat(price);
+                  document.getElementById('actual_price').value = total;
+                  array.splice(index, 1);
+
+              }
+
+            }
+
+            document.getElementById('service_plans_array').value = JSON.stringify(array);
+
+
+       }
+
+       $(document).ready(function() {
+          $('#summernote').summernote();
+          $('#summernote2').summernote();
+          $('.dropdown-toggle').dropdown();
+       });
+
+    </script>
+
+{% endblock %}
+
+

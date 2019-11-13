@@ -1,0 +1,269 @@
+{% extends 'admin/fulllayouttwo.html' %}
+{% load static %}
+{% load contract_functions %}
+{% block header %}
+<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,700,700i" rel="stylesheet">
+<style>
+    body{font-family: 'Roboto Condensed', sans-serif;padding: 0;margin: 0;}
+</style>
+{%  endblock %}
+{% block content %}
+    <div class="row">
+        <!-- Left col -->
+        <section class="col-lg-7 connectedSortable ui-sortable">
+            <br>
+           <div class="table-border" style="width: 700px;text-align: center;border: 1px solid #000;margin: 0 auto;height: 1050px;">
+    <h1 style="margin: 0;padding: 10px;font-size: 15px;font-weight: normal;text-align: left;border-bottom: 1px solid #000;background-color: #dbe8f2;">
+        {{ contract_data.0.title1 }} : {{ customer_plan_data.0.user_id__account_id }}{{ n }}
+    <span style="float: right;">Date : {{ customer_plan_data.0.created_at}}</span>
+    </h1>
+    <div class="table-inner" style="width: 700px">
+    <table style="width: 330px;margin: 10px;border:1px solid #000;float: left;">
+        <thead>
+        <tr style="background-color: #cfd0cd;">
+            <th style="text-align: left;font-weight:300;padding: 5px;">{{ contract_data.0.title2 }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr style="width: 100%;float: left;padding: 5px 0;">
+            <td style="font-size: 14px;text-align: left;">
+                {{ customer_plan_data.0.user_id__first_name}}{{ customer_plan_data.0.user_id__last_name}}<br>
+                {{ customer_plan_data.0.user_id__account_id }},{{ customer_plan_data.0.user_id__phone }}
+            </td>
+        </tr>
+        <tr style="width: 100%;float: left;padding: 5px 0;">
+            <td style="font-size: 14px;text-align: left;">
+                <strong>Address</strong><br>
+                {{ address.0.address_1}},{{ address.0.address_2}},{{ address.0.city__city_name}},{{ address.0.province__province_name}},{{ address.0.country__country_name}}
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table style="width: 330px;margin: 10px;border:1px solid #000;float: right;">
+        <thead>
+        <tr style="background-color: #cfd0cd;">
+            <th style="text-align: left;font-weight:300;padding: 5px;">{{ contract_data.0.title3 }}: </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr style="width: 100%;float: left;padding: 5px 0;">
+            <td style="font-size: 14px;text-align: left;">
+                <br>
+               Payment via  Paypal
+            </td>
+        </tr>
+        <tr style="width: 100%;float: left;padding: 5px 0;">
+            <td style="font-size: 14px;text-align: left;">
+                <strong>&nbsp;</strong><br>
+                &nbsp;
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table style="width: 680px;margin: 10px;border:1px solid #000;">
+        <thead>
+        <tr style="background-color: #cfd0cd;">
+            <th style="text-align: left;font-weight:300;padding: 5px;">{{ contract_data.0.title4 }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr style="text-align: left;width: 100%;float: left;">
+            <td style="padding: 5px 0;font-size: 14px;">
+                {{ contract_data.0.title5 }}
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: left;padding-bottom: 20px;font-size: 14px">
+                For your first Gemestelecom prepayment Acc#{{ customer_plan_data.0.user_id__account_id }}- $ {% fulltotal customerwithservicetotal hw_total %}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+        <div class="summary" style="width: 680px;float: left;padding: 0 10px;border-bottom: 1px solid #000;">
+           <h3 style="text-align: left;font-weight: 100;">{{ contract_data.0.title6 }}</h3>
+            <p style="text-align: left;text-transform: capitalize;font-size: 14px;">Total monthly charges
+                <span style="float: right;">$ {{ customerwithservicetotal }}</span>
+            </p>
+            <p style="text-align: left;font-size: 14px;">One Time Charges (see details on next page)
+                <span style="float: right;">$ {{ hw_total }}</span>
+            </p>
+{#            <p style="text-align: left;border-bottom: 1px solid #000;font-size: 14px;">G.S.T#}
+{#                <span style="float: right;">$8.45</span>#}
+{#            </p>#}
+{#            <p style="text-align: left;font-size: 14px;">P.S.T#}
+{#                <span style="float: right;">$16.88</span>#}
+{#            </p>#}
+            <p style="text-align: left;font-size: 14px;border-bottom: 1px solid #000;">First Monthly Charges(Total monthly + Onetime charges)
+                <span style="float: right;">$ {% fulltotal customerwithservicetotal hw_total %}</span>
+            </p>
+        </div>
+        <div class="summary" style="width: 680px;float: left;padding:10px;border-bottom: 1px solid #000;">
+            <h3 style="text-align: left;font-weight: 100;">{{ contract_data.0.title7 }}</h3>
+            <p style="text-align: left;text-transform: capitalize;font-size: 14px;border-bottom: 1px solid #000;">Plan Name
+                <span style="float: right;">Total</span>
+            </p>
+
+            {% for contract in contractData %}
+            {% get_contract_title_details contract as CONTRACT_TITLE %}
+            {% get_contract_price_details contract as CONTRACT_PRICE %}
+            {% get_contract_qty_details contract as CONTRACT_OTY %}
+            <p style="text-align: left;font-size: 14px;">{{ CONTRACT_TITLE }} ({{ CONTRACT_PRICE }} x {{ CONTRACT_OTY }})
+                <span style="float: right;">$ {% subtotal_contract_price CONTRACT_PRICE CONTRACT_OTY %} </span>
+            </p>
+            {% endfor %}
+
+            <p style="text-align: left;border-bottom: 1px solid #000;font-size: 14px;">Total Monthly Charges
+                <span style="float: right;">$ {{ customerwithservicetotal }}</span>
+            </p>
+        </div>
+       <table style="width: 680px;float: left;padding: 0 10px;">
+           <caption style="text-align: left;margin-top: 20px;padding: 0 10px;font-size: 20px;margin-bottom: 10px;">{{ contract_data.0.title8 }}</caption>
+           <thead>
+           <tr style="width: 100%;border-bottom: 2px solid #000;">
+               <th colspan="6" style="text-align: left;font-weight: 600;">Plan Name</th>
+               <th colspan="1" style="text-align: right;font-weight: 600;"></th>
+               <th colspan="1" style="text-align: right;font-weight: 600;"> Price</th>
+           </tr>
+           </thead>
+           <tbody>
+           {%  for hw in hwDtata %}
+           {%  get_hw_title_details hw as hw_title %}
+           {%  get_hw_qty_details hw as hw_qty %}
+           {%  get_hw_price_details hw as hw_price %}
+           <tr>
+               <td colspan="6" style="text-align: left;">
+                   {{ hw_title }} x {{ hw_qty }}
+               </td>
+               <th colspan="1" style="text-align: right;font-weight: 100;"></th>
+               <th colspan="1" style="text-align: right;font-weight: 100;">{% subtotal_hw_price hw_price hw_qty %}</th>
+           </tr>
+           {% endfor %}
+           <tr style="margin: 5px 0;">
+               <td colspan="6" style="text-align: left;">
+                   <strong>Total Onetime Charges</strong>
+               </td>
+               <th colspan="1" style="text-align: right;font-weight: 100;"><strong></strong></th>
+               <th colspan="1" style="text-align: right;font-weight: 100;"><strong>$ {{ hw_total }}</strong></th>
+           </tr>
+           </tbody>
+       </table>
+        <table style="width: 680px;float: left;padding: 0 10px;border-bottom: 1px solid #000;">
+            <caption style="text-align: left;margin-top: 20px;padding: 0 10px;font-size: 20px;margin-bottom: 10px;">Service Agreement Savings</caption>
+            <thead>
+            <tr style="width: 100%;">
+                <th colspan="6" style="text-align: left;font-weight: 600;">Details</th>
+                <th colspan="1" style="text-align: right;font-weight: 600;">Retail Price</th>
+                <th colspan="1" style="text-align: right;font-weight: 600;">Discounted Price</th>
+                <th colspan="1" style="text-align: right;font-weight: 600;">Savings</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td colspan="6" style="text-align: left;">
+                    Total Savings
+                </td>
+                <td>
+                  &nbsp;
+                </td>
+                <td>
+                  &nbsp;
+                </td>
+                <td style="text-align: right;">
+                  $0.00
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text" style="width: 680px;padding: 10px 10px;">
+        <p style="text-align: left;padding-top: 20px;">{{ contract_data.0.title9 }}</p>
+    </div>
+</div>
+           <div class="table-border" style="width: 700px;text-align: center;border: 1px solid #000;margin: 20px auto;height: 550px;">
+    <h1 style="margin: 0;padding: 10px;font-size: 15px;font-weight:bold;text-align: left;border-bottom: 1px solid #000;background-color: #dbe8f2;">{{ contract_data.0.title10 }}</h1>
+    <p style="margin: 0;padding: 10px;font-size: 15px;text-align: left;font-weight: bold;">{{ contract_data.0.title11 }}</p>
+    {% for contract in contractData %}
+    {% get_contract_title_details contract as CONTRACT_TITLE %}
+    {% get_contract_price_details contract as CONTRACT_PRICE %}
+    {% get_contract_qty_details contract as CONTRACT_OTY %}
+        <p style="margin: 0;padding: 0 10px;font-size: 15px;text-align: left;">{{ CONTRACT_TITLE }} ({{ CONTRACT_PRICE }} x {{ CONTRACT_OTY }})</p>
+    {% endfor %}
+    <p style="margin: 0;padding: 0 10px;font-size: 15px;text-align: left;">{{ contract_terms }}</p>
+    <p style="margin: 0;padding: 20px 10px;font-size: 15px;text-align: left;">{{ contract_data.0.title12 }}<a href="https://gowebbi-egciptv.herokuapp.com/egciptv/">https://gowebbi-egciptv.herokuapp.com/egciptv/</a> </p>
+    <p style="margin: 0;padding: 0 10px 10px 10px;font-size: 15px;text-align: left;"><input type="checkbox">{{ contract_data.0.title13 }}</p>
+    <p style="margin: 0;padding: 0 10px 0 10px;font-size: 15px;text-align: left;"><input type="checkbox">{{ contract_data.0.title13 }}
+    </p>
+    <p style="padding: 0 10px 10px 30px;margin: 0;text-align: left;">{{ contract_data.0.title14 }}</p>
+    <p style="margin: 0;padding: 0 10px 0 10px;font-size: 15px;text-align: left;"><input type="checkbox">{{ contract_data.0.title15 }}
+    </p>
+    <p style="font-weight: bold;text-transform: uppercase;text-align: left;padding: 0 10px;color: #1700ee;">{{ contract_data.0.title16 }}
+    </p>
+    <p style="text-align: left;padding: 0 10px;">
+        <strong>Signature :</strong>         ______________________________
+    </p>
+    <p style="text-align: left;padding: 0 10px;">
+        <strong>Service agreement : </strong> {{ contract_data.0.title17 }}
+    </p>
+    <p style="text-align: left;padding: 0 10px;">
+        <strong>Type :</strong>           _____________________________________
+    </p>
+    <p style="text-align: left;padding: 0 10px;">
+        <strong>Service start date :</strong>             _____________________________
+    </p>
+</div>
+        </section>
+        <section class="col-lg-3 connectedSortable ui-sortable">
+            <br>
+<!-------------------------------------------------------- Email Send  ------------------------------------------------------------------------>
+
+            <div class="box box-info">
+            <form action="{% url 'email_contract' id %}" method="get">
+            <div class="box-header ui-sortable-handle" style="cursor: move;">
+              <i class="fa fa-envelope"></i>
+              <h3 class="box-title">Send Email</h3>
+            </div>
+
+            <div class="box-body">
+
+                <div class="form-group">
+                  <input type="email" class="form-control" name="emailto" placeholder="Email to:" value="{{ customer_plan_data.0.user_id__email_address }}">
+                </div>
+              </div>
+            <div class="box-footer clearfix">
+              <button type="submit" class="pull-right btn btn-default" id="sendEmail">Send
+                <i class="fa fa-paper-plane "></i></button>
+            </div>
+            </form>
+          </div>
+<!-------------------------------------------------------- PDF DOWNLOAD ------------------------------------------------------------------------>
+            <br>
+
+            <div class="box box-info">
+            <div class="box-header ui-sortable-handle" style="cursor: move;">
+              <i class="fa fa-file-pdf-o"></i>
+              <h3 class="box-title">Pdf Download</h3>
+            </div>
+            <div class="box-footer clearfix">
+              <a href="{% url 'pdf' %}" target="_blank"><button type="button" class="pull-right btn btn-default" id="sendEmail">Download
+                <i class="fa fa-angle-down"></i></button></a>
+            </div>
+            </div>
+
+
+            <br>
+
+            <div class="box box-info">
+            <div class="box-header ui-sortable-handle" style="cursor: move;">
+              <i class="fa fa-file-pdf-o"></i>
+              <h3 class="box-title">Translate Contract</h3>
+            </div>
+            <div class="box-footer clearfix">
+              <a href="{% url 'viewcontractfrench' %}" target="_blank"><button type="button" class="pull-right btn btn-default">French
+                <i class="fa fa-angle-down"></i></button></a>
+            </div>
+          </div>
+        </section>
+        <!-- right col -->
+      </div>
+{% endblock %}

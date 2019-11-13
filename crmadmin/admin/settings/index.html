@@ -1,0 +1,257 @@
+{% extends 'admin/layout.html' %}
+{% load static %}
+{% load admin_functions %}
+{% load read_special_offer %}
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.bootstrap.min.css" />
+    <link rel="stylesheet" href="{% static 'admin/fancybox/jquery.fancybox.css' %}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static 'admin/custom.css' %}" type="text/css" media="screen" />
+{% endblock %}
+{% block content %}
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+            <div class="box-header">
+              <h3 class="box-title"> Settings </h3>
+            </div>
+              <!-- Custom Tabs -->
+              <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                  <li {% if request.session.tabName == 'logins' %}class="active"{% endif %} onclick="setTab('logins')" id="logins" ><a href="#tab_1" data-toggle="tab" aria-expanded="false">Logins</a></li>
+{#                  <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false">Test Numbers</a></li>#}
+{#                  <li class=""><a href="#tab_3" data-toggle="tab" aria-expanded="true">Manage Bussiness Rates</a></li>#}
+                    <li {% if request.session.tabName == 'manage_service_prices' %}class="active"{% endif %} onclick="setTab('manage_service_prices')" id="manage_service_prices"><a href="#tab_4" data-toggle="tab"  aria-expanded="true">Manage Service Prices</a></li>
+{#                  <li><a href="#tab_5" data-toggle="tab" aria-expanded="true">Fiber Optic Instant Quote</a></li>#}
+                </ul>
+                <div class="tab-content">
+<!---------------------------------------------------------- Logins ------------------------------------------------------------------->
+                  <div {% if request.session.tabName == 'logins' %}class="tab-pane active"{% else %}class="tab-pane"{% endif %}  id="tab_1">
+                    <div class="pull-right" style="padding-bottom: 15px;">
+                          <a href="{% url 'settings_logins_add' %}" class="fancybox fancybox.iframe btn btn-info btn-xs">Add User</a>
+                    </div>
+                  <div style="padding-top: 64px;">
+                    <table id="myTablelogin" class="table table-bordered table-striped" style="width:100%;!important;" >
+                                <thead>
+                                <tr>
+                                  <th>UserName</th>
+                                  <td>Type</td>
+                                  <th>Role</th>
+                                  <th>Active</th>
+                                  <th>Last Login</th>
+                                  <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    {% for user in userdetails %}
+                                        <tr>
+                                          <td>{{user.user_id__username}}</td>
+                                          <td>{{user.login_type}}</td>
+                                          <td>{{user.role}}</td>
+                                          <td>{{user.user_id__is_active}}</td>
+                                          <td>{{user.user_id__last_login}}</td>
+                                          <td><a href="{% url 'settings_logins_edit' user.user_id %}" class="fancybox fancybox.iframe btn btn-default btn-xs"><i class="fa fa-edit"></i></a></td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                              </table>
+                  </div>
+                  </div>
+<!---------------------------------------------------------- Test Numbers ------------------------------------------------------------------->
+                  <div class="tab-pane" id="tab_2">
+                    The European languages are members of the same family. Their separate existence is a myth.
+                    For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ
+                    in their grammar, their pronunciation and their most common words. Everyone realizes why a
+                    new common language would be desirable: one could refuse to pay expensive translators. To
+                    achieve this, it would be necessary to have uniform grammar, pronunciation and more common
+                    words. If several languages coalesce, the grammar of the resulting language is more simple
+                    and regular than that of the individual languages.
+                  </div>
+<!---------------------------------------------------------- Manage Bussiness Rates ------------------------------------------------------------------->
+                  <div class="tab-pane" id="tab_3">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                    when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                    It has survived not only five centuries, but also the leap into electronic typesetting,
+                    remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
+                    sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
+                    like Aldus PageMaker including versions of Lorem Ipsum.
+                  </div>
+<!---------------------------------------------------------- Manage Service Prices ------------------------------------------------------------------->
+                  <div {% if request.session.tabName == 'manage_service_prices' %}class="tab-pane active"{% else %}class="tab-pane"{% endif %} id="tab_4">
+                        <div class="pull-right" style="padding-bottom: 15px;">
+                          <a href="{% url 'settings_manage_service_price_category_add' %}" class="fancybox fancybox.iframe btn btn-success btn-xs">Service Category Add</a>
+                        </div>
+                        <div class="box-body">
+                        {% for servies_categories in servies_category %}
+                        <div class="box-group" id="accordion{{ forloop.counter }}">
+                          <div class="panel box box-primary">
+                            <div class="box-header with-border">
+                              <h4 class="box-title pull-left">
+                                  <a data-toggle="collapse" data-parent="#accordion{{ forloop.counter }}" onclick="setTabcol('collapseOne{{ forloop.counter }}')" href="#collapseOne{{ forloop.counter }}" {% if request.session.tabNamecol == 'collapseOne{{ forloop.counter }}' %}aria-expanded="true" class=""{% else %}aria-expanded="false" class="collapsed"{% endif %}>
+                                    {{ servies_categories.service_category_name }}
+                                  </a>
+                              </h4>
+                              <div class="pull-right">
+                                  <a href="{% url 'settings_manage_service_price_category_edit' servies_categories.id %}" class="fancybox fancybox.iframe btn btn-info btn-xs"><i class="fa fa-edit"></i></a>
+                                <a href="{% url 'settings_manage_service_price_category_delete' servies_categories.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                              </div>
+                            </div>
+                          <div id="collapseOne{{ forloop.counter }}"  {% if request.session.tabNamecol == 'collapseOne{{ forloop.counter }}' %}class="panel-collapse collapse in" aria-expanded="true" style=""{% else %}class="panel-collapse collapse" aria-expanded="false" style="height: 0px;"{% endif %} >
+                              <div class="pull-right" style="padding-top: 15px;">
+                                <a href="{% url 'settings_manage_service_price_add' servies_categories.id %}" class="fancybox fancybox.iframe btn btn-warning btn-xs"> + Add</a>
+                              </div>
+                              <div style="padding-top: 64px;">
+                                <table id="myTable{{ forloop.counter }}" class="table table-bordered table-striped" style="width:100% !important;" >
+                                <thead>
+                                <tr>
+                                  <th>Name</th>
+                                  <th>Logo</th>
+                                  <td>Price</td>
+                                  <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    {% get_service_each_category_read servies_categories.id as SERVICECATEGORY %}
+                                    {% for servieslist in SERVICECATEGORY %}
+                                        <tr>
+                                          <td>{{servieslist.service_name}}</td>
+                                          <td><img src="/media/{{servieslist.service_logo}}" style="height:50px;width:50px;"></td>
+                                          <td>
+                                              <span id="price{{ servieslist.id }}">{{servieslist.service_price}}</span>
+
+                                              <input  class="pull-right" id="newprice{{ servieslist.id  }}" value="{{servieslist.service_price}}" onchange="saveprice({{  servieslist.id    }})">
+                                          </td>
+                                          <td>
+                                              <a href="{% url 'settings_manage_service_price_edit' servieslist.id servies_categories.id %}" class="fancybox fancybox.iframe btn btn-success btn-xs"><i class="fa fa-edit"></i></a>
+                                              <a href="{% url 'settings_manage_service_price_delete' servieslist.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                                          </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                              </table>
+                            </div>
+                          </div>
+
+                          </div>
+                        </div>
+                        {% endfor %}
+                        </div>
+                  </div>
+<!---------------------------------------------------------- Fiber Optic Instant Quote< ------------------------------------------------------------------->
+                  <div class="tab-pane" id="tab_5">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                    when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                    It has survived not only five centuries, but also the leap into electronic typesetting,
+                    remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
+                    sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
+                    like Aldus PageMaker including versions of Lorem Ipsum.
+                  </div>
+                  <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
+              </div>
+              <!-- nav-tabs-custom -->
+            </div>
+            </div>
+      </div>
+
+
+
+    </section>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'admin/plugins/jQuery/jQuery-2.2.0.min.js' %}"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
+<script type="text/javascript" src="{% static 'admin/fancybox/jquery.fancybox.pack.js' %}"></script>
+{#<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>#}
+
+<script>
+    $(document).ready( function () {
+        var length = '{{ servies_category }}';
+        length = length.replace('[','');
+        length = length.replace(']','');
+        length = length.replace(/&#39;/g, '');
+        length = length.split(', ');
+        for(var i=1;i<length.length;i++) {
+            $('#myTable'+i).DataTable();
+        }
+    });
+    $(document).ready(function () {
+
+        $('#myTablelogin').DataTable();
+
+    })
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".fancybox").fancybox({
+            afterClose: function () {
+                location.reload();
+            },
+            autoSize : false,
+            width    : "50%",
+        });  
+    });
+
+$(document).ready(function(){
+    $(".panel").click(function(){
+	$(this).next().slideToggle('slow');
+	$(this).parent().siblings().find('.panel-content').slideUp();
+
+    });
+});
+
+ function saveprice(id){
+     var service_price = document.getElementById('newprice'+id).value;
+        $.ajax({
+            type: "post",
+            url: "{% url 'settings_manage_service_price_value_update' %}",
+            data: {
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                pk: id,service_price:service_price
+            },
+            success:function (success){
+                console.log(success);
+                $('#price'+id).empty().append(success.data);
+            }
+        })
+    }
+    function setTab(tabName){
+      $.ajax({
+          type: "post",
+          url: "{% url 'set_tab' %}",
+          data: {
+              csrfmiddlewaretoken: "{{csrf_token}}",
+              tabName:tabName
+          },
+          success:function (success){
+              console.log(success);
+          }
+      })
+    }
+    function setTabcol(tabName){
+      $.ajax({
+          type: "post",
+          url: "{% url 'set_tab_col' %}",
+          data: {
+              csrfmiddlewaretoken: "{{csrf_token}}",
+              tabName:tabName
+          },
+          success:function (success){
+              console.log(success);
+          }
+      })
+    }
+</script>
+{% endblock %}
+
+
+
+          <!-- /.box -->

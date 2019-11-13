@@ -1,0 +1,33 @@
+{% load static %}
+{% load other_section %}
+{% load special_offers_functions %}
+{% load special_offer_category_service %}
+<div class="row">
+{% for s in sp %}
+<div class="col-md-4">
+    <div class="section-part">
+      {% getOffersPlans s.special_offers_id as SPECIALOFFERS %}
+      <h4>  {%  for sp in SPECIALOFFERS %}
+            {%  if forloop.counter|add:"-1" %}
+              +
+            {% endif %}
+            {{ sp.service_price_id__service_name }}
+            {%  endfor %}
+      </h4>
+        <div class="section-part-new">
+{#                                                  <h6>120Mbps <small>(Download Speed)</small></h6>#}
+{#                                                  <span>Data Transfer Unlimited</span>#}
+            <p class="data_space">{{ s.special_offers_id__details  | safe }}</p>
+            <div class="strat-part-price">
+                <p>Special Price </p>
+                <h2> {{ s.special_offers_id__actual_price }}/ <small>(Month)</small></h2>
+                <h4> {{ s.special_offers_id__offers_price }}/ <small>(Month)</small><span>Offer Price</span></h4>
+            </div>
+            <div class="bottom-part">
+               <a href="{% url 'get_special_offers_plan_details' s.id %}"><button>More Details</button></a>
+            </div>
+        </div>
+      </div>
+</div>
+{% endfor %}
+</div>

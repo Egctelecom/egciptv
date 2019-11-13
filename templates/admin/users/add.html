@@ -1,0 +1,431 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% load admin_functions %}
+{% load create_account_number %}
+{% block content %}
+{% if messages %}
+ <div class="alert alert-success alert-dismissible">
+     {% for message in messages %}
+     <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+     {% endfor %}
+ </div>
+ {% endif %}
+<form method="post" id="" class="form-horizontal" action="{% url 'add_customer' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="col-md-6">
+        <div class="box-header with-border">
+              <h3 class="box-title">Personal Information</h3>
+            </div>
+        <div class="box-body">
+      <p class="margin">First Name</p>
+      <div class="input-group">
+        <input type="text" name="first_name" class="form-control" value="" id="first_name" style="width: 208px!important;">
+        </div>
+      <p class="margin">Gsr</p>
+      <div class="input-group">
+        <input type="text" name="first_name_gsr" class="form-control" value="" id="first_name_gsr" style="width: 208px!important;">
+      </div>
+      <input type="hidden" name="status" class="form-control" value="0%" required style="width: 208px!important;">
+      <input type="hidden" name="account_id" class="form-control" value="{% account_number %}" required style="width: 208px!important;">
+
+    <p class="margin">Last Name</p>
+    <div class="input-group">
+      <input type="text" name="last_name" class="form-control" value="" required style="width: 208px!important;">
+    </div>
+    <p class="margin">Gsr</p>
+    <div class="input-group">
+     <input type="text" name="last_name_gsr" class="form-control" value="" id="last_name_gsr"  style="width: 208px!important;">
+    </div>
+    <p class="margin">Company</p>
+      <div class="input-group">
+        <input type="text" name="company_name" class="form-control" value="" id="company_name" style="width: 208px!important;">
+      </div>
+      <p class="margin">Gsr</p>
+      <div class="input-group">
+           <input type="text" name="company_name_gsr" class="form-control" value="" id="company_name_gsr" style="width: 208px!important;">
+      </div>
+
+      <p class="margin">Date Of Birth</p>
+      <div class="input-group">
+        <input type="text" name="dob" class="form-control" value=""  id="datepicker" style="width: 208px!important;">
+      </div>
+      <p class="margin">Display company Name</p>
+        <div class="input-group">
+          <input type="radio" name="display_name"  value="company_name" required style="width: 208px!important;">
+        </div>
+        <p class="margin">Display user Name</p>
+          <div class="input-group">
+            <input type="radio" name="display_name"  value="user_name" required style="width: 208px!important;">
+          </div>
+          <p class="margin">Phone -Mobile</p>
+          <div class="input-group">
+            <input type="number" name="phone" class="form-control" required value=""  style="width: 208px!important;">
+          </div>
+
+        <p class="margin">Phone -Other</p>
+        <div class="input-group">
+          <input type="number" name="other_phone" class="form-control" required value=""  style="width: 208px!important;">
+        </div>
+
+      <p class="margin">Email</p>
+      <div class="input-group">
+       <input type="email" name="email_address" class="form-control" value="" required style="width: 208px!important;">
+      </div>
+      <p class="margin">Portal Password</p>
+      <div class="input-group">
+        
+        <input type="text" name="portal_password" id='p' class="form-control" style="width: 208px!important;">
+        <span class="input-group-btn" style="padding-right: 926px !important;">
+            <input type='button' class="btn btn-info btn-flat" required value ='generate' onclick='document.getElementById("p").value = Password.generate(16)'>
+        </span>
+      </div>
+     <p class="margin">Prefferd Language</p>
+        <div class="input-group">
+          <input type="radio" name="prefferd_language"  value="english" required style="width: 208px!important;">English<br>
+          <input type="radio" name="prefferd_language"  value="french" required style="width: 208px!important;">French
+        </div>
+
+      </div>
+      <p class="margin">Zone</p>
+      <div class="input-group">
+            <select class="form-control" name="zone" required id="zone" style="width: 208px!important;" onchange="set_gsr()">
+            <option value="residential" selected>Residential</option>
+            <option value="commercial" >commercial</option>
+            </select>
+      </div>
+      <p class="margin">Service  Provider</p>
+      <div class="input-group">
+        <select name="payment_method" class="form-control" required style="width: 208px!important;" >
+            <option>Select One</option>
+            {% for service_providers in service_provider  %}
+            <option value="{{ service_providers.id }}">{{ service_providers.service_provider_name }}</option>
+            {% endfor %}
+        </select>
+      </div>
+       <div class="box-footer">
+           <button type="submit" class="btn btn-primary" name="Submit"> Add</button>
+       </div>
+    </div>
+    <div class="col-md-6">
+         <div class="box-header with-border">
+              <h3 class="box-title">Account Address</h3>
+            </div>
+          <div class="box-body">
+              <p class="margin">Address 1</p>
+              <div class="input-group">
+                <input type="text" name="address_1" id="address_1" class="form-control"required value=""  style="width: 208px!important;">
+              </div>
+                <p class="margin">Address 2</p>
+              <div class="input-group">
+                <input type="text" name="address_2" id="address_2" class="form-control" required value=""  style="width: 208px!important;">
+              </div>
+                 <p class="margin">Country</p>
+                 <div class="input-group">
+                <select name="country" class="form-control" id="country" required style="width: 208px!important;" onchange="get_province()">
+                    <option>Select Country</option>
+                    {% for countries in country %}
+                    <option value="{{ countries.id }}">{{ countries.country_name }}</option>
+                    {%  endfor %}
+                </select>
+              </div>
+                 <p class="margin">Province</p>
+                 <div class="input-group" id="select_province">
+                     <select name="province" class="form-control" id="province" required style="width: 208px!important;">
+                          <option>Select Province</option>
+                      </select>
+                  </div>
+                 <p class="margin">City</p>
+                 <div class="input-group">
+                   <div class="input-group" id="select_city">
+                   <select name="city" class="form-control" id="city" required style="width: 208px!important;">
+                        <option>Select City</option>
+                   </select>
+                   </div>
+              </div>
+                <p class="margin">Postal</p>
+              <div class="input-group">
+                <input type="text" name="postal" id="postal" class="form-control" required value=""  style="width: 208px!important;">
+              </div>
+          </div>
+         <div class="box-header with-border">
+              <h3 class="box-title">Billing Address , <input type="checkbox"  onclick="same_as_account_address()" id="checkadd" >  same as account address  ? </h3>
+         </div>
+          <div class="box-body">
+              <p class="margin">Address 1</p>
+              <div class="input-group">
+                <input type="text" name="billing_address_1" id="billing_address_1" required class="form-control" value=""  style="width: 208px!important;">
+              </div>
+               <p class="margin">Address 2</p>
+              <div class="input-group">
+                <input type="text" name="billing_address_2" id="billing_address_2" required class="form-control" value=""  style="width: 208px!important;">
+              </div>
+              <p class="margin">Country</p>
+              <div class="input-group">
+                <select name="billing_country" class="form-control" id="billing_country" required style="width: 208px!important;" onchange="get_billing_province()">
+                    <option>Select Country</option>
+                    {% for countries in country %}
+                    <option value="{{ countries.id }}">{{ countries.country_name }}</option>
+                    {%  endfor %}
+                </select>
+              </div>
+              <span id="billing_account">
+              <p class="margin">Province</p>
+              <di class="input-group" id="select_billing_province">
+                <select name="billing_province" id="billing_province" class="form-control" required style="width: 208px!important;">
+                    <option>Select  Province</option>
+                </select>
+              </di>
+              <p class="margin">City</p>
+              <div class="input-group" id="select_billing_city">
+                <select name="billing_city" class="form-control" id="billing_city" required style="width: 208px!important;" onchange="get_billing_city()">
+                    <option>Select  City</option>
+                </select>
+              </div>
+              </span>
+              <p class="margin">Postal</p>
+              <div class="input-group">
+                <input type="text" name="billing_postal" id="billing_postal" class="form-control" required value=""  style="width: 208px!important;">
+              </div>
+          </div>
+    </div>
+    <!-- <div class="col-md-3">
+         <div class="box-header with-border">
+              <h3 class="box-title">Billing Details</h3>
+            </div>
+          <div class="box-body">
+              <p class="margin">Salesperson</p>
+              <div class="input-group">
+                <select name="salesperson" class="form-control" required style="width: 208px!important;" >
+                    {% for user in user_profile %}
+                    <option value="{{ user.id }}">{{ user.user_id__username }}</option>
+                    {% endfor %}
+                </select>
+              </div>
+              <p class="margin">Contract Type</p>
+              <div class="input-group">
+                <select name="contract_type" class="form-control" required style="width: 208px!important;" >
+                    <option value="month">Monthly</option>
+                    <option value="1">1 year</option>
+                    <option value="2">2 year</option>
+                    <option value="3">3 year</option>
+                    <option value="4">4 year</option>
+                    <option value="5">5 year</option>
+                    <option value="6">6 year</option>
+                    <option value="7">7 year</option>
+                </select>
+              </div>
+              <p class="margin">Billing Day</p>
+              <div class="input-group">
+                <select name="billing_day" class="form-control" required style="width: 208px!important;" >
+                    <option value="1">1 </option>
+                    <option value="15">15</option>
+                </select>
+              </div>
+              <p class="margin">Payment Mode</p>
+              <div class="input-group">
+                <select name="payment_mode" class="form-control" required style="width: 208px!important;" >
+                    <option value="prepaid">Prepaid</option>
+                    <option value="postpaid">Postpaid</option>
+                </select>
+              </div>
+              <p class="margin">Payment Method</p>
+              <div class="input-group">
+                <select name="payment_method" class="form-control" required style="width: 208px!important;" >
+                    <option>Select One</option>
+                    <option value="internet_banking">Internet Banking</option>
+                    <option value="credit_card">Credit Card</option>
+                    <option value="direct_deposal">Direct Deposal</option>
+                    <option value="cheque_money">Cheque/Money Order</option>
+                    <option value="paypal">Paypal</option>
+                </select>
+              </div>
+              <p class="margin">Yearly pre-payment <input type="checkbox" name="year_pre_payment"  value="year_pre_payment"></p>
+              <p class="margin">From</p>
+              <div class="input-group">
+                 <input type="text" name="billing_from" class="form-control" value="" required  style="width: 208px!important;">
+              </div>
+               <p class="margin">To</p>
+              <div class="input-group">
+                 <input type="text" name="billing_to" class="form-control" value="" required style="width: 208px!important;">
+              </div>
+          </div>
+    </div> -->
+</form>
+{% endblock %}
+{% block scripts %}
+<script>
+        var Password = {
+
+      _pattern : /[a-zA-Z0-9_\-\+\.]/,
+
+
+      _getRandomByte : function()
+      {
+        // http://caniuse.com/#feat=getrandomvalues
+        if(window.crypto && window.crypto.getRandomValues)
+        {
+          var result = new Uint8Array(1);
+          window.crypto.getRandomValues(result);
+          return result[0];
+        }
+        else if(window.msCrypto && window.msCrypto.getRandomValues)
+        {
+          var result = new Uint8Array(1);
+          window.msCrypto.getRandomValues(result);
+          return result[0];
+        }
+        else
+        {
+          return Math.floor(Math.random() * 256);
+        }
+      },
+
+      generate : function(length)
+      {
+        return Array.apply(null, {'length': length})
+          .map(function()
+          {
+            var result;
+            while(true)
+            {
+              result = String.fromCharCode(this._getRandomByte());
+              if(this._pattern.test(result))
+              {
+                return result;
+              }
+            }
+          }, this)
+          .join('');
+      }
+};
+
+$('#datepicker').datepicker({
+      autoclose: true
+    });
+</script>
+<script>
+ function same_as_account_address(){
+
+         var checkadd = $('#checkadd').is(':checked');
+
+         if (checkadd == true) {
+
+             var address_1 = document.getElementById('address_1').value;
+             var address_2 = document.getElementById('address_2').value;
+             var city = document.getElementById('city').value;
+             var province = document.getElementById('province').value;
+             var country = document.getElementById('country').value;
+             var postal = document.getElementById('postal').value;
+
+             document.getElementById('billing_address_1').value = address_1;
+             document.getElementById('billing_address_2').value = address_2;
+             {#document.getElementById('billing_city').value = city;#}
+             {#document.getElementById('billing_province').value = province;#}
+             document.getElementById('billing_country').value = country;
+             document.getElementById('billing_postal').value = postal;
+
+
+             $.ajax({
+                type: "post",
+                url: "{% url 'same_as_account_address' %}",
+                data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                    country:country,
+                    province:province,
+                    city:city,
+                },
+                success:function (success){
+                    console.log(success.data);
+                     $('#billing_account').empty().append(success.data);
+                      document.getElementById('billing_city').value = city;
+                      document.getElementById('billing_province').value = province;
+                }
+            })
+
+         }else{
+
+             document.getElementById('billing_address_1').value = '';
+             document.getElementById('billing_address_2').value = '';
+             document.getElementById('billing_city').value = '';
+             document.getElementById('billing_province').value = '';
+             document.getElementById('billing_country').value = '';
+             document.getElementById('billing_postal').value = '';
+         }
+
+
+ }
+ function get_province(){
+     var country = document.getElementById('country').value;
+      $.ajax({
+            type: "post",
+            url: "{% url 'get_service_province' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                country:country,
+            },
+            success:function (success){
+                console.log(success.data);
+                 $('#select_province').empty().append(success.data);
+
+            }
+        })
+ }
+ function get_city(){
+     var province = document.getElementById('province').value;
+      $.ajax({
+            type: "post",
+            url: "{% url 'get_city' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                province:province,
+            },
+            success:function (success){
+                console.log(success.data);
+                 $('#select_city').empty().append(success.data);
+            }
+        })
+ }
+
+  function get_billing_province(){
+     var billing_country = document.getElementById('billing_country').value;
+      $.ajax({
+            type: "post",
+            url: "{% url 'get_billing_province' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                country:billing_country,
+            },
+            success:function (success){
+                console.log(success.data);
+                 $('#select_billing_province').empty().append(success.data);
+            }
+        })
+ }
+ function get_billing_city(){
+     var billing_province = document.getElementById('billing_province').value;
+      $.ajax({
+            type: "post",
+            url: "{% url 'get_billing_city' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                province:billing_province,
+            },
+            success:function (success){
+                console.log(success.data);
+                 $('#select_billing_city').empty().append(success.data);
+            }
+        })
+ }
+ function set_gsr(){
+     var zone = document.getElementById('zone').value;
+     if(zone == 'commercial'){
+         $('#first_name_gsr').attr('required','required');
+         $('#last_name_gsr').attr('required','required');
+         $('#company_name_gsr').attr('required','required');
+         $('#company_name').attr('required','required');
+     }else{
+          $('#first_name_gsr').removeAttr('required');
+         $('#last_name_gsr').removeAttr('required');
+         $('#company_name_gsr').removeAttr('required');
+         $('#company_name').removeAttr('required');
+     }
+ }
+
+</script>
+<script src="{% static 'admin/plugins/datepicker/bootstrap-datepicker.js' %}"></script>
+{% endblock %}

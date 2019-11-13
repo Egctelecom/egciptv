@@ -1,0 +1,86 @@
+{% extends 'egciptv/layouts.html' %}
+{% load static %}
+{% block content %}
+<section id="inner-banner-area">
+    <div class="overlay"></div>
+    <div class="container">
+        <h2>Faq</h2>
+       <ol class="breadcrumb">
+           <li class="breadcrumb-item"><a href="#">Home</a></li>
+           <li class="breadcrumb-item  active">FAQ</li>
+       </ol>
+    </div>
+</section>
+
+
+<section id="modem-page">
+    <div class="container">
+    <div class="panel-group" id="accordion">
+        <div class="faqHeader">FAQ</div>
+        {%  for nw in faq %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}">
+                        {%  autoescape off %}{{ nw.questions }}{% endautoescape %}
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse{{ forloop.counter }}" class="panel-collapse collapse{% if forloop.counter == 1 %}in{% endif %}">
+                <div class="panel-body">
+                     {%  autoescape off %}{{ nw.answers }}{% endautoescape %}
+                </div>
+            </div>
+        </div>
+        {%  endfor %}
+    </div>
+</div>
+</section>
+
+{% endblock %}
+{% block scripts %}
+<script src="{%  static 'customer/js/custom.js' %}"></script>
+<script src="{%  static 'customer/js/jquery-1.11.3.js' %}"></script>
+<script src="{%  static 'customer/js/bootstrap.min.js' %}"></script>
+<script src="{%  static 'customer/js/bootsnav.js' %}"></script>
+<script src="{%  static 'customer/js/owl.carousel.min.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        $('#close-btn').click(function() {
+            $('#search-overlay').fadeOut();
+            $('#search-btn').show();
+        });
+        $('#search-btn').click(function() {
+            $(this).hide();
+            $('#search-overlay').fadeIn();
+        });
+    });
+</script>
+<script>
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 214){
+            $('.custom-main-menu-section').addClass("sticky");
+        }
+        else{
+            $('.custom-main-menu-section').removeClass("sticky");
+        }
+    });
+</script>
+<style>
+    .sticky {position: fixed;width: 100%;z-index:9999; top:0;
+
+        background-color:#fff;}
+</style>
+
+
+<script>
+	$(document).ready(function() {
+    $('[id^=detail-]').hide();
+    $('.toggle').click(function() {
+        $input = $( this );
+        $target = $('#'+$input.attr('data-toggle'));
+        $target.slideToggle();
+    });
+});
+</script>
+{% endblock %}

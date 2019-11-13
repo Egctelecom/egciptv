@@ -1,0 +1,93 @@
+{% extends 'egciptv/layouts.html' %}
+{% load static %}
+{% load other_section %}
+{% block content %}
+<section id="inner-banner-area">
+    <div class="overlay"></div>
+    <div class="container">
+        <h2>Plan Package Details</h2>
+       <ol class="breadcrumb">
+           <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+           <li class="breadcrumb-item  active">Plans</li>
+       </ol>
+    </div>
+</section>
+
+<div class="resident-details">
+    <div class="container">
+         <div class="row">
+             <div class="heading-new-part">
+
+                 <div class="col-md-12">
+                     <div class="right-part-new">
+                      <h4>
+
+                            {{ service_list.0.title}}
+
+                      </h4>
+                      <div class="offer-part-price">
+                               <span class="actual-price">{{ service_list.0.retail }}<small>(Month)</small></span>
+                               <span class="offer-price">{{ service_list.0.actual }}<small>(Month)</small><span class="">Offer Price</span></span>
+                      </div>
+
+                     <div>{% autoescape off %}{{ service_list.0.manage_service_id__service_desc }}{%  endautoescape %}</div>
+
+                     </div>
+
+                   <div class="download_btn" download>
+
+
+                       <div class="modal fade" id="myModal" role="dialog">
+                        <div class="modal-dialog">
+
+                          <!-- Modal content-->
+                          <div class="modal-content">
+                                <div class="modal-header">
+                                    Document For {{ service_list.0.title }}
+                                </div>
+                                <div class="modal-body">
+                                  {% get_plans_doc service_list.0.id as PLANDOC %}
+                                  {%  if PLANDOC %}
+                                    {%  for pl in PLANDOC %}
+                                       {% if pl.status == 'active' %}
+                                          <p>
+                                              {{ pl.service_price_doc_name }}
+                                              &nbsp;&nbsp;
+                                              <a href="/media/{{ pl.service_price_doc }}" download="">
+                                                 <i class="fa fa-download" aria-hidden="true"></i>
+                                              </a>
+                                          </p>
+                                        {%  else %}
+                                           <p> Currently document is not approved </p>
+                                        {%  endif %}
+                                    {% endfor %}
+                                  {% else %}
+                                     <p>No Document Available</p>
+                                  {% endif %}
+
+                                </div>
+
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                          </div>
+
+                        </div>
+                      </div>
+
+
+                 </div>
+                     <div class="register-part" style="margin-top: 0;">
+                         <a href="{% url 'apply_for_registration' menu_id service_list.0.id type%}"> <button>Register now</button></a>
+                     </div>
+                         <div style="float: right;margin-top: -53px">
+                            <a data-toggle="modal" data-target="#myModal" >
+                             <button class="btn btn-warning"> Document of Plans</button>
+                            </a>
+                         </div>
+                 </div>
+            </div>
+          </div>
+    </div>
+</div>
+{% endblock %}

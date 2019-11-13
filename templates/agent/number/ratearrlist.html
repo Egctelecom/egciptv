@@ -1,0 +1,6 @@
+    <select name="ratecenter" class="form-control" id="ratecenter" required style="width: 588px!important;" onchange="get_number()">
+        <option>Select RateCenter</option>
+        {% for ratearrlist in ratearr %}
+        <option value="{{ ratearrlist }}">{{ ratearrlist }}</option>
+        {% endfor %}
+    </select>

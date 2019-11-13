@@ -1,0 +1,6 @@
+    <select name="city" class="form-control" id="city" required style="width: 208px!important;">
+        <option>Select City</option>
+        {% for cities in city %}
+        <option value="{{ cities.id }}">{{ cities.city_name }}</option>
+        {% endfor %}
+    </select>

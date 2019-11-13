@@ -1,0 +1,224 @@
+<link rel="stylesheet" href="style.css">{% extends 'egciptv/layouts.html' %}
+{% load static %}
+{% load i18n %}
+{% load special_offer_category_service %}
+{% load special_offers_functions %}
+{% load other_section %}
+{% load get_background_image %}
+{% block content %}
+
+{%  get_background_image as bg_image %}
+<section id="banner-area1" style = "background: url('/media/{{ bg_image.image }}'); background-repeat:no-repeat;
+   background-size:cover;">
+    <div id="carousel-example-generic" class="carousel slide carousel-fade" data-ride="carousel">
+        <div class="carousel-inner">
+            {% for sl in slider %}
+            <div class="item {% if forloop.counter == 1 %}active{%endif%}">
+                <div class="carousel-caption">
+                  <div class="col-md-8 col-sm-6">
+                      <h1>{{ sl.slider_name }}</h1>
+                      <div class="slider-text">{% autoescape off %}{{ sl.details }}{% endautoescape %}</div>
+                      <button onclick="go_to('{{ sl.url }}')">Click here</button>
+                  </div>
+                    <div class="col-md-4 col-sm-6">
+                        <img src="/media/{{ sl.image }}" class="img-responsive hidden-xs"/>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span></a>
+        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span></a>
+    </div>
+</section>
+
+<section id="products-features">
+    <div class="container">
+        <div class="heading-outer">
+            <h2>{% trans "Services and features" %}</h2>
+        </div>
+        <div class="row center-block">
+        {%  for service_feature_dt in service_feature %}
+        <div class="col-md-4">
+
+           <div class="box1-area">
+               <span class="service-icon">
+                       <img src="/media/{{ service_feature_dt.service_feature_logo }}" style="height:50px;width:50px;">
+                   </span>
+                   <h2>{{ service_feature_dt.service_parent_category_id__service_parent_category_name }}</h2>
+               <div class="for-border"></div>
+                <div class="data_space" id="features">{% autoescape off %}{{ service_feature_dt.details }}{% endautoescape %}</div>
+               <a href="{%  url 'service_features_details' service_feature_dt.id %}"><button>Read more</button></a>
+
+           </div>
+        </div>
+        {%  endfor %}
+      </div>
+    </div>
+</section>
+{#{% other_section_data 'About' as OTHERSECTIONDTA %}#}
+{#<section id="about-us">#}
+{#    <div class="container">#}
+{#        <div class="heading-outer">#}
+{#            <h2 class="clr-area">{{ OTHERSECTIONDTA.0.key }}</h2>#}
+{#        </div>#}
+{#        <p class="clr-area">{{ OTHERSECTIONDTA.0.value | safe }}</p>#}
+{#        <button>Learn More</button>#}
+{#    </div>#}
+{#</section>#}
+
+<section id="services">
+    <div class="container">
+        <div class="heading-outer">
+            <h2 class="clr-area">Special Offers</h2>
+        </div>
+       <div class="col-md-12">
+           <div class="menu-bar">
+{#            <ul>#}
+{#                {%  get_parent_category as OFFERS_PARENT_CATEGORY %}#}
+{#                {%  for offers_cate in OFFERS_PARENT_CATEGORY  %}#}
+{#                <li>#}
+{#                <div class="dropdown">#}
+{#                    <a class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">{{ offers_cate.special_offers_parent_category_name }} <span class="caret"></span></a>#}
+{#                    {%  get_sub_parent_category offers_cate.id as OFFERS_SUB_PARENT_CATEGORY %}#}
+{#                    {%  if OFFERS_SUB_PARENT_CATEGORY %}#}
+{#                    <ul class="dropdown-menu">#}
+{#                        {%  for offers_sub_cate in OFFERS_SUB_PARENT_CATEGORY  %}#}
+{#                        <li> <a id="arf{{ forloop.counter }}" onclick="callspeciallofferslist({{ offers_sub_cate.id }},{{ offers_cate.id }})">{{ offers_sub_cate.special_offers_sub_parent_category_name }}</a> </li>#}
+{#                        {%  endfor %}#}
+{#                    </ul>#}
+{#                   </div>#}
+{#                   {%  endif %}#}
+{#                </li>#}
+{#                {%  endfor %}#}
+{#            </ul>#}
+           <ul class="tabs-main">
+                {%  get_parent_category as OFFERS_PARENT_CATEGORY %}
+                {%  for offers_cate in OFFERS_PARENT_CATEGORY  %}
+                <li class="tab{% if forloop.counter <= 4  %}{{ forloop.counter }}{% else %}{{ forloop.counter | add:-4 }}{% endif %}">
+                <div class="dropdown">
+                    <a class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> {{ offers_cate.special_offers_parent_category_name }} <span class="caret"></span></a>
+                     {%  get_sub_parent_category offers_cate.id as OFFERS_SUB_PARENT_CATEGORY %}
+                     {%  if OFFERS_SUB_PARENT_CATEGORY %}
+                    <ul class="dropdown-menu dropdown-menu1">
+                        {%  for offers_sub_cate in OFFERS_SUB_PARENT_CATEGORY  %}
+                        <li> <a id="arf{{ forloop.counter }}" onclick="callspeciallofferslist({{ offers_sub_cate.id }},{{ offers_cate.id }})" >{{ offers_sub_cate.special_offers_sub_parent_category_name }}</a></li>
+                        {%  endfor %}
+                    </ul>
+                     {%  endif %}
+                   </div>
+                </li>
+                {%  endfor %}
+            </ul>
+
+           </div>
+       </div>
+    <div class="clearfix"></div>
+       <div class="main-area" id="dt"></div>        `
+    </div>
+</section>
+<section id="newsletter-area">
+    <div class="overlay"></div>
+
+    <div class="container">
+
+
+        <div class="col-md-12">
+            <div class="heading-outer">
+                <h2 class="short-headline">SUBSCRIBE NEWSLETTER</h2>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-area">
+                <div class="input-group">
+                    <input type="email" class="form-control" placeholder="Enter your email">
+                    <span class="input-group-btn">
+                            <button class="btn btn-theme" type="submit">Subscribe</button>
+                     </span>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</section>
+</section>
+
+
+
+
+{% endblock %}
+{% block scripts %}
+<!---Slim js---->
+<script src="{%  static 'customer/slim-scroll/js/jquery.slimscroll.js' %} "></script>
+<script src="{%  static 'customer/slim-scroll/js/jquery.slimscroll.min.js ' %} "></script>
+<script>
+ $(function(){
+       $(".data_space").each(function(i){
+           len=$(this).text().length;
+           if(len>60)
+           {
+                $(this).text($(this).text().substr(0,60)+'...');
+            }
+       });
+   });
+ $(function(){
+   $(".fritz").each(function(i){
+       len=$(this).text().length;
+       if(len>60)
+       {
+            $(this).text($(this).text().substr(0,60)+'...');
+        }
+   });
+});
+</script>
+<!----Slim js---->
+<script type="text/javascript">
+    $(function(){
+        $('.scroll-box').slimScroll();
+    });
+    window.onload = document.getElementById('arf1').click();
+    function callspeciallofferslist(id,p_id){
+        $.ajax({
+                type: "post",
+                url: "{% url 'get_set_of_special_offers' %}",
+                data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                    id:id,parent_id:p_id
+                },
+                success:function (success){
+                    console.log(success.data);
+                    $('#dt').empty().append(success.data);
+
+                }
+        })
+
+    }
+    function go_to(url){
+        window.open(url);
+    }
+</script>
+    <script>
+    $(document).ready(function() {
+        $('#close-btn').click(function() {
+            $('#search-overlay').fadeOut();
+            $('#search-btn').show();
+        });
+
+
+        $('#search-btn').click(function() {
+            $(this).hide();
+            $('#search-overlay').fadeIn();
+        });
+    });
+
+
+
+
+
+</script>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% block content %}
+    <section class="content">
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <div class="tab-content">
+              <div class="active tab-pane" id="activity">
+                <!-- Post -->
+                <div class="post clearfix">
+                  {% for comments in comment %}
+                  <div class="user-block">
+                    <img class="img-circle img-bordered-sm" src="{% static 'admin/dist/img/usr.png'%}" alt="User Image">
+                        <span class="username">
+                          <a href="#">
+                              {% if comments.user_id__is_superuser == True %}
+                              Admin
+                              {% else %}
+                                  {{ comments.user_id__first_name }}
+                              {% endif %}
+                          </a>
+                        </span>
+                    <span class="description">Sent you a message - {{ comments.created_at }}</span>
+                  </div>
+                  <!-- /.user-block -->
+                  <p>
+                   {{ comments.comment }}
+                  </p>
+                  {% endfor %}
+                  <div id="datalist">
+
+                  </div>
+
+                  <form class="form-horizontal">
+                    <div class="form-group margin-bottom-none">
+                      <div class="col-sm-9">
+                          <textarea class="form-control input-sm" placeholder="Response" id="comment"></textarea>
+                      </div>
+                      <div class="col-sm-3">
+                        <button type="button" class="btn btn-danger pull-right btn-block btn-sm" onclick="send()">Send</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <!-- /.post -->
+
+              </div>
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+        </div>
+    </section>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+
+    function send(){
+        var comment = document.getElementById('comment').value;
+        var customer = "{{ customer_id }}";
+       $.ajax({
+            type: "post",
+            url: "{% url 'save_comment' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                comment:comment,
+                customer_id:customer
+            },
+            success:function (success){
+                console.log(success.data);
+                 $('#datalist').empty().append(success.data);
+            }
+        })
+    }
+
+</script>
+{% endblock %}

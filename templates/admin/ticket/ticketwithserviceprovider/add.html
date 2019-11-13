@@ -1,0 +1,56 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% block content %}
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Ticket With Service Provider</h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" id="" class="form-horizontal" action="{% url 'add_map_ticket_with_service_provider' %}" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                      <div class="box-body">
+
+                      <p class="margin">Select Category Title</p>
+                      <div class="input-group">
+                        <select name="ticket_category" class="form-control" required style="width: 588px!important;">
+                            <option>Select Category</option>
+                            {% for datas in data %}
+                            <option value="{{ datas.id }}">{{ datas.category_title }}</option>
+                            {% endfor %}
+                        </select>
+                      </div>
+
+                      <p class="margin">Select Service Provider</p>
+                      <div class="input-group">
+                        <select name="service_provider" class="form-control" required style="width: 588px!important;">
+                            <option>Select Service Provider</option>
+                            {% for datas in service_provider %}
+                            <option value="{{ datas.id }}">{{ datas.service_provider_name }}</option>
+                            {% endfor %}
+                        </select>
+                      </div>
+
+
+
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Add</button>
+                       </div>
+                </form>
+
+          </div>
+          <!-- /.box -->
+    </div>
+{% endblock %}
+
+
+

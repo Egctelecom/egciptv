@@ -1,0 +1,6 @@
+    <select name="manage_service" class="form-control" id="manageservice" required style="width: 588px!important;" onchange="get_title()">
+        <option>Select Service Plan</option>
+        {% for provinces in manage_service_price %}
+        <option value="{{ provinces.id }}">{{ provinces.service_name }}</option>
+        {% endfor %}
+    </select>

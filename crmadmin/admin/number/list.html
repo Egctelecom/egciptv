@@ -1,0 +1,6 @@
+    <select name="province" class="form-control" id="province" required style="width: 588px!important;" onchange="get_ratecenters()">
+        <option>Select Province</option>
+        {% for provinces in province %}
+        <option value="{{ provinces.id }}">{{ provinces.province_name }}</option>
+        {% endfor %}
+    </select>

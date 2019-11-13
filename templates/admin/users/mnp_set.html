@@ -1,0 +1,284 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% load admin_functions %}
+{% load create_account_number %}
+{% block content %}
+<form method="post" id="" class="form-horizontal" action="{% url 'set_mnp_add' %}" enctype="multipart/form-data">
+    <div class="col-md-6">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+
+            <div class="box-header with-border">
+              <h3 class="box-title">Port Number</h3>
+            </div>
+            {% if messages %}
+            <div class="alert alert-success alert-dismissible">
+            {% for message in messages %}
+            <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+            {% endfor %}
+            </div>
+            {% endif %}
+          <br>
+                 {% csrf_token %}
+                  <div class="form-group">
+                        <label class="col-sm-4 control-label" for="City Name">Location Type<span style="color: red;">*</span></label>
+                        <div class="col-sm-8">
+                            <input type = "radio" name = "location_type" id = "location_type" value = "business" checked><label for="location_type">&nbsp;Business</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type = "radio" name = "location_type" id = "location_type1" value = "residential"><label for="location_type1">&nbsp;Residential</label>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                  <div id="residential_part" style="display: none">
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="City Name">First Name<span style="color: red;">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="first_name" id="first_name" value="" title="First Name">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                  <div class="form-group">
+                        <label class="col-sm-4 control-label">Last Name<span style="color: red;">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="last_name" id="last_name" value="" title="Last Name">
+                            <span class="help-block"></span>
+                        </div>
+                  </div>
+                  </div>
+                  <div id="business_part">
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" for="City Name">Business Contact<span style="color: red;">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="business_contact" id="business_contact" value="" title="Business Contact">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                  <div class="form-group">
+                        <label class="col-sm-4 control-label">Business Name <span style="color: red;">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="business_name" id="business_name" value="" title="Business Name">
+                            <span class="help-block"></span>
+                        </div>
+                  </div>
+                  </div>
+                  <div class="form-group">
+                        <label class="col-sm-4 control-label">Account Number<span style="color: red;">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="account_number" id="account_number" value="{{ customer_data.0.customer_id__account_id }}" readonly title="Account Number">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                  <div class="form-group">
+                        <label class="col-sm-4 control-label" for="City Name">Service Address<span style="color: red;">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="service_address " value="" title="service_address " required>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                  <div class="form-group">
+                        <label class="col-sm-4 control-label">Service city <span style="color: red;">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="service_city" value="" title="service_city  " required>
+                            <span class="help-block"></span>
+                        </div>
+                  </div>
+                  <div class="form-group">
+                        <label class="col-sm-4 control-label">Service State <span style="color: red;">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="service_state" value="" title="service state" required>
+                            <span class="help-block"></span>
+                        </div>
+                  </div>
+                  <div class="form-group">
+                        <label class="col-sm-4 control-label">Service Zip <span style="color: red;">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="service_zip " value="" title="service zip code" required>
+                            <span class="help-block"></span>
+                        </div>
+                  </div>
+                  <div class="form-group">
+                        <label class="col-sm-4 control-label">Partial Port <span style="color: red;">*</span></label>
+                        <div class="col-sm-8">
+                            <input type = "radio" name = "partial_port" id = "partial_port" value = "1" checked><label for="partial_port">&nbsp;Yes</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type = "radio" name = "partial_port" id = "partial_port1" value = "0"><label for="partial_port1">&nbsp;No</label>
+                            <span class="help-block"></span>
+                        </div>
+                  </div>
+                  <div class="form-group">
+                        <label class="col-sm-4 control-label">Pin/Password<span style="color: red;">*</span></label>
+                        <div class="col-sm-8">
+                            <input type = "radio" name = "wireless_pin" id = "wireless_pin" value = "1" checked> <label for="wireless_pin">&nbsp;Yes</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type = "radio" name = "wireless_pin" id = "wireless_pin1" value = "0"><label for="wireless_pin1">&nbsp;No</label>
+                            <span class="help-block"></span>
+                        </div>
+                  </div>
+                  <div class="form-group">
+                        <label class="col-sm-4 control-label">Bill Upload <span style="color: red;">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="file" onchange="encodeImageFileAsURL(this,'bill_file_base64')" class="form-control" name="bill_file" id="bill_file" value="" title="Upload customer bill" required>
+                            <input type="hidden" name="bill_file_base64" id="bill_file_base64"  value="" >
+                            <span class="help-block"></span>
+                        </div>
+                  </div>
+                  <div class="form-group">
+                        <label class="col-sm-4 control-label">Signature <span style="color: red;">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="file" onchange="encodeImageFileAsURL(this,'signature_base64')" class="form-control" name="signature" value="" title="Upload customer signature" required>
+                            <input type="hidden" name="signature_base64" id="signature_base64"  value="" >
+                            <span class="help-block"></span>
+                        </div>
+                  </div>
+                  <div class="form-group">
+                        <label class="col-sm-4 control-label">Caller Id <span style="color: red;">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="caller_id" value="" title="Caller Id" required>
+                            <span class="help-block"></span>
+                        </div>
+                  </div>
+                  <div class="form-actions"><br>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-primary" name="Submit">Submit</button>
+                            </div>
+                        </div>
+                  </div>
+
+
+
+          </div>
+   </div>
+    <div class="col-md-6">
+      <div class="box box-info">
+       <div class="box-header with-border">
+              <h3 class="box-title"></h3>
+       </div>
+        <div style="display: none;" id="cl">
+            <p id="msg">
+
+            </p>
+        </div>
+       <br>
+       <input type="hidden" name="btn" id="bt">
+         <div class="form-group">
+          <label class="col-sm-2 control-label" for="City Name">Number<span style="color: red;">*</span></label>
+          <div class="col-sm-6">
+              <input type="text" class="form-control" name="number" id="numbers" title="Numbers" onchange="addnumber()">
+              <span class="help-block"></span>
+
+              <label for="exampleInputFile">Upload Your Document here [Only .pdf file]</label>
+              <input type="file" name="approve_upload_data" onchange="encodeImageFileAsURLtest(this,'approve_upload_data_base64')" id="approve_upload_data" >
+              <input type="hidden" name="approve_upload_data_base64" id="approve_upload_data_base64"  value="" >
+              <p class="help-block"></p>
+          </div>
+          <div class="col-sm-4">
+              <img id="loading-image" src="{% static 'admin/ajax-loader.gif'%}" style="display:none;"/>
+              <a onclick="save({{ customer_pk }})" class="btn btn-info btn-xs"><i class="fa fa-plus"></i></a>
+              <span class="help-block"></span>
+          </div>
+         </div>
+      </div>
+    </div>
+</form>
+{% endblock %}
+{% block scripts %}
+    <script>
+       $('input[name="location_type"]').on('change',function(){
+           var type = $(this).val();
+           if(type == 'business'){
+               $('#business_part').show();
+               $('#business_contact').attr('required',true);
+               $('#business_name').attr('required',true);
+               $('#first_name').attr('required',false);
+               $('#last_name').attr('required',false);
+               $('#residential_part').hide();
+           }else if(type == 'residential'){
+                $('#business_part').hide();
+               $('#first_name').attr('required',true);
+               $('#last_name').attr('required',true);
+               $('#residential_part').show();
+               $('#business_contact').attr('required',false);
+               $('#business_name').attr('required',false);
+           }else{
+               $('#business_part').hide();
+               $('#residential_part').hide();
+           }
+       });
+       function encodeImageFileAsURL(element,id) {
+              var file = element.files[0];
+              var reader = new FileReader();
+              reader.onloadend = function () {
+                  console.log('RESULT', reader.result);
+                  $('#' + id).val(reader.result);
+              }
+              reader.readAsDataURL(file);
+        }
+        function encodeImageFileAsURLtest(element,id) {
+         var myfile= document.getElementById('approve_upload_data').value;
+          var ext = myfile.split('.').pop();
+          if(ext =="pdf") {
+              var file = element.files[0];
+              var reader = new FileReader();
+              reader.onloadend = function () {
+                  console.log('RESULT', reader.result);
+                  var base64String = reader.result.split(',').pop();
+                  console.log(base64String);
+                  $('#' + id).val(base64String);
+              }
+              reader.readAsDataURL(file);
+          }else{
+              document.getElementById("approve_upload_data").value = null;
+               alert('.pdf file only');
+          }
+
+
+        }
+
+        function addnumber(){
+           var nu = document.getElementById('numbers').value;
+           document.getElementById('bt').value=nu;
+
+        }
+
+        function save(pk){
+            var nu = document.getElementById('numbers').value;
+            var approve_upload_data_base64 = document.getElementById('approve_upload_data_base64').value;
+            if(nu =="") {
+
+                alert('Please enter any number');
+
+            }else if(approve_upload_data_base64 == ""){
+
+                alert('No file attached');
+
+            }else{
+                  $.ajax({
+                type: "post",
+                url: "{% url 'save_port_number' %}",
+                data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                mobile_number:nu,
+                customer_pk:pk,
+                approve_upload_data_base64:approve_upload_data_base64
+                },
+                beforeSend: function() {
+                    $("#loading-image").show();
+                },
+                success:function (success){
+                    console.log(success);
+                    if(success['data']=='success'){
+                        $('#cl').show();
+                        $('#cl').removeClass();
+                        $('#cl').addClass('alert alert-success alert-dismissible');
+                        $('#msg').empty().append('Your number is portable.');
+                        $("#loading-image").hide();
+                    }else{
+                        $('#cl').show();
+                        $('#cl').removeClass();
+                        $('#cl').addClass('alert alert-danger alert-dismissible');
+                        $('#msg').empty().append('Your number is not portable. Please Enter valid Number.');
+                        $("#loading-image").hide();
+                    }
+                }
+              })
+            }
+        }
+    </script>
+{% endblock %}

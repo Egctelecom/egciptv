@@ -1,0 +1,336 @@
+{% extends 'egciptv/layouts.html' %}
+{% load static %}
+{% block content %}
+<section id="inner-banner-area">
+    <div class="overlay"></div>
+    <div class="container">
+       <h2>{{ category.0.service_category_id__service_category_name|capfirst }}</h2>
+       <ol class="breadcrumb">
+           <li class="breadcrumb-item"><a href="#">Home</a></li>
+           <li class="breadcrumb-item  active">{{ category.0.service_parent_category_id__service_parent_category_name }}</li>
+           <!--<li class="breadcrumb-item  active">{{ category.0.service_sub_parent_category_name_id__service_sub_parent_category_name }}</li>-->
+           <!--<li class="breadcrumb-item  active">{{ category.0.service_category_id__service_category_name }}</li>-->
+           <li class="breadcrumb-item  active">Apply</li>
+       </ol>
+    </div>
+</section>
+<section id="modem-page">
+  <form action="{%  url "apply_for_registration" menu_id service_id type%}" method="post" enctype="multipart/form-data">
+     {% csrf_token %}
+    <div class="container">
+
+
+             {% if messages %}
+
+                        {% for message in messages %}
+                        {%  if message == 'Apply For Service Send to Egciptv Successfully.A Reporting Mail Send to Admin.Please Wait for Confirmation.' %}
+                            <div class="alert alert-success alert-dismissible">
+                                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                            </div>
+                            {%  elif message != 'Apply For Service Send to Egciptv Successfully.A Reporting Mail Send to Admin.Please Wait for Confirmation.' %}
+                             <div class="alert alert-success alert-dismissible">
+                                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                            </div>
+                        {%  endif %}
+                        {% endfor %}
+
+
+             {% endif %}
+
+
+        <input type="hidden" name="menu_category"  value="{{ category.0.id }}">
+        <input type="hidden" name="plan"  value="{{ service_id }}">
+
+        <div class="col-md-12 box-area">
+            <h2>Personal Information</h2>
+
+            <div class="form-group col-md-6">
+                <label>First Name</label>
+                <input type="text" name="first_name" class="form-control">
+            </div>
+            <div class="form-group col-md-6">
+                <label>Last Name</label>
+                <input type="text" name="last_name" class="form-control">
+            </div>
+            <div class="form-group col-md-6">
+                <label>E mail</label>
+                <input type="text" name="email_address" class="form-control">
+            </div>
+            <div class="form-group col-md-6">
+                <label>Company Name</label>
+                <input type="text" name="company_name" class="form-control">
+            </div>
+            <div class="form-group col-md-6">
+                <label>Phone</label>
+                <input type="text" name ="phone" class="form-control">
+            </div>
+            <div class="form-group col-md-6">
+                <label>Cell Number</label>
+                <input type="text" name ="cell_number" class="form-control">
+            </div>
+        </div>
+
+
+
+
+        <div class="col-md-12 box-area">
+            <h2>Account Info</h2>
+
+            <div class="form-group col-md-6">
+                <label>Best Time to Call</label>
+               <select class="form-control" name ="call_time">
+                   <option>Any Time</option>
+                   <option>9am to 12pm</option>
+                   <option>12pm to 3pm</option>
+                   <option>12pm to 3pm</option>
+                   <option>6pm to 9pm</option>
+               </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label>Best Time Of Installation</label>
+                <select class="form-control" name="installation_time">
+                    <option>Preferred Installation Time</option>
+                    <option>7:30 am to 12:00 pm</option>
+                    <option>12:00pm to 5:00pm</option>
+                    <option>5:00pm to 8:00pm</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label>How did you hear about us?</label>
+                <select class="form-control" name="hear_about_us">
+                    <option>Newspaper</option>
+                    <option>Online Ads</option>
+                    <option>Friend</option>
+                    <option>Online forum</option>
+                    <option>Taxi Ads</option>
+                    <option>Other</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label>Existing Service Provider</label>
+                <input type="text" class="form-control" name="existing_service_provider">
+            </div>
+
+            <div class="form-group col-md-6">
+                <label>Service Start Date</label>
+                <input type="text" class="form-control" id="datepicker" name="service_date_time">
+            </div>
+            <div class="form-group col-md-6">
+                <label>Cancellation Date with current provider</label>
+                <input type="text" class="form-control" id="datepicker2" name="cancellation_date_with_current_provider">
+            </div>
+            <div class="form-group col-md-6">
+                <label>Term of Service</label>
+                <select class="form-control" name="terms_of_service">
+                    <option>Please Select Term of Service</option>
+                    <option>2 Years</option>
+                    <option>1 Year</option>
+                    <option>Monthly</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label>Referrer Account No.</label>
+                <input type="number" name="referred_ac_no" class="form-control">
+            </div>
+            <div class="form-group col-md-6">
+                <label>Referred By</label>
+                <input type="text"  name="referred_by"class="form-control">
+            </div>
+            <div class="form-group col-md-6">
+                <label>Promo Code</label>
+                <input type="text" name="promo_code" class="form-control">
+            </div>
+
+            <div class="form-group col-md-12">
+                <label>Message</label>
+                <textarea class="form-control" name="message" rows="8"></textarea>
+            </div>
+
+              <div class="form-group col-md-12">
+                <label>Previous Invoice</label>
+                <input type="file" class="form-control" name="previous_invoice">
+            </div>
+
+        </div>
+
+
+        <div class="col-md-12 box-area">
+            <h2>Service Address</h2>
+            <div class="form-group col-md-6">
+                <label>Street Number</label>
+                <input type="text" class="form-control" name="service_address_1" id="service_address_1">
+            </div>
+            <div class="form-group col-md-6">
+                <label>Street Name</label>
+                <input type="text" class="form-control" name="service_address_2" id="service_address_2">
+            </div>
+
+            <div class="form-group col-md-6">
+                <label>Apt./Suite</label>
+                <input type="text" class="form-control" name="service_apt_suite" id="service_apt_suite">
+            </div>
+
+
+
+            <div class="form-group col-md-6">
+                <label>Province</label>
+                <select class="form-control" name="service_province" onchange="get_city_new(this.value)">
+                    {% for provinces in province %}
+                    <option value="{{ provinces.id }}" {% if request.session.province_name == provinces.province_name %}selected{% endif %}>{{ provinces.province_name }}</option>
+                    {%  endfor %}
+                </select>
+            </div>
+
+            <div class="form-group col-md-6" id="city_list">
+                <label>City</label>
+                <select class="form-control" name="service_city" >
+                  {% for cities in city %}
+                    <option value="{{ cities.id }}" {% if request.session.city_name == cities.city_name %}selected{% endif %}>{{ cities.city_name }}</option>
+                    {%  endfor %}
+                </select>
+            </div>
+
+            <input type="hidden" name="service_country"  value="{{ country.0.id }}">
+
+
+            <div class="form-group col-md-6">
+                <label>Postal Code</label>
+                <input type="text" class="form-control" id="service_postcode" name="service_postcode">
+            </div>
+
+
+            <p class="text-center">
+                <input type="checkbox" name="sameAddress" id="checkadd" onchange="set_address_to_billing()" value="True">&nbsp; Billing address is same as service address
+            </p>
+
+        </div>
+
+
+
+        <div class="col-md-12 box-area">
+            <h2>Billing Address</h2>
+            <div class="form-group col-md-6">
+                <label>Street Number</label>
+                <input type="text" class="form-control" name="billing_address_1" id="billing_address_1">
+            </div>
+            <div class="form-group col-md-6">
+                <label>Street Name</label>
+                <input type="text" class="form-control" name="billing_address_2" id="billing_address_2">
+            </div>
+
+            <div class="form-group col-md-6">
+                <label>Apt./Suite</label>
+                <input type="text" class="form-control" name="billing_apt_suite" id="billing_apt_suite">
+            </div>
+
+            <input type="hidden" name="billing_country"  value="{{ country.0.id }}">
+
+            <div class="form-group col-md-6" >
+                <label>Province</label>
+                <select class="form-control" name="billing_province"  onchange="get_city_billing(this.value)">
+                    {% for provinces in province %}
+                    <option value="{{ provinces.id }}" {% if request.session.province_name == provinces.province_name %}selected{% endif %}>{{ provinces.province_name }}</option>
+                    {%  endfor %}
+                </select>
+            </div>
+
+            <div class="form-group col-md-6" id="city_list_billing">
+                <label>City</label>
+                <select class="form-control" name="billing_city" >
+                  {% for cities in city %}
+                    <option value="{{ cities.id }}" {% if request.session.city_name == cities.city_name %}selected{% endif %}>{{ cities.city_name }}</option>
+                    {%  endfor %}
+                </select>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label>Postal Code</label>
+                <input type="text" class="form-control" name="billing_postcode" id="billing_postcode">
+            </div>
+
+            <input type="hidden" name="applied_ip_address" value="142.55.135.66>
+        </div>
+
+
+            <div class="col-md-12 text-center">
+                <button class="btn btn-primary">Submit Registration</button>
+                <button class="btn btn-success">Reset</button>
+            </div>
+
+
+
+    </div>
+  </form>
+</section>
+{% block scripts %}
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+         rel = "stylesheet">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script>
+ function set_address_to_billing(){
+
+         var checkadd = $('#checkadd').is(':checked');
+
+         if (checkadd == true) {
+
+             var service_address_1 = document.getElementById('service_address_1').value;
+             var service_address_2 = document.getElementById('service_address_2').value;
+             var service_apt_suite = document.getElementById('service_apt_suite').value;
+             var service_postcode = document.getElementById('service_postcode').value;
+
+             document.getElementById('billing_address_1').value = service_address_1;
+             document.getElementById('billing_address_2').value = service_address_2;
+             document.getElementById('billing_apt_suite').value = service_apt_suite;
+             document.getElementById('billing_postcode').value = service_postcode;
+
+
+         }else{
+
+             document.getElementById('billing_address_1').value = '';
+             document.getElementById('billing_address_2').value = '';
+             document.getElementById('billing_apt_suite').value = '';
+             document.getElementById('billing_postcode').value = '';
+         }
+
+
+ }
+ function get_city_new(region){
+        $.ajax({
+                type: "post",
+                url: "{% url 'reg_get_city_according_region' %}",
+                data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                    province:region,
+
+                },
+                success:function (success){
+                    console.log(success.data);
+                    $('#city_list').empty().append(success.data);
+                }
+              });
+
+ }
+
+  function get_city_billing(region){
+        $.ajax({
+                type: "post",
+                url: "{% url 'reg_billing_get_city_according_region' %}",
+                data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                    province:region,
+
+                },
+                success:function (success){
+                    console.log(success.data);
+                    $('#city_list_billing').empty().append(success.data);
+                }
+              });
+
+ }
+
+  $(document).ready(function () {
+    $("#datepicker" ).datepicker();
+    $("#datepicker2" ).datepicker();
+  });
+ </script>
+{% endblock %}
+{% endblock %}

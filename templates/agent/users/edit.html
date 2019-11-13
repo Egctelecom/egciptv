@@ -1,0 +1,158 @@
+{% extends 'agent/fancybox.html' %}
+{% load static %}
+{% block content %}
+{% load contract_functions %}
+{% if messages %}
+ <div class="alert alert-success alert-dismissible">
+     {% for message in messages %}
+     <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+     {% endfor %}
+ </div>
+ {% endif %}
+<form method="post" id="" class="form-horizontal" action="{% url 'agent_edit_customer' customer.0.id %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="col-md-3">
+        <div class="box-body">
+                    <p class="margin">First Name</p>
+                      <div class="input-group">
+                        <input type="text" name="first_name" class="form-control" value="{{customer.0.first_name}}" required style="width: 208px!important;">
+                      </div>
+                      <input type="hidden" name="status" class="form-control" value="{{customer.0.status}}" required style="width: 208px!important;">
+                      <input type="hidden" name="account_id" class="form-control" value="{{customer.0.account_id}}" required style="width: 208px!important;">
+
+                      <p class="margin">Last Name</p>
+                        <div class="input-group">
+                          <input type="text" name="last_name" class="form-control" value="{{customer.0.last_name}}" required style="width: 208px!important;">
+                        </div>
+                        <p class="margin">Company</p>
+                          <div class="input-group">
+                            <input type="text" name="company_name" class="form-control" value="{{customer.0.company_name}}" required style="width: 208px!important;">
+                          </div>
+                          <p class="margin">Display company Name</p>
+                            <div class="input-group">
+                              <input type="radio" name="display_name"  value="company_name" {% if customer.0.display_name == 'company_name' %}checked{% endif %}  required style="width: 208px!important;">
+                            </div>
+                            <p class="margin">Display user Name</p>
+                              <div class="input-group">
+                                <input type="radio" name="display_name"  value="user_name" {% if customer.0.display_name == 'user_name' %}checked{% endif %} required style="width: 208px!important;">
+                              </div>
+
+                            <p class="margin">Phone -Other</p>
+                            <div class="input-group">
+                              <input type="number" name="other_phone" class="form-control" value="{{customer.0.other_phone}}"  style="width: 208px!important;">
+                            </div>
+
+
+
+
+                      <p class="margin">Date Of Birth</p>
+                      <div class="input-group">
+                        <input type="text" name="dob" class="form-control" value="{{customer.0.dob}}"  id="datepicker" style="width: 208px!important;">
+                      </div>
+                      <p class="margin">Zone</p>
+                      <div class="input-group">
+                            <select class="form-control" name="zone" required style="width: 208px!important;">
+                            <option value="residential" {% if customer.0.zone == 'residential' %}selected{% endif %} >Residential</option>
+                            <option value="commercial" {% if customer.0.zone == 'commercial' %}selected{% endif %}>commercial</option>
+                            </select>
+                      </div>
+
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"> Update</button>
+                       </div>
+    </div>
+    <div class="col-md-3">
+          <div class="box-body">
+                      <p class="margin">Gsr</p>
+                      <div class="input-group">
+                        <input type="text" name="first_name_gsr" class="form-control" value="{{customer.0.first_name_gsr}}" required style="width: 208px!important;">
+                      </div>
+                      <p class="margin">Gsr</p>
+                      <div class="input-group">
+                        <input type="text" name="last_name_gsr" class="form-control" value="{{customer.0.last_name_gsr}}" required style="width: 208px!important;">
+                      </div>
+                      <p class="margin">Gsr</p>
+                      <div class="input-group">
+                        <input type="text" name="company_name_gsr" class="form-control" value="{{customer.0.company_name_gsr}}" required style="width: 208px!important;">
+                      </div>
+                      <p class="margin">Email</p>
+                      <div class="input-group">
+                       <input type="email" name="email_address" class="form-control" value="{{customer.0.email_address}}" required style="width: 208px!important;">
+                      </div>
+
+                      <p class="margin">Phone -Mobile</p>
+                      <div class="input-group">
+                        <input type="number" name="phone" class="form-control" value="{{customer.0.phone}}"  style="width: 208px!important;">
+                      </div>
+
+                      <p class="margin">Portal Password</p>
+                      <div class="input-group">
+                        <!-- /btn-group -->
+                        <input type="text" name="portal_password" id='p' class="form-control" value="{{customer.0.portal_password}}" style="width: 208px!important;">
+                        <span class="input-group-btn" style="padding-right: 926px !important;">
+                            <input type='button' class="btn btn-info btn-flat" value ='generate' onclick='document.getElementById("p").value = Password.generate(16)'>
+                        </span>
+                      </div>
+
+                      <p class="margin">Prefferd Language</p>
+                        <div class="input-group">
+                          <input type="radio" name="prefferd_language"  value="english" {% if customer.0.prefferd_language == 'english' %}checked{% endif %} required style="width: 208px!important;">English
+                          <input type="radio" name="prefferd_language"  value="french" {% if customer.0.prefferd_language == 'french' %}checked{% endif %} required style="width: 208px!important;">French
+                        </div>
+    </div>
+</form>
+{% endblock %}
+{% block scripts %}
+<script>
+        var Password = {
+
+      _pattern : /[a-zA-Z0-9_\-\+\.]/,
+
+
+      _getRandomByte : function()
+      {
+        // http://caniuse.com/#feat=getrandomvalues
+        if(window.crypto && window.crypto.getRandomValues)
+        {
+          var result = new Uint8Array(1);
+          window.crypto.getRandomValues(result);
+          return result[0];
+        }
+        else if(window.msCrypto && window.msCrypto.getRandomValues)
+        {
+          var result = new Uint8Array(1);
+          window.msCrypto.getRandomValues(result);
+          return result[0];
+        }
+        else
+        {
+          return Math.floor(Math.random() * 256);
+        }
+      },
+
+      generate : function(length)
+      {
+        return Array.apply(null, {'length': length})
+          .map(function()
+          {
+            var result;
+            while(true)
+            {
+              result = String.fromCharCode(this._getRandomByte());
+              if(this._pattern.test(result))
+              {
+                return result;
+              }
+            }
+          }, this)
+          .join('');
+      }
+};
+
+$('#datepicker').datepicker({
+      autoclose: true
+    });
+</script>
+<script src="{% static 'admin/plugins/datepicker/bootstrap-datepicker.js' %}"></script>
+{% endblock %}

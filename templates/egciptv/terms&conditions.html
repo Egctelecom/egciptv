@@ -1,0 +1,68 @@
+{% extends 'egciptv/layouts.html' %}
+{% load static %}
+{% block content %}
+<section id="inner-banner-area">
+    <div class="overlay"></div>
+    <div class="container">
+        <h2>{{ t_c.0.key }}</h2>
+       <ol class="breadcrumb">
+           <li class="breadcrumb-item"><a href="#">Home</a></li>
+           <li class="breadcrumb-item  active">{{ t_c.0.key }}</li>
+       </ol>
+    </div>
+</section>
+
+<section id="terms-conditions-page">
+    <div class="container">
+       <h2>{{ t_c.0.key }}</h2>
+        <p>{%  autoescape off %}{{ t_c.0.value }}{% endautoescape %}</p>
+    </div>
+</section>
+
+{% endblock %}
+{% block scripts %}
+<script src="{%  static 'customer/js/custom.js' %}"></script>
+<script src="{%  static 'customer/js/jquery-1.11.3.js' %}"></script>
+<script src="{%  static 'customer/js/bootstrap.min.js' %}"></script>
+<script src="{%  static 'customer/js/bootsnav.js' %}"></script>
+<script src="{%  static 'customer/js/owl.carousel.min.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        $('#close-btn').click(function() {
+            $('#search-overlay').fadeOut();
+            $('#search-btn').show();
+        });
+        $('#search-btn').click(function() {
+            $(this).hide();
+            $('#search-overlay').fadeIn();
+        });
+    });
+</script>
+<script>
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 214){
+            $('.custom-main-menu-section').addClass("sticky");
+        }
+        else{
+            $('.custom-main-menu-section').removeClass("sticky");
+        }
+    });
+</script>
+<style>
+    .sticky {position: fixed;width: 100%;z-index:9999; top:0;
+
+        background-color:#fff;}
+</style>
+
+
+<script>
+	$(document).ready(function() {
+    $('[id^=detail-]').hide();
+    $('.toggle').click(function() {
+        $input = $( this );
+        $target = $('#'+$input.attr('data-toggle'));
+        $target.slideToggle();
+    });
+});
+</script>
+{% endblock %}

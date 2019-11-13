@@ -1,0 +1,98 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% block content %}
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Sales Tax Edit</h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" id="" class="form-horizontal" action="{% url 'edit_sales_tax' salestax.0.id %}" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                      <div class="box-body">
+
+                      <p class="margin">Province </p>
+                      <div class="input-group">
+                        <select name="province" class="form-control" required style="width: 588px!important;">
+                        <option>--Select--</option>
+                            {% for provinces in province %}
+                            <option value="{{ provinces.id }}" {%  if salestax.0.province_id  == provinces.id  %}selected{% endif %}>{{ provinces.province_name }}</option>
+                            {% endfor %}
+                        </select>
+                      </div>
+
+                      <p class="margin">Tax Name</p>
+                      <div class="input-group">
+                        <input type="text" name="tax_name" class="form-control" value="{{ salestax.0.tax_name  }}" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin" >Abbreviation</p>
+                      <div class="input-group">
+                        <input type="text" name="abbreviation" class="form-control" value="{{ salestax.0.abbreviation  }}" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin" >Description</p>
+                      <div class="input-group">
+                          <textarea name="description" class="form-control"  required style="width: 588px!important;" rows="10">{{ salestax.0.description  }}</textarea>
+                      </div>
+
+                      <p class="margin" >Your tax number</p>
+                      <div class="input-group">
+                        <input type="text" name="tax_number" class="form-control" value="{{ salestax.0.tax_number  }}" required style="width: 588px!important;">
+                      </div>
+
+
+                      <p class="margin" ></p>
+                      <div class="input-group">
+                        <input type="checkbox" name="is_tax_number_show" id="is_tax_number_show" value="{{ salestax.0.is_tax_number_show  }}" onchange="test('is_tax_number_show')"  {%  if salestax.0.is_tax_number_show  == 'True' %}checked{% endif %}  > Show tax number on invoices
+                      </div>
+
+                      <p class="margin" ></p>
+                      <div class="input-group">
+                        <input type="checkbox" name="is_fedral_tax" id="is_fedral_tax" value="{{ salestax.0.is_fedral_tax  }}" onchange="test('is_fedral_tax')" {%  if salestax.0.is_fedral_tax  == 'True'  %}checked{% endif %}  > Fedral Tax
+                      </div>
+
+                      <p class="margin" ></p>
+                      <div class="input-group">
+                        <input type="checkbox" name="is_provisional_tax" id="is_provisional_tax" value="{{ salestax.0.is_provisional_tax }}" onchange="test('is_provisional_tax')" {%  if salestax.0.is_provisional_tax  == 'True' %}checked{% endif %}  > Provisional Tax
+                      </div>
+
+                      <p class="margin" >Tax rate (%)</p>
+                      <div class="input-group">
+                        <input type="number" name="tax_rate" class="form-control" value="{{ salestax.0.tax_rate  }}" required  min="1" step="0.01" style="width: 588px!important;">
+                      </div>
+
+
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Edit </button>
+                       </div>
+                </form>
+
+          </div>
+          <!-- /.box -->
+    </div>
+{% endblock %}
+{% block scripts %}
+<script>
+function test(id) {
+    if ($('#'+id).is(':checked')) {
+        document.getElementById(id).value = 'True';
+        console.log('True');
+    } else {
+        document.getElementById(id).value = 'False';
+        console.log('False');
+    }
+}
+</script>
+{% endblock %}
+
+

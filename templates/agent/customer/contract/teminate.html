@@ -1,0 +1,87 @@
+{% extends 'agent/fancybox.html' %}
+{% load static %}
+{% block content %}
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Terminate Contract</h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" id="" class="form-horizontal" action="{% url 'agent_terminate_contract' id %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="box-body">
+
+                      <p class="margin">Contract Type</p>
+                      <div class="input-group">
+                        <input type="text" name="contract_type" class="form-control" value="monthly"  style="width: 588px!important;">
+                      </div>
+                      <p class="margin">Contract Date</p>
+                      <div class="input-group">
+                        <input type="text" name="contract_date" class="form-control" value="{{ contract_date }}"  style="width: 588px!important;">
+                      </div>
+                      <p class="margin">Zone</p>
+                      <div class="input-group">
+                        <input type="text" name="zone" class="form-control" value="bussiness"  style="width: 588px!important;">
+                      </div>
+                      <p class="margin">Monthly Charge</p>
+                      <div class="input-group">
+                        <input type="text" name="monthly_charge" class="form-control" value="0.00"  style="width: 588px!important;">
+                      </div>
+                       <p class="margin">Outstanding Balance</p>
+                      <div class="input-group">
+                        <input type="text" name="outstanding_balance" class="form-control" value="0.00"  style="width: 588px!important;">
+                      </div>
+                       <p class="margin">Cancellation Date</p>
+                      <div class="input-group">
+                        <input type="text" name="cancellation_date" class="form-control" value="" id="datepicker" style="width: 588px!important;">
+                      </div>
+                         <p class="margin">Cancellation Charge</p>
+                      <div class="input-group">
+                        <input type="number" step="0.01" min="0" name="cancellation_charge" class="form-control" value=""  style="width: 588px!important;">
+                      </div>
+                           <p class="margin">Admin Fee</p>
+                      <div class="input-group">
+                        <input type="number" step="0.01" min="0" name="admin_fee" class="form-control" value=""  style="width: 588px!important;">
+                      </div>
+                           <p class="margin">Additional Charge</p>
+                      <div class="input-group">
+                        <input type="number" step="0.01" min="0" name="additional_charge" class="form-control" value=""  style="width: 588px!important;">
+                      </div>
+                            <p class="margin">Comment</p>
+                      <div class="input-group">
+                          <textarea name="comment" class="form-control"  rows="5"cols="5" style="width: 588px!important;"></textarea>
+                      </div>
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Add</button>
+                       </div>
+
+
+
+                </form>
+
+          </div>
+          <!-- /.box -->
+    </div>
+{% endblock %}
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+  </script>
+{%  endblock %}
+
+
+

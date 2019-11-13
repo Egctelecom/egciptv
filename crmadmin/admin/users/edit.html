@@ -1,0 +1,341 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% block content %}
+{% load contract_functions %}
+{% if messages %}
+ <div class="alert alert-success alert-dismissible">
+     {% for message in messages %}
+     <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+     {% endfor %}
+ </div>
+ {% endif %}
+<form method="post" id="" class="form-horizontal" action="{% url 'edit_customer' customer.0.id %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="col-md-3">
+        <div class="box-body">
+                    <p class="margin">Account Number</p>
+                      <div class="input-group">
+                       <input type="text" name="account_id" class="form-control" value="{{customer.0.account_id}}" required style="width: 208px!important;">
+                      </div>
+                    <p class="margin">First Name</p>
+                      <div class="input-group">
+                        <input type="text" name="first_name" class="form-control" value="{{customer.0.first_name}}" required style="width: 208px!important;">
+                      </div>
+                      <input type="hidden" name="status" class="form-control" value="{{customer.0.status}}" required style="width: 208px!important;">
+{#                      <input type="hidden" name="account_id" class="form-control" value="{{customer.0.account_id}}" required style="width: 208px!important;">#}
+
+                      <p class="margin">Last Name</p>
+                        <div class="input-group">
+                          <input type="text" name="last_name" class="form-control" value="{{customer.0.last_name}}" required style="width: 208px!important;">
+                        </div>
+                        <p class="margin">Company</p>
+                          <div class="input-group">
+                            <input type="text" name="company_name" class="form-control" value="{{customer.0.company_name}}" required style="width: 208px!important;">
+                          </div>
+                          <p class="margin">Display company Name</p>
+                            <div class="input-group">
+                              <input type="radio" name="display_name"  value="company_name" {% if customer.0.display_name == 'company_name' %}checked{% endif %}  required style="width: 208px!important;">
+                            </div>
+                            <p class="margin">Display user Name</p>
+                              <div class="input-group">
+                                <input type="radio" name="display_name"  value="user_name" {% if customer.0.display_name == 'user_name' %}checked{% endif %} required style="width: 208px!important;">
+                              </div>
+
+                            <p class="margin">Phone -Other</p>
+                            <div class="input-group">
+                              <input type="number" name="other_phone" class="form-control" value="{{customer.0.other_phone}}"  style="width: 208px!important;">
+                            </div>
+
+
+
+
+                      <p class="margin">Date Of Birth</p>
+                      <div class="input-group">
+                        <input type="text" name="dob" class="form-control" value="{{customer.0.dob}}"  id="datepicker" style="width: 208px!important;">
+                      </div>
+                      <p class="margin">Zone</p>
+                      <div class="input-group">
+                            <select class="form-control" name="zone" required style="width: 208px!important;">
+                            <option value="residential" {% if customer.0.zone == 'residential' %}selected{% endif %} >Residential</option>
+                            <option value="commercial" {% if customer.0.zone == 'commercial' %}selected{% endif %}>commercial</option>
+                            </select>
+                      </div>
+
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"> Update</button>
+                       </div>
+    </div>
+    <div class="col-md-3">
+          <div class="box-body">
+                      <p class="margin">Gsr</p>
+                      <div class="input-group">
+                        <input type="text" name="first_name_gsr" class="form-control" value="{{customer.0.first_name_gsr}}" required style="width: 208px!important;">
+                      </div>
+                      <p class="margin">Gsr</p>
+                      <div class="input-group">
+                        <input type="text" name="last_name_gsr" class="form-control" value="{{customer.0.last_name_gsr}}" required style="width: 208px!important;">
+                      </div>
+                      <p class="margin">Gsr</p>
+                      <div class="input-group">
+                        <input type="text" name="company_name_gsr" class="form-control" value="{{customer.0.company_name_gsr}}" required style="width: 208px!important;">
+                      </div>
+                      <p class="margin">Email</p>
+                      <div class="input-group">
+                       <input type="email" name="email_address" class="form-control" value="{{customer.0.email_address}}" required style="width: 208px!important;">
+                      </div>
+
+                      <p class="margin">Phone -Mobile</p>
+                      <div class="input-group">
+                        <input type="number" name="phone" class="form-control" value="{{customer.0.phone}}"  style="width: 208px!important;">
+                      </div>
+
+                      <p class="margin">Need Password Change</p>
+                        <div class="input-group">
+                          <input type="radio" name="need_password" id="need_password"  value="true"  style="width: 208px!important;" onclick="test()">True
+                          <input type="radio" name="need_password" id="need_password2"  value="false" checked style="width: 208px!important;" onclick="test()">False
+                        </div>
+
+                      <p class="margin" id="rt" style="display: none">Portal Password</p>
+                      <div class="input-group" id="rt_t" style="display: none">
+                        <!-- /btn-group -->
+                        <input type="text" name="portal_password" id='p' class="form-control" value="{{customer.0.portal_password}}" style="width: 208px!important;">
+                        <span class="input-group-btn" style="padding-right: 926px !important;">
+                            <input type='button' class="btn btn-info btn-flat" value ='generate' onclick='document.getElementById("p").value = Password.generate(16)'>
+                        </span>
+                      </div>
+
+                      <p class="margin">Prefferd Language</p>
+                        <div class="input-group">
+                          <input type="radio" name="prefferd_language"  value="english" {% if customer.0.prefferd_language == 'english' %}checked{% endif %} required style="width: 208px!important;">English
+                          <input type="radio" name="prefferd_language"  value="french" {% if customer.0.prefferd_language == 'french' %}checked{% endif %} required style="width: 208px!important;">French
+                        </div>
+    </div>
+    </div>
+
+    <div class="col-md-3">
+         <div class="box-header with-border">
+              <h3 class="box-title">Account Address</h3>
+            </div>
+          <div class="box-body">
+              <p class="margin">Address 1</p>
+              <div class="input-group">
+                <input type="text" name="address_1" id="address_1" class="form-control"required value="{{ account_address.0.address_1 }}"  style="width: 208px!important;">
+              </div>
+                <p class="margin">Address 2</p>
+              <div class="input-group">
+                <input type="text" name="address_2" id="address_2" class="form-control" required value="{{ account_address.0.address_2 }}"  style="width: 208px!important;">
+              </div>
+                 <p class="margin">Country</p>
+                 <div class="input-group">
+                <select name="country" class="form-control" id="country" required style="width: 208px!important;" onchange="get_province()">
+                    <option>Select Country</option>
+                    {% for countries in country %}
+                    <option value="{{ countries.id }}" {% if countries.id == account_address.0.country_id %}selected{% endif %}>{{ countries.country_name }}</option>
+                    {%  endfor %}
+                </select>
+              </div>
+                 <p class="margin">Province</p>
+                 <div class="input-group" id="select_province">
+                     <select name="province" class="form-control" id="province" required style="width: 208px!important;">
+                          <option>Select Province</option>
+                          {% for provinces in province %}
+                            <option value="{{ provinces.id }}" {% if provinces.id == account_address.0.province_id %}selected{% endif %}>{{ provinces.province_name }}</option>
+                          {%  endfor %}
+                      </select>
+                  </div>
+                 <p class="margin">City</p>
+                 <div class="input-group">
+                   <div class="input-group" id="select_city">
+                   <select name="city" class="form-control" id="city" required style="width: 208px!important;">
+                        <option>Select City</option>
+                        {% for cities in city %}
+                             <option value="{{ cities.id }}" {% if cities.id == account_address.0.city_id %}selected{% endif %}>{{ cities.city_name }}</option>
+                        {%  endfor %}
+                   </select>
+                   </div>
+              </div>
+              <p class="margin">Postal</p>
+              <div class="input-group">
+                <input type="text" name="postal" id="postal" class="form-control" required value=""  style="width: 208px!important;">
+              </div>
+          </div>
+         <div class="box-header with-border">
+              <h3 class="box-title">Billing Address , <input type="checkbox"  onclick="same_as_account_address()" id="checkadd" >  same as account address  ? </h3>
+         </div>
+          <div class="box-body">
+              <p class="margin">Address 1</p>
+              <div class="input-group">
+                <input type="text" name="billing_address_1" id="billing_address_1" required class="form-control" value="{{ billing_address.0.billing_address_1 }}"  style="width: 208px!important;">
+              </div>
+               <p class="margin">Address 2</p>
+              <div class="input-group">
+                <input type="text" name="billing_address_2" id="billing_address_2" required class="form-control" value="{{ billing_address.0.billing_address_2 }}"  style="width: 208px!important;">
+              </div>
+              <p class="margin">Country</p>
+              <div class="input-group">
+                <select name="billing_country" class="form-control" id="billing_country" required style="width: 208px!important;" onchange="get_billing_province()">
+                    <option>Select Country</option>
+                    {% for countries in country %}
+                    <option value="{{ countries.id }}" {% if countries.id == billing_address.0.billing_country_id %}selected{% endif %}>{{ countries.country_name }}</option>
+                    {%  endfor %}
+                </select>
+              </div>
+              <p class="margin">Province</p>
+              <di class="input-group" id="select_billing_province">
+                <select name="billing_province" id="billing_province" class="form-control" required style="width: 208px!important;">
+                    <option>Select  Province</option>
+                    {% for provinces in province %}
+                        <option value="{{ provinces.id }}" {% if provinces.id == billing_address.0.billing_province_id %}selected{% endif %}>{{ provinces.province_name }}</option>
+                    {%  endfor %}
+                </select>
+              </di>
+              <p class="margin">City</p>
+              <div class="input-group" id="select_billing_city">
+                <select name="billing_city" class="form-control" id="billing_city" required style="width: 208px!important;" onchange="get_billing_city()">
+                    <option>Select  City</option>
+                    {% for cities in city %}
+                        <option value="{{ cities.id }}" {% if cities.id == billing_address.0.billing_city_id %}selected{% endif %}>{{ cities.city_name }}</option>
+                    {%  endfor %}
+                </select>
+              </div>
+              <p class="margin">Postal</p>
+              <div class="input-group">
+                <input type="text" name="billing_postal" id="billing_postal" class="form-control" required value=""  style="width: 208px!important;">
+              </div>
+          </div>
+    </div>
+    <div class="col-md-3">
+         <div class="box-header with-border">
+              <h3 class="box-title">Billing Details</h3>
+            </div>
+          <div class="box-body">
+              <p class="margin">Salesperson</p>
+              <div class="input-group">
+                <select name="salesperson" class="form-control" required style="width: 208px!important;" >
+                    {% for user in user_profile %}
+                    <option value="{{ user.id }}" {% if user.id == billing_details.0.salesperson_id %}selected{% endif %}>{{ user.user_id__username }}</option>
+                    {% endfor %}
+                </select>
+              </div>
+              <p class="margin">Contract Type</p>
+              <div class="input-group">
+                <select name="contract_type" class="form-control" required style="width: 208px!important;" >
+                    <option value="month" {% if billing_details.0.contract_type == 'month' %}selected{% endif %}>Monthly</option>
+                    <option value="1" {% if billing_details.0.contract_type == '1' %}selected{% endif %}>1 year</option>
+                    <option value="2" {% if billing_details.0.contract_type == '2' %}selected{% endif %}>2 year</option>
+                    <option value="3" {% if billing_details.0.contract_type == '3' %}selected{% endif %}>3 year</option>
+                    <option value="4" {% if billing_details.0.contract_type == '4' %}selected{% endif %}>4 year</option>
+                    <option value="5" {% if billing_details.0.contract_type == '5' %}selected{% endif %}>5 year</option>
+                    <option value="6" {% if billing_details.0.contract_type == '6' %}selected{% endif %}>6 year</option>
+                    <option value="7" {% if billing_details.0.contract_type == '7' %}selected{% endif %}>7 year</option>
+                </select>
+              </div>
+              <p class="margin">Billing Day</p>
+              <div class="input-group">
+                <select name="billing_day" class="form-control" required style="width: 208px!important;" >
+                    <option value="1"  {% if billing_details.0.billing_day == '1' %}selected{% endif %}>1 </option>
+                    <option value="15" {% if billing_details.0.billing_day == '15' %}selected{% endif %}>15</option>
+                </select>
+              </div>
+              <p class="margin">Payment Mode</p>
+              <div class="input-group">
+                <select name="payment_mode" class="form-control" required style="width: 208px!important;" >
+                    <option value="prepaid"  {% if billing_details.0.payment_mode == 'prepaid' %}selected{% endif %}>Prepaid</option>
+                    <option value="postpaid" {% if billing_details.0.payment_mode == 'postpaid' %}selected{% endif %}>Postpaid</option>
+                </select>
+              </div>
+              <p class="margin">Payment Method</p>
+              <div class="input-group">
+                <select name="payment_method" class="form-control" required style="width: 208px!important;" >
+                    <option>Select One</option>
+                    <option value="internet_banking" {% if billing_details.0.payment_method == 'internet_banking' %}selected{% endif %}>Internet Banking</option>
+                    <option value="credit_card"      {% if billing_details.0.payment_method == 'credit_card' %}selected{% endif %}>Credit Card</option>
+                    <option value="direct_deposal"   {% if billing_details.0.payment_method == 'direct_deposal' %}selected{% endif %}>Direct Deposal</option>
+                    <option value="cheque_money"     {% if billing_details.0.payment_method == 'cheque_money' %}selected{% endif %}>Cheque/Money Order</option>
+                    <option value="paypal"           {% if billing_details.0.payment_method == 'paypal' %}selected{% endif %}>Paypal</option>
+                </select>
+              </div>
+              <p class="margin">Yearly pre-payment <input type="checkbox" name="year_pre_payment"  value="year_pre_payment" {% if billing_details.0.year_pre_payment == 'year_pre_payment' %}checked{% endif %} required></p>
+              <p class="margin">From</p>
+              <div class="input-group">
+                 <input type="text" name="billing_from" class="form-control" value="{{ billing_details.0.billing_from }}" required  style="width: 208px!important;">
+              </div>
+               <p class="margin">To</p>
+              <div class="input-group">
+                 <input type="text" name="billing_to" class="form-control" value="{{ billing_details.0.billing_to }}" required style="width: 208px!important;">
+              </div>
+          </div>
+    </div>
+</form>
+{% endblock %}
+{% block scripts %}
+<script>
+        var Password = {
+
+      _pattern : /[a-zA-Z0-9_\-\+\.]/,
+
+
+      _getRandomByte : function()
+      {
+        // http://caniuse.com/#feat=getrandomvalues
+        if(window.crypto && window.crypto.getRandomValues)
+        {
+          var result = new Uint8Array(1);
+          window.crypto.getRandomValues(result);
+          return result[0];
+        }
+        else if(window.msCrypto && window.msCrypto.getRandomValues)
+        {
+          var result = new Uint8Array(1);
+          window.msCrypto.getRandomValues(result);
+          return result[0];
+        }
+        else
+        {
+          return Math.floor(Math.random() * 256);
+        }
+      },
+
+      generate : function(length)
+      {
+        return Array.apply(null, {'length': length})
+          .map(function()
+          {
+            var result;
+            while(true)
+            {
+              result = String.fromCharCode(this._getRandomByte());
+              if(this._pattern.test(result))
+              {
+                return result;
+              }
+            }
+          }, this)
+          .join('');
+      }
+};
+
+$('#datepicker').datepicker({
+      autoclose: true
+    });
+
+function  test() {
+
+    var data = $('#need_password').is(':checked');
+    var data2 = $('#need_password2').is(':checked');
+    console.log(data);
+    console.log(data2);
+    if (data == true) {
+        $('#rt').show();
+        $('#rt_t').show();
+    } else if (data2 == true) {
+        $('#rt').hide();
+        $('#rt_t').hide();
+    }
+}
+
+
+</script>
+<script src="{% static 'admin/plugins/datepicker/bootstrap-datepicker.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'agent/fancybox.html' %}
+{% load static %}
+{% block content %}
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Create Tickets </h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" id="" class="form-horizontal" action="{% url 'agent_create_tickets' id %}" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                      <div class="box-body">
+
+                      <p class="margin">Subjects</p>
+                      <div class="input-group">
+                        <input type="text" name="subject" class="form-control" value="" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Details</p>
+                      <div class="input-group">
+                          <textarea name="threads"  class="form-control" required style="width: 588px!important;"></textarea>
+                      </div>
+
+                      <p class="margin">Category</p>
+                      <div class="input-group">
+                        <select  name="category"  class="form-control" required style="width: 588px!important;">
+                            <option value="administrator">Administrator</option>
+                            <option value="user">User</option>
+                        </select>
+                      </div>
+
+                      <p class="margin">Priority</p>
+                      <div class="input-group">
+                        <select  name="priority"  class="form-control" required style="width: 588px!important;">
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                      </div>
+
+                      <input type="hidden" name="customer" class="form-control" value="{{ id }}" required style="width: 588px!important;">
+
+
+
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Add</button>
+                       </div>
+                </form>
+
+          </div>
+          <!-- /.box -->
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+
+    </script>
+{% endblock %}
+
+
+

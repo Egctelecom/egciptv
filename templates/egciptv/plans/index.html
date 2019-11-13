@@ -1,0 +1,115 @@
+{% extends 'egciptv/layouts.html' %}
+{% load static %}
+{% load other_section %}
+{% block content %}
+<section id="inner-banner-area">
+    <div class="overlay"></div>
+    <div class="container">
+        <h2>{{ category.0.service_category_id__service_category_name|capfirst }}</h2>
+       <ol class="breadcrumb">
+           <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+           <li class="breadcrumb-item  active">{{ parent_categories.0.service_parent_category_name }}</li>
+<!--           <li class="breadcrumb-item  active">{{ sub_parent_categories.0.service_sub_parent_category_name }}</li>-->
+<!--           <li class="breadcrumb-item  active">{{ category.0.service_category_id__service_category_name }}</li>-->
+       </ol>
+    </div>
+</section>
+<section id="Residential-page">
+    <div class="container">
+
+        {% if flag == 1 %}
+            {%  for st in service_list %}
+               {% for pc in st %}
+                 <div class="col-md-4">
+                    <div class="wrap-content">
+                        <div class="headline-area">
+                        <h1>{{ pc.title }}</h1>
+                    </div>
+                    <div class="content-area">
+                   <div class="set_content">
+                        <ul>
+                        <li><img src="/media/{{ pc.manage_service_id__service_logo}}" style="height: 50px;width: 50px;"></li>
+                        <li><p>Special Offer:</p>
+                                <p>$ {{ pc.actual }}/month</p>
+                                <p>$ {{ pc.retail }}/month</p>
+                        </li>
+                          </ul>
+
+
+
+                    <div class="details" id="op">
+                        {% autoescape off %}{{ pc.manage_service_id__service_desc}}{% endautoescape %}
+                    </div>
+                   </div>
+                    <div class="row content-end">
+                        <div class="col-md-6">
+                        <a href="{% url 'plans_details' category.0.id pc.id type%}"><button>More Details</button></a>
+                    </div>
+                     <div class="col-md-6 text-right">
+                         <div class="download_btn" download>
+                             <div class="modal fade" id="myModal{{ forloop.counter }}" role="dialog">
+                                <div class="modal-dialog">
+                                  <!-- Modal content-->
+                                  <div class="modal-content">
+                                        <div class="modal-header">
+                                            Document For {{ pc.title  }}
+                                        </div>
+                                        <div class="modal-body">
+                                          {% get_plans_doc pc.id as PLANDOC %}
+                                          {%  if PLANDOC %}
+                                            {%  for pl in PLANDOC %}
+                                                 {%  if pl.status == 'active' %}
+                                                      <p>
+                                                          {{ pl.service_price_doc_name }}
+                                                           &nbsp;
+                                                           &nbsp;
+                                                          <a href="{{ pl.service_price_doc }}" download="">
+                                                             <i class="fa fa-download" aria-hidden="true"></i>
+                                                          </a>
+                                                      </p>
+                                                {% else %}
+                                                     <p> {{ pl.service_price_doc_name }}
+                                                         &nbsp;
+                                                         &nbsp;
+                                                         (Currently this Documents is not approved So it is can not be downloaded) </p>
+                                                {%  endif %}
+                                            {% endfor %}
+                                          {% else %}
+                                             <p>No Document Available</p>
+                                          {% endif %}
+                                        </div>
+
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                  </div>
+
+                                </div>
+                              </div>
+
+                         </div>
+                     </div>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+               {% endfor %}
+            {% endfor %}
+        {%  else %}
+            <div class="col-md-4">
+            <br>
+            <br>
+            <br>
+                <p>----------- No Plans Available ------------</p>
+            <br>
+            <br>
+            <br>
+            <br>
+            </div>
+        {%  endif %}
+    </div>
+</section>
+
+
+
+{% endblock %}

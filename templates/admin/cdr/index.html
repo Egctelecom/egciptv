@@ -1,0 +1,237 @@
+{% extends 'admin/fulllayouttwo.html' %}
+{% load static %}
+{% load number_functions %}
+{% load check_number_functions %}
+{% load return_item %}
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.bootstrap.min.css" />
+    <link rel="stylesheet" href="{% static 'admin/fancybox/jquery.fancybox.css'%}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static 'admin/custom.css'%}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static 'admin/plugins/daterangepicker/daterangepicker-bs3.css'%}">
+
+{% endblock %}
+{% block content %}
+
+<section class="content-header">
+    <div class="form-group">
+        <label>Search CDR according to date</label>
+        <div class="input-group date">
+          <form method="post" action="{% url 'cdr_filter' %}">
+                {% csrf_token %}
+              <input type="text" placeholder="to-date" class="pull-left"  name="start_date" id="datepicker"  data-date-format="mm-dd-yyyy">
+              <input type="text" placeholder="from-date" class="pull-left" name="end_date" id="datepicker2"  data-date-format="mm-dd-yyyy">
+              <button class="btn btn-success btn-xs">search</button>
+
+          </form>
+
+        </div>
+    </div>
+</section>
+
+<section class="content">
+      <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">&nbsp;&nbsp;&nbsp;<span class="label label-info">CDR Records of Customer Number as Source  | {{ start_date }}&nbsp;&nbsp;- &nbsp;&nbsp;{{ end_date }}</span></h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-2">
+            </div>
+            <!-- /.col -->
+            <div class="col-md-6">
+
+            </div>
+            <!-- /.col -->
+          <!-----------------------souces as customer number ---------------->
+            <div class="col-xs-12">
+              <table id="myTable" class="table table-bordered table-striped" >
+                        <thead>
+                        <tr>
+                          <th>Call Date Time</th>
+                          <th>Source</th>
+                          <th>Destination</th>
+                          <th>Duration</th>
+{#                          <th>Call Cost</th>#}
+                          <th bgcolor="#EEA697">Call cost</th>
+                          <th>Type</th>
+                        </tr>
+                        </thead>
+                     <tbody>
+                        {% for date in date_gmt %}
+                        {% with forloop.counter0 as outer_counter %}
+                        {%  if number == source|return_item:outer_counter %}
+                        <tr>
+                            <td>{{ date }}</td>
+                            <td>{{ source|return_item:outer_counter }}</td>
+                            <td>{{ destination|return_item:outer_counter }}</td>
+                            <td>{{ duration|return_item:outer_counter }}</td>
+{#                            <td>{{ callcost|return_item:outer_counter }}</td>#}
+                            {% is_number_plus destination|return_item:outer_counter as IS_PLUS %}
+
+                            {% if IS_PLUS == "+" %}
+                                   {%  check_number destination|return_item:outer_counter as IS_PLUS_CHECK_NUMBER %}
+                                   {%  is_rate_code_chart_plus IS_PLUS_CHECK_NUMBER as RATE_PLUS %}
+                               <td bgcolor="#EEC397">{%  plus_cost RATE_PLUS duration|return_item:outer_counter %}</td>
+
+                            {%  else %}
+
+                                   {%  check_number2 destination|return_item:outer_counter as IS_CHECK_NUMBER %}
+                                   {%  is_rate_code_chart IS_CHECK_NUMBER as RATE %}
+                               <td bgcolor="#EEC397" >{%  cost  RATE duration|return_item:outer_counter %}</td>
+
+                            {%  endif %}
+                            <td>{{ type|return_item:outer_counter }}</td>
+                        </tr>
+                        {%  endif %}
+                        {% endwith %}
+                   {% endfor %}
+                     </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- /.row -->
+        </div>
+      </div>
+
+      <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">&nbsp;&nbsp;&nbsp;<span class="label label-success">CDR Records of Customer Number as Destination &nbsp;| {{ start_date }}&nbsp;&nbsp;- &nbsp;&nbsp;{{ end_date }}</span></h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-2">
+            </div>
+            <!-- /.col -->
+            <div class="col-md-6">
+
+            </div>
+            <!-- /.col -->
+          <!-----------------------destination as customer number ---------------->
+              <div class="col-xs-12">
+              <table id="myTable2" class="table table-bordered table-striped" >
+                        <thead>
+                        <tr>
+                          <th>Call Date Time</th>
+                          <th>Source</th>
+                          <th>Destination</th>
+                          <th>Duration</th>
+                          <th bgcolor="#EEA697">Call cost</th>
+                          <th>Type</th>
+                        </tr>
+                        </thead>
+                     <tbody>
+                        {% for date in date_gmt %}
+                        {% with forloop.counter0 as outer_counter %}
+                        {%  if number == destination|return_item:outer_counter %}
+                        <tr>
+                            <td>{{ date }}</td>
+                            <td>{{ source|return_item:outer_counter }}</td>
+                            <td>{{ destination|return_item:outer_counter }}</td>
+                            <td>{{ duration|return_item:outer_counter }}</td>
+                            <td>{{ callcost|return_item:outer_counter }}</td>
+                            {% is_number_plus destination|return_item:outer_counter as IS_PLUS %}
+
+                            {% if IS_PLUS == "+" %}
+                                   {%  check_number destination|return_item:outer_counter as IS_PLUS_CHECK_NUMBER %}
+                                   {%  is_rate_code_chart_plus IS_PLUS_CHECK_NUMBER as RATE_PLUS %}
+                               <td bgcolor="#EEC397">{%  plus_cost RATE_PLUS duration|return_item:outer_counter %}</td>
+
+                            {%  else %}
+
+                                   {%  check_number2 destination|return_item:outer_counter as IS_CHECK_NUMBER %}
+                                   {%  is_rate_code_chart IS_CHECK_NUMBER as RATE %}
+                               <td bgcolor="#EEC397" >{%  cost  RATE duration|return_item:outer_counter %}</td>
+
+                            {%  endif %}
+                            <td>{{ type|return_item:outer_counter }}</td>
+                        </tr>
+                        {%  endif %}
+                        {% endwith %}
+                   {% endfor %}
+                     </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- /.row -->
+        </div>
+      </div>
+      <!-- /.box -->
+
+    </section>
+
+
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'admin/plugins/jQuery/jQuery-2.2.0.min.js'%}"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
+<script type="text/javascript" src="{% static 'admin/fancybox/jquery.fancybox.pack.js'%}"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<script src="{% static 'admin/plugins/datepicker/bootstrap-datepicker.js' %}"></script>
+
+<script>
+    $(document).ready( function () {
+        $('#myTable').DataTable();
+        document.getElementById('datepicker').value="{{ start_date }}";
+        document.getElementById('datepicker2').value="{{ end_date }}";
+    });
+      $(document).ready( function () {
+        $('#myTable2').DataTable();
+        document.getElementById('datepicker').value="{{ start_date }}";
+        document.getElementById('datepicker2').value="{{ end_date }}";
+    });
+
+
+    $(document).ready(function(){
+
+    $("#datepicker").datepicker({
+        todayBtn:  1,
+        autoclose: true,
+        dateFormat: 'mm-dd-yyyy'
+    }).on('changeDate', function (selected) {
+        var minDate = new Date(selected.date.valueOf());
+        $('#datepicker2').datepicker('setStartDate', minDate);
+    });
+
+    $("#datepicker2").datepicker()
+        .on('changeDate', function (selected) {
+            var minDate = new Date(selected.date.valueOf());
+            $('#datepicker').datepicker('setEndDate', minDate);
+        });
+
+});
+
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".fancybox").fancybox({
+            "width":"50%",
+            "height":"100%",
+            'autoSize' : false,
+            afterClose: function () {
+                location.reload();
+            }
+
+        });
+    });
+
+
+</script>
+{% endblock %}
+l>

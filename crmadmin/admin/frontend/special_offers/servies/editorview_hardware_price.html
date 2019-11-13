@@ -1,0 +1,96 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% block content %}
+<style>
+    .input_fields_wrap{
+    max-width: 350px;
+    }
+    .input_fields_wrap input[type=text]{
+     width:100%;
+     margin:2px 0;
+    }
+</style>
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Edit Or View  Hardware Offers Price </h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" class="form-horizontal" action="{% url 'editorview_special_offers_services_plan_hardware_offer_price' hw_id special_offers_id service_plan_id service_price_id %}" enctype="multipart/form-data">
+
+                      {% csrf_token %}
+                      <div class="box-body">
+
+                      <p class="margin">H/W Title</p>
+                      <div class="input-group">
+                       <input  class="form-control"  disabled style="width: 588px!important;" value="{{ hw.0.hw_title }}">
+                      </div>
+
+
+                      <p class="margin">Actual Device Buy</p>
+                      <div class="input-group">
+                       <input name="device_buy" class="form-control"   required style="width: 588px!important;" value="{{ spOffershw.0.device_buy }}">
+                      </div>
+
+
+                       <p class="margin">Actual Device Rental</p>
+                      <div class="input-group">
+                       <input name="device_rental" class="form-control"   required style="width: 588px!important;" value="{{ spOffershw.0.device_rental }}">
+                      </div>
+
+
+                      <p class="margin">Actual Monthly Rent </p>
+                      <div class="input-group">
+                       <input name="montly_rent" class="form-control"   required style="width: 588px!important;" value="{{ spOffershw.0.montly_rent }}">
+                      </div>
+
+                      <p class="margin"> H/W Quantity </p>
+                      <div class="input-group">
+                       <input type="number" name="hw_qty" class="form-control"  required style="width: 588px!important;" value="{{ spOffershw.0.hw_qty }}" min="1">
+                      </div>
+
+                      <p class="margin">Current Offers Price </p>
+                      <div class="input-group">
+                       <input type="number" name="offer_price" class="form-control"  required step="0.01" min="0" style="width: 588px!important;" value="{{ spOffershw.0.offer_price }}">
+                      </div>
+
+
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Update </button>
+                       </div>
+                </form>
+
+          </div>
+          <!-- /.box -->
+    </div>
+{% endblock %}
+{% block scripts %}
+<script>
+function get_province(){
+     var category = document.getElementById('category').value;
+      $.ajax({
+            type: "post",
+            url: "{% url 'get_sub_parent_list' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                category:category,
+            },
+            success:function (success){
+                console.log(success.data);
+                 $('#sub_parent_category').empty().append(success.data);
+            }
+        })
+ }
+
+
+</script>
+{% endblock %}
+
+

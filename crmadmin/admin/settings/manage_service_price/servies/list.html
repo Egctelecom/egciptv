@@ -1,0 +1,2 @@
+
+<a onclick="Change_status({{ msc.0.id }})"><button {%  if msc.0.status == 'active' %} class="btn btn-success btn-xs"{%  else %} class="btn btn-warning btn-xs" {%  endif %} >{{ msc.0.status | title }}</button></a>

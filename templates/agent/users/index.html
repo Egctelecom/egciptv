@@ -1,0 +1,130 @@
+{% extends 'agent/layout.html' %}
+{%  load static %}
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.bootstrap.min.css" />
+    <link rel="stylesheet" href="{% static 'admin/fancybox/jquery.fancybox.css'%}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static 'admin/custom.css'%}" type="text/css" media="screen" />
+{% endblock %}
+{% block content %}
+
+<section class="content">
+      <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">Users</h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-group">
+                <label>Account</label>
+                <select class="form-control select2 select2-hidden-accessible" id="account"  onclick="add_user()">
+                  <option value="0" selected="selected">Select </option>
+                    {% if perms.adminsidecustomer.add_customer %}
+                  <option value="add_user_account">Add Users account</option>
+                    {% endif %}
+                </select>
+              </div>
+
+            </div>
+            <!-- /.col -->
+            <div class="col-md-6">
+
+            </div>
+            <!-- /.col -->
+            <div class="col-xs-12">
+              <table id="myTable" class="table table-bordered table-striped" >
+                        <thead>
+                        <tr>
+                          <th>Account Id</th>
+                          <th>Status</th>
+                          <th>Name</th>
+                          <th>Phone</th>
+                          <th>Monthly</th>
+                          <th>Balance</th>
+                          <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                          {% for customer_list in customer %}
+                          <tr>
+                            <td>
+                              {{customer_list.account_id}}<br>
+                              <span class="label label-info">{{customer_list.created_at}}</span>
+                            </td>
+                            <td>{{customer_list.status}}</td>
+                            <td>{{customer_list.phone}}</td>
+                            <td>
+                              <img src="https://png.icons8.com/office/40/000000/sms.png">
+                              <img src="https://png.icons8.com/office/30/000000/administrator-male.png">
+                              <img src="https://png.icons8.com/color/48/000000/key.png">
+                              <a href="{% url 'agent_customer_details' customer_list.id %}">{{customer_list.first_name}} {{customer_list.last_name}}</a>
+                            </td>
+                            <td></td>
+                            <td></td>
+
+                            <td>
+                                 {% if perms.adminsidecustomer.change_customer %}
+                                <a href="{% url 'agent_edit_customer' customer_list.id %}" class="fancybox fancybox.iframe btn btn-default"><i class="fa fa-pencil"></i></a></td>
+                                 {% endif %}
+                          </tr>
+                         {% endfor %}
+                        </tbody>
+
+                      </table>
+            </div>
+          </div>
+          <!-- /.row -->
+        </div>
+      </div>
+      <!-- /.box -->
+
+    </section>
+{% if perms.adminsidecustomer.add_customer %}
+<a href="{% url 'agent_add_customer' %}" class="fancybox fancybox.iframe btn btn-default" id="customer_add" style="display:none;"></a>
+{% endif %}
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'admin/plugins/jQuery/jQuery-2.2.0.min.js'%}"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
+<script type="text/javascript" src="{% static 'admin/fancybox/jquery.fancybox.pack.js'%}"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<script>
+    $(document).ready( function () {
+        $('#myTable').DataTable();
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".fancybox").fancybox({
+            "width":"100%",
+            "height":"100%",
+            'autoSize' : false,
+            afterClose: function () {
+                location.reload();
+            }
+
+        });
+    });
+
+    function add_user(){
+      var account  = document.getElementById('account').value;
+      if(account == 'add_user_account'){
+        $('#customer_add').click();
+      }else{
+
+      }
+    }
+
+</script>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends 'agent/layout.html' %}
+{% load static %}
+{% load admin_functions %}
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.bootstrap.min.css" />
+    <link rel="stylesheet" href="{% static 'admin/fancybox/jquery.fancybox.css' %}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static 'admin/custom.css' %}" type="text/css" media="screen" />
+{% endblock %}
+{% block content %}
+
+    <section class="content-header">
+     {% if perms.crmadmin.add_serviceprovider %}
+       <a href="{% url 'agent_service_provider_add' %}" class="fancybox fancybox.iframe btn btn-info  btn-xs">Add Service Provider</a>
+    {% endif %}
+    </section>
+
+<section class="content">
+
+   <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Services Provider List</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body" style="min-height:400px">
+                <table id="myTablelogin" class="table table-bordered table-striped" style="width:100%;!important;" >
+                    <thead>
+                        <tr>
+                          <th>Service Provider Name</th>
+{#                          <td>Price</td>#}
+                          <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for service in service_provider  %}
+                        <tr>
+                          <td>{{service.service_provider_name}}</td>
+                          <td>
+                              {% if perms.crmadmin.change_serviceprovider %}
+                              <a href="{% url 'agent_service_provider_edit' service.id %}" class="fancybox fancybox.iframe btn btn-info  btn-xs"><i class="fa fa-edit"></i> Edit </a>
+                              {% endif %}
+                              {% if perms.crmadmin.add_serviceproviderplan %}
+{#                              <a href="{% url 'services_delete' service.id %}" class="btn btn-default"><i class="fa fa-trash"></i></a>#}
+                               <a href="{% url 'agent_plan_add_to_service_provider' service.id %}" class="fancybox fancybox.iframe btn btn-success  btn-xs"><i class="fa fa-plus"></i> Add Plan </a>
+                              {% endif %}
+                              <a href="{% url 'agent_view_plan_of_service_provider' service.id %}" class="btn btn-warning  btn-xs"><i class="fa fa-eye"></i> View Plan </a>
+
+                          </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            </div>
+        </div>
+   </div>
+</section>
+
+
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'admin/plugins/jQuery/jQuery-2.2.0.min.js' %}"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
+<script type="text/javascript" src="{% static 'admin/fancybox/jquery.fancybox.pack.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+
+        $('#myTablelogin').DataTable();
+
+    })
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".fancybox").fancybox({
+            afterClose: function () {
+                location.reload();
+            },
+            autoSize : false,
+            width    : "50%",
+        });
+    });
+
+</script>
+{% endblock %}

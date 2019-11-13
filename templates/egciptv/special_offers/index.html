@@ -1,0 +1,68 @@
+{% extends 'egciptv/layouts.html' %}
+{% load static %}
+{% load other_section %}
+{% load special_offers_functions %}
+{% load special_offer_category_service %}
+{% block content %}
+
+<section id="inner-banner-area">
+    <div class="overlay"></div>
+    <div class="container">
+        <h2>Special Offers</h2>
+       <ol class="breadcrumb">
+           <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+           <li class="breadcrumb-item  active">Special Offers</li>
+<!--           <li class="breadcrumb-item  active">{{ special_offers_list.0.special_offers_parent_category_id__special_offers_parent_category_name }}</li>-->
+<!--           <li class="breadcrumb-item  active">{{ special_offers_list.0.special_offers_sub_parent_category_id__special_offers_sub_parent_category_name }}</li>-->
+       </ol>
+    </div>
+</section>
+
+<section id="content-area">
+    <div class="container">
+        <div class="row">
+        <div class="col-md-12">
+            <div class="content-details">
+                <div class="text">
+                     {% getOffersPlans special_offers_list.0.special_offers_id as SPECIALOFFERS %}
+                    <h2>
+                        {%  for sp in SPECIALOFFERS %}
+                           {%  if forloop.counter|add:"-1" %}
+                               +
+                           {% endif %}
+                           {{ sp.service_price_id__service_name }}
+                        {%  endfor %}
+                    </h2>
+                <p>{{ special_offers_list.0.special_offers_id__details }}</p>
+                <p>{{ special_offers_list.0.special_offers_id__features }}</p>
+                </div>
+                <div class="numbers">
+                    <h1>$ {{ special_offers_list.0.special_offers_id__actual_price }} /Month</h1>
+                    <h4>$ {{ special_offers_list.0.special_offers_id__offers_price }}/Month</h4>
+                </div>
+            </div>
+
+        </div>
+            <div class="col-md-12">
+                <div class="list-details">
+                    <h3>With Details</h3>
+                    {%  special_offers_plans_with_hardwareRates_function special_offers_list.0.special_offers_id as SPHW %}
+                    <ul>
+                        {% for sp in SPHW %}
+                        <li>{{ sp.hw_id__hw_title }}</li>
+                        <li>Actual Price : {{sp.device_buy}}</li>
+                        <li>Offer Price : {{sp.offer_price}} </li>
+                        {%  endfor %}
+                    </ul>
+                    <a href="{%  url 'apply_for_registrations_special_offers' %}">Resister</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+{% endblock %}

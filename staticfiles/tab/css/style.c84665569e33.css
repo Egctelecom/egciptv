@@ -1,0 +1,154 @@
+/* Template default stylesheet*/
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Muli', sans-serif;
+  font-weight: 400;
+  position: relative;
+  background-color: #f3f3f3;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+p {
+  font-size: 1rem;
+}
+
+a {
+  text-decoration: none;
+  color: #252525;
+  transition: 0.4s ease;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  list-style-type: none;
+}
+
+section {
+  overflow: hidden;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+.btn {
+  /*background-color: #f5ad32;*/
+  color: #ffffff;
+  /*padding: 8px 30px;*/
+  text-transform: uppercase;
+  transition: 0.4s ease;
+  /*font-family: 'Maven Pro', sans-serif;*/
+  /*font-weight: 700;*/
+  font-size: 15px;
+  /*border-radius: 3px;*/
+}
+
+/*.btn:hover {*/
+  /*background-color: #ffffff;*/
+  /*color: #f5ad32;*/
+  /*text-transform: uppercase;*/
+  /*box-shadow: 2px 8px 25px 0px rgba(4, 4, 4, 0.1);*/
+/*}*/
+
+header{
+  background-color: #605ca8;
+}
+
+header .navbar{
+  padding: 0;
+}
+
+header .navbar-expand-lg .navbar-nav .nav-link {
+  color:#ffffff;
+  font-size: 0.8rem;
+  padding: 15px;
+  text-transform: capitalize;
+}
+header .navbar-expand-lg .navbar-nav .nav-link:hover {
+  background-color: #565397;
+}
+
+header .navbar-brand{
+  color:#ffffff;
+  padding: 0;
+}
+
+#tab-area {
+  padding: 70px;
+  text-transform: capitalize;
+}
+
+#tab-area .tab-area-content {
+  padding: 40px;
+  background-color: #ffffff;
+}
+
+#tab-area .tab-area-content .tab-content {
+  margin-top: 40px;
+}
+
+#tab-area .tab-area-content .nav-tab-parent {
+  border-bottom: 2px solid transparent;
+}
+
+#tab-area .tab-area-content .nav-tab-parent .nav-item.show .nav-link,
+#tab-area .tab-area-content .nav-tab-parent .nav-link.active {
+  border: none;
+  border-bottom: 3px solid #ca6afb;
+  border-radius: 0;
+  font-weight: 700;
+  color: #000000;
+}
+
+#tab-area .tab-area-content .nav-tab-parent .nav-link {
+  border: none;
+  border-bottom: 2px solid transparent;
+}
+
+#tab-area .tab-area-content .nav-tab-child .nav-item.show .nav-link,
+#tab-area .tab-area-content .nav-tab-child .nav-link.active {
+  border-radius: 0;
+  color: #28a745;
+}
+
+#tab-area .tab-area-content .nav-tab-child .nav-link {
+  border-radius: 0;
+}
+
+@media(max-width:768px){
+  #tab-area {
+    padding: 10px;
+  }
+
+  #tab-area .tab-area-content{
+    padding: 20px;
+  }
+}

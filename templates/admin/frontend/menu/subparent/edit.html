@@ -1,0 +1,91 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% block content %}
+<style>
+    .input_fields_wrap{
+    max-width: 350px;
+    }
+    .input_fields_wrap input[type=text]{
+     width:100%;
+     margin:2px 0;
+    }
+</style>
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Edit Sub Parent Category </h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" class="form-horizontal" action="{% url 'menu_parent_sub_category_edit' for_edited_menu.0.id %}" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                      <div class="box-body">
+
+
+                      <p class="margin">Manage Service Category</p>
+                      <div class="input-group">
+                        <select name="service_parent_category" class="form-control" id="category" required style="width: 588px!important;">
+                         <option>Select Manage Service Parent Category</option>
+                         {% for category in category_list %}
+                         <option value="{{ category.id }}" {% if category.id == for_edited_menu.0.service_parent_category_id %}selected{% endif %}>{{ category.service_parent_category_name }}</option>
+                         {% endfor %}
+                        </select>
+                      </div>
+
+                      <p class="margin">Manage Service Sub Parent Category</p>
+                      <div class="input-group">
+                        <input name="service_sub_parent_category_name" class="form-control" value="{{ for_edited_menu.0.service_sub_parent_category_name }}" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Status</p>
+                      <div class="input-group">
+                        <select name="status" class="form-control" id="" required style="width: 588px!important;">
+                        <option>Select Status</option>
+                        <option value="active" {% if for_edited_menu.0.status == 'active' %}selected{% endif %}>Active</option>
+                        <option value="inactive" {% if  for_edited_menu.0.status == 'inactive' %}selected{% endif %}>Inactive</option>
+                        <option value="delete" {% if  for_edited_menu.0.status == 'delete' %}selected{% endif %}>Delete</option>
+                        </select>
+                      </div>
+
+                      </div>
+
+
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Update</button>
+                       </div>
+                </form>
+
+          </div>
+          <!-- /.box -->
+    </div>
+{% endblock %}
+{% block scripts %}
+<script>
+function get_province(){
+     var country = document.getElementById('country').value;
+      $.ajax({
+            type: "post",
+            url: "{% url 'get_province_via' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                country:country,
+            },
+            success:function (success){
+                console.log(success.data);
+                 $('#select_province').empty().append(success.data);
+            }
+        })
+ }
+
+
+</script>
+{% endblock %}
+
+

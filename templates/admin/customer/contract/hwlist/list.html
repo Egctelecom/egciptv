@@ -1,0 +1,10 @@
+  {% for service_plan_hw_list in service_plan_hw %}
+                            <li>
+                                  <span class="handle ui-sortable-handle">
+                                    <i class="fa fa-ellipsis-v"></i>
+                                    <i class="fa fa-ellipsis-v"></i>
+                                  </span>
+                              <input type="checkbox" id="hw_data{{ service_plan_hw_list.id }}" value="{{ service_plan_hw_list.id }}" checked onchange="set_hw({{ service_plan_hw_list.id }})">
+                              <span class="text">{{ service_plan_hw_list.hw_id__hw_title }}</span>
+                            </li>
+                            {% endfor %}

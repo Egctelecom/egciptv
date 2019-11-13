@@ -1,0 +1,48 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% block content %}
+<style>
+    .input_fields_wrap{
+    max-width: 350px;
+    }
+    .input_fields_wrap input[type=text]{
+     width:100%;
+     margin:2px 0;
+    }
+</style>
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Edit Province Name</h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" class="form-horizontal" action="{% url 'edit_province' province_list.0.id  %}" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                      <div class="box-body">
+                          <input type="hidden" class="form-control" name="country_id" value="{{ province_list.0.country_id }}">
+                      <p class="margin">Province  Name</p>
+                      <div class="input-group">
+                         <input type="text" class="form-control" name="province_name" value="{{ province_list.0.province_name }}">
+                      </div>
+
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Edit </button>
+                       </div>
+                </form>
+
+          </div>
+          <!-- /.box -->
+    </div>
+{% endblock %}
+
+
+

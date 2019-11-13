@@ -1,0 +1,190 @@
+Ftab.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+/**** full table area ****/
+#full-table-area{float: left;width: 100%;position: relative;overflow: hidden;padding: 20px 0;}
+#full-table-area .top-links-area{float: left;width: 100%;margin-bottom: 30px;}
+#full-table-area .top-links-area ul{margin: 0;padding: 0;}
+#full-table-area .top-links-area ul li{display: inline-block;list-style-type: none;font-family: "Roboto Condensed" ,sans-serif;padding: 0 5px;}
+#full-table-area .top-links-area ul li .status{padding: 5px 10px;background-color: #ffb900;color: #ffffff;}
+#full-table-area .top-links-area ul li a{font-size: 17px;transition: .4s ease;margin: 5px 0;display: block;}
+#full-table-area .top-links-area ul li a:hover{text-decoration: none;}
+#full-table-area .top-links-area ul li.links a{font-size: 14px;padding: 5px 10px;background-color: #0098ff;color: #ffffff;}
+#full-table-area .top-links-area ul li.links.active a{background-color: #63a900;}
+#full-table-area .top-links-area ul li.links.login a{background-color: #63a900;}
+#full-table-area .top-links-area ul li.links a:hover{background-color: #ff5b00;}
+#full-table-area .tab-area{float: left;width: 100%;}
+#full-table-area .tab-area .nav-tabs>li{margin-bottom: 0;}
+#full-table-area .tab-area .nav-tabs>li>a{border: none;}
+#full-table-area .tab-area .nav-tabs>li>a .fa{margin-right: 10px;}
+#full-table-area .tab-area .nav-tabs>li.active>a{border: none;}
+#full-table-area .tab-area .nav>li>a:hover{background-color: transparent;}
+#full-table-area .tab-area .table-area{float: left;width: 100%;position: relative;z-index: 99;}
+#full-table-area .tab-area .table{border: 1px solid #dddddd;margin-top: 30px !important; width: 100% !important;}
+#full-table-area .tab-area td span{float: left;width: 100%;font-size: 12px;}
+#full-table-area .tab-area td select{width: 100%;height: 40px;}
+#full-table-area .tab-area .data-list{float: left;width: 100%;margin-top: 15px;}
+#full-table-area .tab-area .data-list ul{padding: 0;margin: 0 0 15px;float: left;width: 100%;}
+#full-table-area .tab-area .data-list ul li{list-style-type: none;float: left;width: calc(100% / 5 - 30px);text-align: center;background-color: #63a900;color: #ffffff;margin: 0 15px;}
+#full-table-area .tab-area .data-list ul li.orange{background-color: #ffb900;}
+#full-table-area .tab-area .data-list ul li.blue{background-color: #0098ff;}
+#full-table-area .tab-area .data-list ul li.purple{background-color: #b700d2;}
+#full-table-area .tab-area .data-list ul li.red{background-color: #ff3434;}
+#full-table-area .tab-area .data-list ul li .top{float: left;width: 100%;padding: 2px 0;background-color: rgba(80, 80, 80, 0.4);}
+#full-table-area .tab-area .data-list ul li .data{float: left;width: 100%;padding: 12px 0;}
+@media(max-width: 767px){
+    #full-table-area .tab-area .data-list ul li{width: calc(100% / 3 - 30px);margin-bottom: 10px;}
+}
+@media(max-width: 480px){
+    #full-table-area .tab-area .data-list ul li{width: calc(100% / 2 - 30px);}
+}
+#chart_div{margin-top: 15px;}
+/**** full table area ****/
+/******** pricing area starts *********/
+#pricing-area ul{padding: 0;}
+#pricing-area ul li{list-style-type: none;font-family: "Roboto Condensed",sans-serif;}
+#pricing-area{float: left;width: 100%;overflow: hidden;position: relative;padding: 100px 0 80px;background-color: #ececec;}
+#pricing-area .heading{float: left;width: 100%;margin-bottom: 35px;}
+#pricing-area .heading h1{color: #060606;text-transform: uppercase;position: relative;margin: 0 0 20px;font-size: 38px;}
+#pricing-area .heading h3{color: #060606;}
+#pricing-area .pricing-area-inner{float: left;width: 100%;}
+#pricing-area .pricing-area-inner .inner-details{float: left;width: 100%;margin-bottom: 20px;background-color: #ffffff;transition: .4s;box-shadow: 0 6px 10px rgba(179, 179, 179, 0.65);}
+#pricing-area .pricing-area-inner .inner-details .top-box{float: left;width: 100%;padding: 30px 30px 0;position: relative;}
+#pricing-area .pricing-area-inner .inner-details .top-box ul li{font-size: 25px;color: #7d7d7d;display:  block;padding: 10px 0;}
+#pricing-area .pricing-area-inner .inner-details .top-box ul li span{text-decoration: line-through;}
+#pricing-area .pricing-area-inner .inner-details .top-box ul li.highlight{background-color: #181d2d;color: #ffffff;}
+#pricing-area .pricing-area-inner .inner-details .body-box{float: left;width: 100%;padding: 30px;}
+#pricing-area .pricing-area-inner .inner-details .body-box ul{padding: 0;margin: 0;}
+#pricing-area .pricing-area-inner .inner-details .body-box .names li{padding: 10px 0;font-size: 20px;color: #060a1b;}
+#pricing-area .pricing-area-inner .inner-details .body-box .names li::before{position: relative;content: "\f192";font: normal normal normal 15px/1 FontAwesome;padding-right: 10px;color: #030c19;top: -2px;}
+#pricing-area .pricing-area-inner .inner-details .btn-area{float: left;width: 100%;margin-top: 30px;}
+#pricing-area .pricing-area-inner .inner-details .btn-area ul li{display: block;padding: 5px 0;}
+#pricing-area .pricing-area-inner .inner-details .btn-area a{display: inline-block;overflow:hidden;text-transform: uppercase;background-color: transparent;border: 2px solid #ff6816;color: #000000;font-size: 16px;text-align: center;transition: all .4s ease;padding: 10px 25px;min-width: 125px;border-radius: 50px;}
+#pricing-area .pricing-area-inner .inner-details .btn-area ul li:last-child a{background-color: #ff6816;}
+#pricing-area .pricing-area-inner .inner-details .btn-area a:hover{background-color: #f53f00 !important;border: 2px solid #f53f00;text-decoration: none;}
+#pricing-area .pricing-area-inner #pricing-carousel{float: left;width: 100%;}
+#pricing-area .pricing-area-inner #pricing-carousel .owl-stage-outer{padding: 10px;}
+#pricing-area .pricing-area-inner #pricing-carousel .item{padding: 40px 0 0;transition: .4s;margin: 0 15px;}
+#pricing-area .pricing-area-inner #pricing-carousel .center .item{padding: 0;}
+#pricing-area .pricing-area-inner #pricing-carousel .center .item .inner-details{padding: 40px 0;}
+#pricing-area .owl-nav button {display: inline-block;zoom: 1;padding: 0;font-size: 50px;color: #000000;
+    border: none;height: 38px;line-height: 38px;border-radius: 0;width: 38px;margin-top: 30px;transition: .4s;position: absolute;opacity: 1;}
+#pricing-area .owl-nav button:hover{background-color: transparent;}
+#pricing-area .owl-nav button:focus{outline: none;}
+#pricing-area .pricing-area-inner #pricing-carousel .owl-next{position:absolute;right: 0;top: 40%;transform: translateY(-50%);-webkit-transform: translateY(-50%);-moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);-o-transform: translateY(-50%);}
+#pricing-area .pricing-area-inner #pricing-carousel .owl-prev{position:absolute;left: 15px;top: 40%;transform: translateY(-50%);-webkit-transform: translateY(-50%);-moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);-o-transform: translateY(-50%);}
+/******** pricing area ends *********/
+
+
+ /* Padding - just for asthetics on Bootsnipp.com */
+/*body { margin-top:20px; }*/
+
+/* CSS for Credit Card Payment form */
+.credit-card-box .panel-title {
+    display: inline;
+    font-weight: bold;
+}
+.credit-card-box .form-control.error {
+    border-color: red;
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(255,0,0,0.6);
+}
+.credit-card-box label.error {
+  font-weight: bold;
+  color: red;
+  padding: 2px 8px;
+  margin-top: 2px;
+}
+.credit-card-box .payment-errors {
+  font-weight: bold;
+  color: red;
+  padding: 2px 8px;
+  margin-top: 2px;
+}
+.credit-card-box label {
+    display: block;
+}
+/* The old "center div vertically" hack */
+.credit-card-box .display-table {
+    display: table;
+}
+.credit-card-box .display-tr {
+    display: table-row;
+}
+.credit-card-box .display-td {
+    display: table-cell;
+    vertical-align: middle;
+    width: 50%;
+}
+/* Just looks nicer */
+.credit-card-box .panel-heading img {
+    min-width: 180px;
+}
+
+    *{margin:0; padding:0;}
+    .wrapper ,.accordion ,.panel,.panel-content{ float:left; width:100%;}
+    .panel p{margin: 0;padding: 10px;background: #0303;margin-bottom: 10px;}
+    .panel-content p{margin: 0;padding: 10px;background: #08f90833;margin-bottom: 10px;}
+    .panel-content{ display:none;}
+   .box-title .options{float: right;}
+
+   .tab-pane .post .form-group .btns{width: 100%;margin: 0;padding: 0;}
+   .tab-pane ul.btns-bottom{width: 100%;float:right;position: relative;text-align: right;}
+   .tab-pane ul.btns-bottom li{display: inline-block;}
+   .tab-pane ul.btns-bottom li a.btn-create{padding: 5px;color: #fff;background-color: #5cb85c;}
+    .tab-pane ul.btns-bottom li a.btn-terminate{padding: 5px;color: #fff;background-color: #5bc0de;}
+     .tab-pane ul.btns-bottom li a.btn-renew{padding: 5px;color: #fff;background-color: #f0ad4e;}

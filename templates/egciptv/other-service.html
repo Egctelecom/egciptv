@@ -1,0 +1,44 @@
+{% extends 'egciptv/layouts.html' %}
+{% load static %}
+{% load get_service_list %}
+{% block content %}
+<section id="inner-banner-area">
+    <div class="overlay"></div>
+    <div class="container">
+        <h2>Other Service</h2>
+       <ol class="breadcrumb">
+           <li class="breadcrumb-item"><a href="#">Home</a></li>
+           <li class="breadcrumb-item  active">Other Service</li>
+       </ol>
+    </div>
+</section>
+
+
+<section id="plan-part">
+    <div class="container">
+        <div class="row">
+            <div class="heading-outer">
+                <h2>choose your plan</h2>
+            </div>
+            {% for service in  services %}
+             <div class="col-md-4 col-sm-6">
+                 <div class="box1-area-plan">
+
+                     <div class="service-box-part">
+                         <h2>{{ service.service_provider_name }}</h2>
+                         <div class="for-border"></div>
+                         <ul>
+                             {% get_service_category_list service.id as SERVICE %}
+                             {% for ser in SERVICE %}
+                             <li>{{ ser.title }} (<span style="color: red">$ {{ ser.actual }}</span>)</li>
+                             {% endfor %}
+                         </ul>
+                         <button>Order now</button>
+                     </div>
+                 </div>
+             </div>
+            {%  endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

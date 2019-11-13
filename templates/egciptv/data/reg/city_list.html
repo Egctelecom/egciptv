@@ -1,0 +1,6 @@
+ <label>City</label>
+                <select class="form-control" name="service_city" >
+                  {% for cities in city_data %}
+                    <option value="{{ cities.id }}" {% if request.session.city_name == cities.city_name %}selected{% endif %}>{{ cities.city_name }}</option>
+                    {%  endfor %}
+                </select>

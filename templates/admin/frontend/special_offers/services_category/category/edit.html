@@ -1,0 +1,177 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% block content %}
+{%  load special_offers_functions %}
+<style>
+    .input_fields_wrap{
+    max-width: 350px;
+    }
+    .input_fields_wrap input[type=text]{
+     width:100%;
+     margin:2px 0;
+    }
+</style>
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Edit Special Offers Under Category </h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" class="form-horizontal" action="{% url 'special_offers_category_edit' id %}" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                      <div class="box-body">
+
+                      <p class="margin">Manage Special Offers Parent Category</p>
+                      <div class="input-group">
+                        <select name="special_offers_parent_category" class="form-control" id="category" required style="width: 588px!important;" onchange="get_province()">
+                         <option>Select Manage Parent Special Offers Category</option>
+                         {% for category in parent_category_list %}
+                         <option value="{{ category.id }}" {% if special_offers_list.0.special_offers_parent_category_id == category.id %}selected{% endif %}>{{ category.special_offers_parent_category_name }}</option>
+                         {% endfor %}
+                        </select>
+                      </div>
+
+                      <p class="margin">Manage Special Offers Sub Parent Category</p>
+                      <div class="input-group" id="sub_parent_category">
+
+                        <select name="special_offers_sub_parent_category" class="form-control" required style="width: 588px!important;">
+                         <option>Select Manage Parent Special Offers Category</option>
+                         {% for category in sub_parent_category_list %}
+                         <option value="{{ category.id }}" {% if special_offers_list.0.special_offers_sub_parent_category_id == category.id %}selected{% endif %}>{{ category.special_offers_sub_parent_category_name }}</option>
+                         {% endfor %}
+                        </select>
+
+                      </div>
+
+                      <p class="margin">Manage Special Offers </p>
+                      <div class="input-group">
+                        <select name="special_offers" class="form-control" id="" required style="width: 588px!important;">
+                         <option>Select Manage Special Offers Category</option>
+                         {% for category in special_offers_category %}
+                         <option value="{{ category.id }}" {% if special_offers_list.0.special_offers_id == category.id %}selected{% endif %}>
+                             {% getOffersPlans category.id as SPECIALOFFERS %}
+                             {%  for sp in SPECIALOFFERS %}
+                                {%  if forloop.counter|add:"-1" %}
+                                  +
+                                {% endif %}
+                                {{ sp.service_price_id__service_name }}
+                             {%  endfor %}
+                            </td>
+                          </option>
+                         {% endfor %}
+                        </select>
+                      </div>
+
+                      <p class="margin"> Province </p>
+                      <div class="input-group">
+                         <select name="province" class="form-control" id="province" required style="width: 588px!important;" onchange="get_city()">
+                         <option>Select Province</option>
+                         {%  for province in provinces %}
+                         <option value="{{ province.id }}" {%  if province.id == special_offers_list.0.province_id %}selected{%  endif %}>{{ province.province_name }}</option>
+                         {%  endfor %}
+                         </select>
+                      </div>
+
+                      <p class="margin"> City </p>
+                      <div class="input-group" id="city">
+                        <select name="city" class="form-control" required style="width: 588px!important;">
+                        <option>Select City</option>
+                         {%  for cities in city %}
+                         <option value="{{ cities.id }}" {%  if cities.id == special_offers_list.0.city_id %}selected{%  endif %}>{{ cities.city_name }}</option>
+                         {%  endfor %}
+                         </select>
+                      </div>
+
+
+                      <p class="margin">Manage Special Offers Combo Data ( e.g. Internet + Cable )</p>
+                      <div class="input-group">
+                        <input type="text" name="special_offers_combo_name" value="{{ special_offers_list.0.special_offers_combo_name }}" required class="form-control" style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Manage Special Offers Type Name ( e.g. Cable or Bundles )</p>
+                      <div class="input-group">
+                        <input type="text" name="special_offers_type_name" required class="form-control" value="{{ special_offers_list.0.special_offers_type_name }}" style="width: 588px!important;">
+                      </div>
+
+
+                      <p class="margin">Manage Special Offers Communication System Name</p>
+                      <div class="input-group">
+                        <input type="text" name="telecom_name" required class="form-control" value="{{ special_offers_list.0.telecom_name }}" style="width: 588px!important;">
+                      </div>
+
+
+                      <p class="margin">Manage Special Offers Communication System Logo</p>
+                      <div class="input-group">
+                        <input type="file" name="telecom_logo" class="form-control"  style="width: 588px!important;">
+                      </div>
+                      <div class="input-group">
+                        <img src="/media/{{ special_offers_list.0.telecom_logo }}" style="width:50px;height:50px!important;">
+                      </div>
+
+
+                      <p class="margin">Status</p>
+                      <div class="input-group">
+                        <select name="status" class="form-control" id="" required style="width: 588px!important;">
+                         <option>Select Status</option>
+                         <option value="active" {% if special_offers_list.0.status == 'active' %}selected{% endif %}>Active</option>
+                         <option value="inactive" {% if special_offers_list.0.status == 'inactive' %}selected{% endif %}>Inactive</option>
+                         <option value="delete" {% if special_offers_list.0.status == 'delete' %}selected{% endif %}>Delete</option>
+                        </select>
+                      </div>
+
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Update </button>
+                       </div>
+                </form>
+
+          </div>
+          <!-- /.box -->
+    </div>
+{% endblock %}
+{% block scripts %}
+<script>
+function get_province(){
+     var category = document.getElementById('category').value;
+      var category = document.getElementById('category').value;
+      $.ajax({
+            type: "post",
+            url: "{% url 'get_sub_special_offers_parent_list' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                category:category,
+            },
+            success:function (success){
+                console.log(success.data);
+                 $('#sub_parent_category').empty().append(success.data);
+            }
+        })
+ }
+ function get_city(){
+     var province = document.getElementById('province').value;
+      $.ajax({
+            type: "post",
+            url: "{% url 'get_city' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                province:province,
+            },
+            success:function (success){
+                console.log(success.data);
+                 $('#city').empty().append(success.data);
+            }
+        })
+ }
+
+
+
+</script>
+{% endblock %}
+
+

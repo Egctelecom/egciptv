@@ -1,0 +1,76 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% block content %}
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Update Tickets </h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" id="" class="form-horizontal" action="{% url 'edit_tickets' id %}" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                      <div class="box-body">
+
+                      <p class="margin">Subjects</p>
+                      <div class="input-group">
+                        <input type="text" name="subject" class="form-control" value="{{ data.0.subject }}" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Details</p>
+                      <div class="input-group">
+                          <textarea name="threads"  class="form-control" required style="width: 588px!important;">{{ data.0.threads }}</textarea>
+                      </div>
+
+                      <p class="margin">Category</p>
+                      <div class="input-group">
+                        <select  name="category"  class="form-control" required style="width: 588px!important;">
+                            <option value="administrator"{% if data.0.category == 'administrator' %} selected {% endif %}>Administrator</option>
+                            <option value="user" {% if data.0.category == 'user' %} selected {% endif %}>User</option>
+                        </select>
+                      </div>
+
+                      <p class="margin">Priority</p>
+                      <div class="input-group">
+                        <select  name="priority"  class="form-control" required style="width: 588px!important;">
+                            <option value="low" {% if data.0.priority == 'low' %}selected{% endif %}>Low</option>
+                            <option value="medium" {% if data.0.priority == 'medium' %}selected{% endif %}>Medium</option>
+                            <option value="high" {% if data.0.priority == 'high' %}selected{% endif %}>High</option>
+                        </select>
+                      </div>
+
+                      <input type="hidden" name="customer" class="form-control" value="{{ data.0.customer_id }}" required style="width: 588px!important;">
+                      <input type="hidden" name="ticketCategory" class="form-control" value="{{ data.0.ticketCategory_id }}" required style="width: 588px!important;">
+                      <input type="hidden" name="service_provider" class="form-control" value="{{ data.0.service_provider_id }}" required style="width: 588px!important;">
+                      <input type="hidden" name="service_plan_hardware" class="form-control" value="{{ data.0.service_plan_hardware_id }}" required style="width: 588px!important;">
+                      <input type="hidden" name="working_status" class="form-control" value="{{ data.0.working_status }}" required style="width: 588px!important;">
+                      <input type="hidden" name="updatedby" class="form-control" value="{{ data.0.updatedby_id }}" required style="width: 588px!important;">
+
+
+
+
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-paperclip" aria-hidden="true"></i> Update</button>
+                       </div>
+                </form>
+
+          </div>
+          <!-- /.box -->
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+
+    </script>
+{% endblock %}
+
+
+

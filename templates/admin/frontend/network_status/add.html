@@ -1,0 +1,78 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% block content %}
+<style>
+    .input_fields_wrap{
+    max-width: 350px;
+    }
+    .input_fields_wrap input[type=text]{
+     width:100%;
+     margin:2px 0;
+    }
+</style>
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Add Network Status </h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" class="form-horizontal" action="{% url 'network_status_add' %}" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                      <div class="box-body">
+
+                      <p class="margin">Question</p>
+                      <div class="input-group">
+                        <textarea name="questions" class="form-control" id="summernote2" required style="width: 588px!important;"></textarea>
+                      </div>
+
+                      <p class="margin">Answer</p>
+                      <div class="input-group">
+                        <textarea name="answers" class="form-control" id="summernote" required style="width: 588px!important;"></textarea>
+                      </div>
+
+                      <p class="margin">Link</p>
+                      <div class="input-group">
+                        <input type="text" name="link" class="form-control"  style="width: 588px!important;">
+                      </div>
+
+
+                      <p class="margin">Docs / Image / Pdf</p>
+                      <div class="input-group">
+                        <input type="file" name="docs" class="form-control"  style="width: 588px!important;">
+                      </div>
+
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Add</button>
+                       </div>
+                </form>
+
+          </div>
+          <!-- /.box -->
+    </div>
+{% endblock %}
+{% block scripts %}
+  <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote.css" rel="stylesheet">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote.js"></script>
+   <script>
+        $(document).ready(function() {
+          $('#summernote').summernote();
+          $('#summernote2').summernote();
+          $('.dropdown-toggle').dropdown();
+       });
+
+    </script>
+{% endblock %}
+
+

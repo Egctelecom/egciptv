@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<title>:- Mail Template -:</title>
+<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,700,700i" rel="stylesheet">
+{%  load static %}
+
+<!-- Bootstrap -->
+<style>
+body{font-family: 'Roboto Condensed', sans-serif;padding: 0;margin: 0;}
+img{width: 150px;padding: 20px 0;}
+table{width: 830px;margin: 50px auto;border: 1px solid #cccccc;}
+table thead>tr>th{text-align:left;padding: 5px;font-weight: 100;}
+table thead>tr>th.headline{font-weight: 600;border-bottom: 1px solid #cccccc;color: #191919;
+border-top: 1px solid #cccccc;font-size: 12px;}
+table tbody>tr>td{font-size: 14px;margin-bottom: 10px;}
+table .price{text-align: right;font-size: 14px;}
+table thead>tr.bdr{border-bottom: 1px solid #000;}
+
+</style>
+</head>
+<body>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+             <img src="{% static 'admin/logo.png' %}" alt="">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr>
+         <td style="padding-bottom: 10px;">Dear {{ customer_plan_data.0.user_id__first_name }} {{ customer_plan_data.0.user_id__last_name }} account,</td>
+    </tr>
+    <tr>
+        <td style="padding-bottom: 10px;">Thank you for choosing EGC Technologie! The contract attached with this email.</td>
+    </tr>
+
+    <tr>
+
+    </tr>
+    <tr>
+        <td>Regards,</td>
+
+    </tr>
+    <tr>
+        <td>
+             <strong>EGC Technologie</strong>
+        </td>
+    </tr>
+    <tr>
+        <td>
+         <a href="#">4849 Rue Oka</a>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-bottom: 10px;">
+             <a href="#">Pierrefonds, QC</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+         CA H9K 1HB
+        </td>
+    </tr>
+    <tr>
+        <td>
+         4385387764 /
+        </td>
+    </tr>
+    <tr>
+        <td>
+          egctechnical@gmail.com
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

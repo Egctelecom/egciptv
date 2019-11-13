@@ -1,0 +1,581 @@
+{% extends 'admin/layout.html' %}
+{% load contract_functions %}
+{% load usernumber_functions %}
+{% load return_item %}
+{% load number_functions %}
+{% load static %}
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.bootstrap.min.css" />
+    <link rel="stylesheet" href="{% static 'admin/fancybox/jquery.fancybox.css'%}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static 'admin/custom.css'%}" type="text/css" media="screen" />
+{% endblock %}
+{% block content %}
+
+<section class="content">
+
+      <div class="row">
+        <div class="col-md-3">
+
+          <!-- Profile Image -->
+          <div class="box box-primary">
+            <div class="box-body box-profile">
+              <img class="profile-user-img img-responsive img-circle" src="https://png.icons8.com/office/160/000000/administrator-male.png" alt="User profile picture">
+
+              <h3 class="profile-username text-center">{{customer.0.first_name}} {{customer.0.last_name}}</h3>
+
+              <p class="text-muted text-center"><span class="label label-info">{{customer.0.account_id}}</span></p>
+
+              <ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  <b>Setup</b> <a class="pull-right"><span class="label label-success">{{customer.0.status}}</span></a>
+                </li>
+                <li class="list-group-item">
+                  <b>Phone Number</b> <a class="pull-right"><span class="label label-danger">{{customer.0.phone}}</span></a>
+                </li>
+                {% get_customer_address customer.0.id as CUSTOMERADDRESS %}
+                {% for cta in CUSTOMERADDRESS %}
+                <li class="list-group-item" style="padding-bottom:32px;">
+                 <a class="pull-left"><span class="label label-warning">{{cta.address_1}}</span></a>
+                </li>
+                <li class="list-group-item" style="padding-bottom:32px;">
+                  <a class="pull-left"><span class="label label-warning">{{cta.address_2}}</span></a>
+                </li>
+                <li class="list-group-item">
+                  <b>City</b> <a class="pull-right"><span class="label label-warning">{{cta.city_id__city_name}}</span></a>
+                </li>
+                <li class="list-group-item">
+                  <b>Province</b> <a class="pull-right"><span class="label label-warning">{{cta.province_id__province_name}}</span></a>
+                </li>
+                <li class="list-group-item">
+                  <b>Country</b> <a class="pull-right"><span class="label label-warning">{{cta.country_id__country_name}}</span></a>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#service_plan" data-toggle="tab">Service Plan</a></li>
+              <li><a href="#documents" data-toggle="tab">Upload Documents</a></li>
+              <li><a href="#tickets" data-toggle="tab">Tickets</a></li>
+{#              <li><a href="#invoice" data-toggle="tab">Pending Invoie Details</a></li>#}
+              <li><a href="#newcontract" data-toggle="tab">Contract</a></li>
+              <li><a href="#devices" data-toggle="tab">Devices of Contract</a></li>
+
+              <li><a href="#addnumber" data-toggle="tab">Number</a></li>
+
+            </ul>
+            <div class="tab-content">
+            <!----------------------------------------- Service Plan ------------------------------------------>
+              <div class="active tab-pane" id="service_plan">
+                <div class="post">
+                  <div class="row">
+                    <div class="col-md-2" style="float:right;">
+                      <div class="form-group" >
+                        <a  href="{% url 'add_user_service_price' customer.0.id %}" class="fancybox fancybox.iframe btn btn-block btn-success btn-xs">Add a Service Plan</a>
+                      </div>
+
+                    </div>
+                  <div class="col-xs-12 table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                      <tr>
+                        <th>Plan ID </th>
+                        <th>Service Plan</th>
+                        <th>Charge </th>
+                        <th>Monthly / One Time</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      {% for plans in service_plan %}
+                      <tr>
+                        <td>{{ plans.id }}</td>
+                        <td>{{ plans.service_plan_id__title }}</td>
+                        <td>{{ plans.service_price_actual }}</td>
+                        <td>{{ plans.plan_paid_status }}</td>
+                        <td>{{ plans.plan_status }}</td>
+                        <td>
+                             <a href="{% url 'edit_customer_service_plan' plans.id %}" class="fancybox fancybox.iframe btn btn-info btn-xs"> Edit </a>
+                             <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal{{ plans.id }}">Inactive</button>
+                                  <div class="modal fade" id="myModal{{ plans.id }}" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                          <h4 class="modal-title">Are you sure ? </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                         <a href="{% url 'delete_service_plan_to_user' plans.id %}" class="btn btn-success btn-xs">Inactive</a>
+                                         <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal">Cancle</button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- /.col -->
+                </div>
+                </div>
+              </div>
+
+            <!----------------------------------------- Documents ------------------------------------------>
+
+              <div class="tab-pane" id="documents">
+               <div class="post">
+                  <div class="row">
+                    <div class="col-md-2" style="float:right;">
+                      <div class="form-group" >
+                        <a  href="{% url 'upload_documents' customer.0.id %}" class="fancybox fancybox.iframe btn btn-block btn-success btn-xs">Upload Documents</a>
+                      </div>
+
+                    </div>
+                  <div class="col-xs-12 table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                      <tr>
+                        <th>File Name</th>
+                        <th>File Type </th>
+                        <th>Created At</th>
+                        <th>Action</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      {% for document in documents %}
+                      <tr>
+                        <td>{{ document.file_name }}</td>
+                        <td>{{ document.file_type }}</td>
+                        <td>{{ document.created_at }}</td>
+                        <td>
+                            <a href='/{{ document.filedata }}' target="_blank" class="btn btn-info btn-xs" download=""><i class="fa fa-download" aria-hidden="true"></i></a>
+{#                            <a href="{% url 'delete_upload_documents' document.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>#}
+                            <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal{{ document.id }}"><i class="fa fa-trash"></i></button>
+                                  <div class="modal fade" id="myModal{{ document.id }}" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                          <h4 class="modal-title">Are you sure ? </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                         <a href="{% url 'delete_upload_documents' document.id %}" class="btn btn-success btn-xs">Delete</a>
+                                         <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal">Cancle</button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- /.col -->
+                </div>
+                </div>
+              </div>
+            <!----------------------------------------- Create Tickets ------------------------------------------>
+
+              <div class="tab-pane" id="tickets">
+               <div class="post">
+                  <div class="row">
+                    <div class="col-md-2" style="float:right;">
+                      <div class="form-group" >
+                        <a  href="{% url 'create_tickets' customer.0.id %}" class="fancybox fancybox.iframe btn btn-block btn-success btn-xs">Create New Tickets</a>
+                      </div>
+                    </div>
+                  <div class="col-xs-12 table-responsive">
+                   <h3 class="box-title">User</h3>
+                    <table class="table table-striped">
+                      <thead>
+                      <tr>
+                        <th>Subject</th>
+                        <th>Threads</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      {% for ticket in utickets %}
+                      <tr>
+                        <td>{{ ticket.subject }}</td>
+                        <td>{{ ticket.threads }}</td>
+                        <td>{{ ticket.priority }}</td>
+                        <td>
+                            <a href="{% url 'edit_tickets' ticket.id %}"  class="fancybox fancybox.iframe btn btn-info btn-xs"><i class="fa fa-edit"></i></a>
+{#                            <a href="{% url 'delete_tickets' ticket.id %}"  class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a></td>#}
+                            <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal2{{ ticket.id }}"><i class="fa fa-trash"></i></button>
+                              <div class="modal fade" id="myModal2{{ ticket.id }}" role="dialog">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                      <h4 class="modal-title">Are you sure ? </h4>
+                                    </div>
+                                    <div class="modal-body">
+                                     <a href="{% url 'delete_tickets' ticket.id %}" class="btn btn-success btn-xs">Delete</a>
+                                     <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal">Cancle</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                      </tr>
+                      {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                   <div class="col-xs-12 table-responsive">
+                   <h3 class="box-title">Administrator</h3>
+                    <table class="table table-striped">
+                      <thead>
+                      <tr>
+                        <th>Subject</th>
+                        <th>Threads</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      {% for ticket in atickets %}
+                      <tr>
+                        <td>{{ ticket.subject }}</td>
+                        <td>{{ ticket.threads }}</td>
+                        <td>{{ ticket.priority }}</td>
+                        <td>
+                            <a href="{% url 'edit_tickets' ticket.id %}" class="fancybox fancybox.iframe btn btn-info btn-xs"><i class="fa fa-edit"></i></a>
+{#                            <a href="{% url 'delete_tickets' ticket.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>#}
+                             <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal3{{ ticket.id }}"><i class="fa fa-trash"></i></button>
+                              <div class="modal fade" id="myModal3{{ ticket.id }}" role="dialog">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                      <h4 class="modal-title">Are you sure ? </h4>
+                                    </div>
+                                    <div class="modal-body">
+                                     <a href="{% url 'delete_tickets' ticket.id %}" class="btn btn-success btn-xs">Delete</a>
+                                     <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal">Cancle</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- /.col -->
+                </div>
+                </div>
+              </div>
+{#             <!----------------------------------------- Pending Invoice Details ------------------------------------------>#}
+{##}
+{#              <div class="tab-pane" id="invoice">#}
+{#               <div class="post">#}
+{#                  <div class="row">#}
+{#                    <div class="col-md-2" style="float:right;">#}
+{#                      <div class="form-group" >#}
+{#                        <a  href="{% url 'add_pending_invoice_details' customer.0.id %}" class="fancybox fancybox.iframe btn btn-block btn-success btn-xs">New Invoice Details</a>#}
+{#                      </div>#}
+{##}
+{#                    </div>#}
+{#                  <div class="col-xs-12 table-responsive">#}
+{#                    <table class="table table-striped">#}
+{#                      <thead>#}
+{#                      <tr>#}
+{#                        <th>File Name</th>#}
+{#                        <th>File Type </th>#}
+{#                        <th>Created At</th>#}
+{#                        <th>Action</th>#}
+{#                      </tr>#}
+{#                      </thead>#}
+{#                      <tbody>#}
+{#                      {% for document in documents %}#}
+{#                      <tr>#}
+{#                        <td>{{ document.file_name }}</td>#}
+{#                        <td>{{ document.file_type }}</td>#}
+{#                        <td>{{ document.created_at }}</td>#}
+{#                        <td>#}
+{#                            <a href='/{{ document.filedata }}' target="_blank" class="btn btn-info btn-xs" download=""><i class="fa fa-download" aria-hidden="true"></i></a>#}
+{#                            <a href="{% url 'delete_upload_documents' document.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>#}
+{#                        </td>#}
+{#                      </tr>#}
+{#                      {% endfor %}#}
+{#                      </tbody>#}
+{#                    </table>#}
+{#                  </div>#}
+{#                  <!-- /.col -->#}
+{#                </div>#}
+{#                </div>#}
+{#              </div>#}
+             <!----------------------------------------- Create Contract ------------------------------------------>
+
+              <div class="tab-pane" id="newcontract">
+               <div class="post">
+                  <div class="row">
+                    <div class="col-md-6" style="float:right;">
+                      <div class="form-group" >
+                          <div class="row">
+                          <div class="col-md-3">
+                             <a href="{% url 'create_new_contract' customer.0.id %}"
+                                class="fancybox fancybox.iframe btn btn-block btn-success btn-xs"><i class="fa fa-plus" aria-hidden="true"></i>
+                                Create Contract
+                             </a>
+                             </div>
+                          <div class="col-md-3">
+                                <a href="{% url 'update_contract_sheet' customer.0.id %}" class="fancybox fancybox.iframe btn btn-default btn-xs"><i class="fa fa-cog" aria-hidden="true"></i>
+                                    Set Contract Sheet
+                                </a>
+                          </div>
+                          <div class="col-md-3">
+                             <a href="{% url 'terminate_contract' customer.0.id %}" class="fancybox fancybox.iframe btn btn-info btn-xs"><i class="fa fa-trash"></i>
+                                 Terminate Contract
+                             </a>
+                             </div>
+                          <div class="col-md-3">
+                                <a href="{% url 'renew_contract' customer.0.id %}" class="fancybox fancybox.iframe btn btn-warning btn-xs"><i class="fa fa-repeat"></i>
+                                    Renew Contract
+                                </a>
+                             </div>
+                          </div>
+                      </div>
+                    </div>
+                     <div class="col-xs-12 table-responsive">
+                     <p>New Contract </p>
+                    <table class="table table-striped">
+                      <thead>
+                      <tr>
+                        <th>Contract ID</th>
+                        <th>Action</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      {% for customer_plan_datas in customer_plan_data %}
+                      <tr>
+                        <td>
+                            {{ customer_plan_datas.id }}
+                            <a href="{%  url 'view_contract' customer_plan_datas.id %}" class=""><small>View Contract</small></a>
+                        </td>
+                        <td>
+                            <a href="{% url 'email_resend' customer_plan_datas.user_id customer_plan_datas.id%}" class="btn btn-danger btn-xs"><i class="fa fa-paper-plane"></i> Resend Email</a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                     <div class="col-xs-12 table-responsive">
+                     <p>Terminate Contract </p>
+                    <table class="table table-striped">
+                      <thead>
+                      <tr>
+                        <th>Contract ID</th>
+                        <th>Action</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      {% for customer_plan_datas in customer_plan_data_terminate %}
+                      <tr>
+                        <td>
+                            {{ customer_plan_datas.id }}
+                            <a href="{%  url 'view_contract' customer_plan_datas.id %}" class=""><small>View Contract</small></a>
+
+                        </td>
+                        <td>
+                            <a href="{% url 'email_resend' customer_plan_datas.user_id  customer_plan_datas.id %}" class="btn btn-danger btn-xs"><i class="fa fa-paper-plane"></i> Resend Email</a>
+
+                        </td>
+                      </tr>
+                      {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                </div>
+              </div>
+
+             <!----------------------------------------- Device shoew After contract create ------------------------------------------>
+
+              <div class="tab-pane" id="devices">
+               <div class="post">
+                  <div class="row">
+                    <div class="col-md-2" style="float:right;">
+                    </div>
+                  <div class="col-xs-12 table-responsive">
+                   <h3 class="box-title">All Devices of contract</h3>
+                    <table class="table table-striped">
+                      <thead>
+                      <tr>
+                        <th>Hardware Title</th>
+                        <th>Hardware Type</th>
+                        <th>Device Buy Price</th>
+                        <th>Device Rental Price</th>
+                        <th>Device Monthly Rent</th>
+                        <th>Add MAC</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                          {% for hw in hw_list_title%}
+                          {% with forloop.counter0 as outer_counter %}
+
+                          <tr>
+                            <td>{{ hw }}</td>
+                            <td>{{ hw_list_type|return_item:outer_counter  }}</td>
+                            <td>{{ hw_list_device_buy|return_item:outer_counter}}</td>
+                            <td>{{ hw_list_device_rental|return_item:outer_counter}}</td>
+                            <td>{{ hw_list_montly_rent|return_item:outer_counter }}</td>
+                            <td>
+                                <a href="{% url 'view_hw_MAC' hw_list_id|return_item:outer_counter   customer.0.id contarct_based_hw_id|return_item:outer_counter %}" class="fancybox fancybox.iframe btn btn-warning btn-xs"><i class="fa fa-cog" aria-hidden="true"></i>
+                                View H/W MAC</a>
+                            </td>
+                          </tr>
+                          {% endwith %}
+                          {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- /.col -->
+                </div>
+                </div>
+              </div>
+<!-------------------------------------------------------------------------------------- Add Number -------------------------------------------------------------------------------------------------------->
+
+              <div class="tab-pane" id="addnumber">
+               <div class="post">
+               <!-- Map User Number -->
+                  <div class="row">
+                    <div class="col-md-2" style="float:right;">
+                      <div class="form-group" >
+                        <a  href="{% url 'map_number_to_user' customer.0.id %}" class="fancybox fancybox.iframe btn btn-block btn-success btn-xs"><i class="fa fa-plus" aria-hidden="true"></i> Map Number to User</a>
+                      </div>
+                      <div class="form-group" >
+                        <a  href="{% url 'port_number' customer.0.id %}" class="fancybox fancybox.iframe btn btn-block btn-info btn-xs"><i class="fa fa-plus" aria-hidden="true"></i> Port Number</a>
+                      </div>
+                    </div>
+                  <div class="col-xs-12 table-responsive">
+                  <h3 class="box-title">Map User Number</h3>
+                    <table class="table table-striped">
+                      <thead>
+                      <tr>
+                        <th>Did ID</th>
+                        <th>Client Number</th>
+                        <th>Client Name</th>
+                        <th>Last Update</th>
+{#                        <th>MNP</th>#}
+                      </tr>
+                      </thead>
+                      <tbody>
+                      {% for number in number_list %}
+                      <tr>
+                        <td>{{ number.number_id__did_id }}</td>
+                        <td>{{ number.number_id__number }}</td>
+                        <td>{{ number.user_id__first_name }} {{ number.user_id__last_name }}</td>
+                        <td>{{ number.updated_at }}</td>
+{#                       <td>#}
+{#                           {% if number_list.count == forloop.counter %}#}
+{#                              <a href="{% url 'set_mnp' number.number_id__number  number.user_id__id%}" class="fancybox fancybox.iframe btn btn-warning btn-xs"><i class="fa fa-cog" aria-hidden="true"></i>#}
+{#                              MNP Set</a>#}
+{#                           {% endif %}#}
+{#                       </td>#}
+                        <td>
+                           {% if number_list.count == forloop.counter %}
+                           <a  href="{% url 'cdr_number_records' number.number_id__number customer.0.id %}" class="btn btn-block btn-info btn-xs">
+                               <i class="fa fa-plus" aria-hidden="true"></i>
+                               CDR Records
+                           </a>
+                           {% endif %}
+                        </td>
+                      </tr>
+                      {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+               <!-- Port Number -->
+                 <div class="row">
+                 <div class="col-md-2" style="float:right;">
+                 </div>
+                 <div class="col-xs-12 table-responsive">
+                  <h3 class="box-title">Port Number to Our Provider </h3>
+                    <table class="table table-striped">
+                      <thead>
+                      <tr>
+                        <th>Port Number</th>
+                        <th>Status </th>
+                        <th>Last Update</th>
+                        <th> Uploaded Documents</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      {% for port_number in port_number_list %}
+                      <tr>
+                        <td>{{ port_number.number}}</td>
+                        <td><span class="label label-success">Activated</span></td>
+                        <td>{{ port_number.updated_at }}</td>
+                        <td>
+                            <input type="hidden" id="p{{ port_number.id }}" value="{{ port_number.approve_upload_data }}">
+                            <a id='dwnldLnk{{  port_number.id  }}' download='ApprovalDocument_{{  port_number.id  }}.pdf' style="display:none;" />
+                            <a id="export" class="btn btn-warning btn-xs"  onclick="createDownloadLink({{ port_number.id }})"><i class="fa fa-download"></i>  Download</a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+               </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</section>
+
+<a href="{% url 'add_customer' %}" class="fancybox fancybox.iframe btn btn-default" id="customer_add" style="display:none;"></a>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'admin/plugins/jQuery/jQuery-2.2.0.min.js'%}"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
+<script type="text/javascript" src="{% static 'admin/fancybox/jquery.fancybox.pack.js'%}"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<script>
+    $(document).ready( function () {
+        $('#myTable').DataTable();
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".fancybox").fancybox({
+             afterClose: function () {
+                location.reload();
+            },
+            autoSize : false,
+            width    : "100%",
+            height    : "100%",
+
+        });
+    });
+
+function createDownloadLink(id){
+    var str = document.getElementById('p'+id).value;
+    console.log(str);
+    var dlnk = document.getElementById('dwnldLnk'+id);
+    dlnk.href = 'data:application/octet-stream;base64,'+str;
+    dlnk.click();
+}
+
+</script>
+{% endblock %}

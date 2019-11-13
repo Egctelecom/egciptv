@@ -1,0 +1,157 @@
+{% extends 'admin/fulllayout.html' %}
+{% load static %}
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.bootstrap.min.css" />
+    <link rel="stylesheet" href="{% static 'admin/fancybox/jquery.fancybox.css' %}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static 'admin/custom.css' %}" type="text/css" media="screen" />
+{% endblock %}
+{% block content %}
+     <section class="content-header">
+       <a href="{% url 'settings_manage_service_price_doc_add' id %}" class="fancybox fancybox.iframe btn btn-info btn-xs"><i class="fa fa-upload"></i>  Upload Documents</a>
+    </section>
+    <section class="content">
+
+          <div class="row">
+            <div class="col-xs-12">
+               <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Document Files</h3>
+                {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table id="myTablelogin" class="table table-bordered table-striped" style="width:100%;!important;" >
+                    <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Files</th>
+                          <th>Uploaded At</th>
+                          <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for services in data  %}
+                        <tr>
+                          <td>{{services.service_price_doc_name|title}}</td>
+                          <td><a href="/{{ services.service_price_doc }}" download=""><i class="fa fa-download"></i> Click to download uploaded files</a></td>
+                          <td>{{ services.created_at }}</td>
+                          <td>
+                              <span  id="btn{{ services.id }}">
+                                  <a onclick="Change_status({{ services.id }})"><button {%  if services.status == 'active' %} class="btn btn-success btn-xs"{%  else %} class="btn btn-warning btn-xs" {%  endif %} >{{ services.status | title }}</button></a>
+                              </span>
+                              <span>
+                                  <a data-toggle="modal" data-target="#myModalcnf{{ services.id }}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</a>
+                                  <div id="myModalcnf{{ services.id }}" class="modal fade" role="dialog">
+                                      <div class="modal-dialog">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Do want to delete ? </h4>
+                                          </div>
+                                          <div class="modal-footer">
+                                             <a href="{%  url 'settings_manage_service_price_doc_delete' services.id services.service_price_provider_id  %}"><button type="button" class="btn btn-danger btn-xs" id="delete">Yes</button></a>
+                                            <button type="button" class="btn btn-default btn-xs" data-dismiss="modal">No</button>
+                                          </div>
+                                        </div>
+
+                                      </div>
+                                    </div>
+                              </span>
+                          </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            </div>
+            </div>
+          </div>
+
+    </section>
+
+
+    <!--  Alert Model --->
+
+        <div id="myModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+              <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body">
+                <p style="font-size:20px;"><b id="msgdata"></b></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    <!--  Confirm  Model --->
+
+        <div id="myModalcnf" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+              <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body">
+                <p style="font-size:20px;"><b id="msgdata"></b></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'admin/plugins/jQuery/jQuery-2.2.0.min.js' %}"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
+<script type="text/javascript" src="{% static 'admin/fancybox/jquery.fancybox.pack.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+
+        $('#myTablelogin').DataTable();
+
+    })
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".fancybox").fancybox({
+            afterClose: function () {
+                location.reload();
+            },
+            autoSize : false,
+            width    : "50%",
+        });
+    });
+
+    function Change_status(id){
+     $.ajax({
+         type:"post",
+         url: '{% url 'settings_manage_service_price_doc_status_change' %}',
+         data:{csrfmiddlewaretoken:"{{ csrf_token }}",
+               id:id
+         },
+         success:function(success){
+             console.log(success);
+             $('#btn'+id).empty().append(success.data);
+             $('#msgdata').empty().append(success.msg);
+             $('#myModal').modal('show');
+         }
+
+     });
+    }
+
+</script>
+{% endblock %}
+

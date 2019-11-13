@@ -1,0 +1,106 @@
+{%  load static %}
+
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- Sidebar user panel -->
+      <div class="user-panel">
+        <div class="pull-left image">
+          <img src="/media/{{ request.session.avatar  }}" class="img-circle" alt="User Image">
+        </div>
+        <div class="pull-left info">
+          <p>{{ request.session.username  }}</p>
+          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+        </div>
+      </div>
+      <!-- search form -->
+      <form action="#" method="get" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="Search...">
+              <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+        </div>
+      </form>
+      <ul class="sidebar-menu">
+
+        <li class="header">MAIN NAVIGATION</li>
+
+        <li class="treeview active">
+
+          <a href="{% url 'dashboard' %}"><i class="fa fa-circle-o" style="color:red;"></i>  <span>Dashboard</span> </a>
+
+        </li>
+
+        <li class="treeview">
+
+         <a href="{% url 'settings' %}"><i class="fa fa-gears" aria-hidden="true" style="color:red;"></i> <span>Settings</span>  </a>
+
+        </li>
+
+        <li class="treeview">
+
+         <a href="{% url 'services' %}"><i class="fa fa-cubes" aria-hidden="true" style="color:red;"></i> <span>Services</span>  </a>
+
+        </li>
+
+        <li><a href="{% url 'customer' %}"><i class="fa fa-user" style="color:red;"></i> <span>Users</span></a></li>
+
+        <li><a href="{% url 'number' %}"><i class="fa fa-phone" aria-hidden="true" style="color:red;"></i> <span>Number</span></a></li>
+
+        <li><a href="{% url 'tickets_list' %}"><i class="fa fa-bars" aria-hidden="true" style="color:red;"></i> <span>Tickets</span></a></li>
+
+        <li><a href="{% url 'cdr_details' %}"><i class="fa fa-fax" aria-hidden="true" style="color:red;"></i><span> CDR details</span></a></li>
+
+        <li><a href="{% url 'sales_tax' %}"><i class="fa fa-balance-scale" aria-hidden="true" style="color:red;"></i><span> Sales Tax </span></a></li>
+
+        <li><a href="{% url 'area_rate' %}"><i class="fa fa-flag" aria-hidden="true" style="color:red;"></i><span> Rate with area code </span></a></li>
+
+        <li><a href="{% url 'voip_distance_rate_view' %}"><i class="fa fa-file-excel-o" aria-hidden="true" style="color:red;"></i><span> Voip Long Distance Rate </span></a></li>
+
+        <li><a href="{% url 'agent' %}"><i class="fa fa-user-secret" aria-hidden="true" style="color:red;"></i> <span>Agent</span></a></li>
+
+        <li><a href="{% url 'apply_user' %}"><i class="fa fa-bed" aria-hidden="true" style="color:red;"></i> <span>Applied User</span></a></li>
+
+{#        <li><a href="{% url 'rate_customer_billing_cdr_test' %}"><i class="fa fa-user-secret" aria-hidden="true"></i> <span>test</span></a></li>#}
+
+        <li class="treeview">
+          <a>
+            <i class="fa fa-share" style="color:red;"></i> <span>Front Side</span>
+            <i class="fa fa-angle-left pull-right"></i>
+          </a>
+          <ul class="treeview-menu" style="display: none;">
+            <li class="">
+              <a href="#"><i class="fa fa-bars" style="color:green;"></i> Menus <i class="fa fa-angle-left pull-right"></i></a>
+              <ul class="treeview-menu" style="display: none;">
+                <li><a href="{% url 'menu_parent_category_list' %}"><i class="fa fa-circle-o" ></i> Parent Menu </a></li>
+                <li><a href="{% url 'menu_parent_sub_category_list' %}"><i class="fa fa-circle-o"></i> Sub Menu </a></li>
+                <li><a href="{% url 'menu_category_list' %}"><i class="fa fa-circle-o"></i> Category Menu </a></li>
+              </ul>
+            </li>
+            <li class="">
+                <a href="#"><i class="fa fa-bars" style="color:green;"></i> Special Offers <i class="fa fa-angle-left pull-right"></i></a>
+                  <ul class="treeview-menu" style="display: none;">
+                    <li><a href="{% url 'special_offers' %}"><i class="fa fa-circle-o"></i> Special Offers </a></li>
+                    <li><a href="{% url 'special_offers_parent_category_list' %}"><i class="fa fa-circle-o"></i> Special Offers Parent Category </a></li>
+                    <li><a href="{% url 'special_offers_parent_sub_category_list' %}"><i class="fa fa-circle-o"></i> Special Offers Sub Parent Category </a></li>
+                    <li><a href="{% url 'special_offers_category_list' %}"><i class="fa fa-circle-o"></i> Special Offers Attach Under Parent or Subparent Category  </a></li>
+                </ul>
+            </li>
+            <li><a href="{% url 'service_feature_list' %}"><i class="fa fa-laptop" aria-hidden="true" style="color:green;"></i> <span> Service Feature</span></a></li>
+            <li><a href="{% url 'index_others_details' %}"><i class="fa fa-umbrella" aria-hidden="true" style="color:green;"></i> <span> Other Details</span></a></li>
+            <li><a href="{% url 'slider_index' %}"><i class="fa fa-camera" aria-hidden="true" style="color:green;"></i> <span> Slider</span></a></li>
+            <li><a href="{% url 'network_status_index' %}"><i class="fa fa-bluetooth-b" aria-hidden="true" style="color:green;"></i> <span> Network Status</span></a></li>
+            <li><a href="{% url 'faq_index' %}"><i class="fa fa-bell" aria-hidden="true" style="color:green;"></i> <span> FAQs</span></a></li>
+            <li><a href="{% url 'follow_us_index' %}"><i class="fa fa-facebook" aria-hidden="true" style="color:green;"></i> <span> Follow Us</span></a></li>
+            <li><a href="{% url 'logo' %}"><i class="fa fa-facebook" aria-hidden="true" style="color:green;"></i> <span> Logo </span></a></li>
+          </ul>
+        </li>
+
+
+      </ul>
+
+    </section>
+    <!-- /.sidebar -->
+  </aside>

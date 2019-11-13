@@ -1,0 +1,133 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% block content %}
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">User Add</h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" id="" class="form-horizontal" action="{% url 'settings_logins_add' %}" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                      <div class="box-body">
+
+                      <p class="margin">User Name</p>
+                      <div class="input-group">
+                        <input type="text" name="username" class="form-control" value="" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Password</p>
+                      <div class="input-group">
+                        <!-- /btn-group -->
+                        <input type="text" name="password" id='p' class="form-control">
+                        <span class="input-group-btn">
+                            <input type='button' class="btn btn-info btn-flat" value ='generate' onclick='document.getElementById("p").value = Password.generate(16)'>
+                        </span>
+                      </div>
+
+                      <p class="margin">Email</p>
+                      <div class="input-group">
+                       <input type="email" name="email" class="form-control" value="" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Commissions USD</p>
+                      <div class="input-group">
+                        <input type="number" name="commissions_in_USD" class="form-control" value=""  style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Commissions %</p>
+                      <div class="input-group">
+                        <input type="number" name="commissions_in_percent" class="form-control" value=""  style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Extension</p>
+                      <div class="input-group">
+                        <input type="text" name="extension" class="form-control" value=""  style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Login Type</p>
+                      <div class="input-group">
+                            <select class="form-control" name="login_type" required style="width: 588px!important;">
+                            <option value="salesperson" selected>Salesperson</option>
+                            <option value="support" >Support</option>
+                            <option value="administrator" >Administrator</option>
+                            </select>
+                      </div>
+
+                      <p class="margin">Role</p>
+                      <div class="input-group">
+                            <select class="form-control" name="role" required style="width: 588px!important;">
+                            <option value="restricted" selected>Restricted</option>
+                            <option value="relaxed" >Relaxed</option>
+                            </select>
+                      </div>
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Add</button>
+                       </div>
+                </form>
+
+          </div>
+          <!-- /.box -->
+    </div>
+{% block scripts %}
+    <script>
+        var Password = {
+
+      _pattern : /[a-zA-Z0-9_\-\+\.]/,
+
+
+      _getRandomByte : function()
+      {
+        // http://caniuse.com/#feat=getrandomvalues
+        if(window.crypto && window.crypto.getRandomValues)
+        {
+          var result = new Uint8Array(1);
+          window.crypto.getRandomValues(result);
+          return result[0];
+        }
+        else if(window.msCrypto && window.msCrypto.getRandomValues)
+        {
+          var result = new Uint8Array(1);
+          window.msCrypto.getRandomValues(result);
+          return result[0];
+        }
+        else
+        {
+          return Math.floor(Math.random() * 256);
+        }
+      },
+
+      generate : function(length)
+      {
+        return Array.apply(null, {'length': length})
+          .map(function()
+          {
+            var result;
+            while(true)
+            {
+              result = String.fromCharCode(this._getRandomByte());
+              if(this._pattern.test(result))
+              {
+                return result;
+              }
+            }
+          }, this)
+          .join('');
+      }
+
+};
+    </script>
+{% endblock %}
+{% endblock %}
+
+
+

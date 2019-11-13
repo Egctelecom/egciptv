@@ -1,0 +1,98 @@
+{% extends 'admin/fulllayout.html' %}
+{% load static %}
+{% load permission_function %}
+{% block content %}
+    <section class="content">
+    <div class="row">
+        <div class="col-xs-6">
+         <div class="alert alert-success alert-dismissible" id="msg" style="display: none;">
+                   Permission Updated for  {{ agent.0.first_name }} {{ agent.0.last_name }}
+            </div>
+        <div class="alert alert-success alert-dismissible" id="error_msg" style="display: none;">
+                  ERROR !  Permission Not Updated for  {{ agent.0.first_name }} {{ agent.0.last_name }}
+            </div>
+            <div class="box">
+            <div class="box-header">
+              <h3 class="box-title"><small>Permission of</small> {{ agent.0.first_name }} {{ agent.0.last_name }}</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body" style="min-height:400px">
+                {% for permissions in permission %}
+                {% get_permission  permissions.codename haveperm user_id as is_perms%}
+                <div class="checkbox">
+                    <label>
+                      <input type="checkbox"  {% if is_perms == True%}checked{% endif %} id="permission{{ permissions.id }}" value="{{ permissions.id }}" onclick="set_id({{ permissions.id }})">
+                      {{ permissions.name }}
+                    </label>
+                  </div>
+                {% endfor %}
+            </div>
+            </div>
+        </div>
+         <div class="col-xs-6">
+                <div class="box">
+                <div class="box-header">
+                 <h3 class="box-title"><small>Click to Save Permission Button for save agent permission</small></h3>
+                </div>
+                <div class="box-body" style="min-height:100px">
+                    <button class="btn btn-success btn-lg btn-xs" onclick="save_permission({{ agent.0.id }})"> <i class="fa fa-key"></i> Save Permission </button>
+                </div>
+                </div>
+            </div>
+   </div>
+    </section>
+{% endblock %}
+{% block scripts %}
+    <!-- jQuery 2.2.0 -->
+<script src="{% static 'admin/plugins/jQuery/jQuery-2.2.0.min.js'%}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<script>
+var arrt =[];
+function set_id(id){
+    var lt = $('#permission' + id).is(':checked');
+     if (lt == true) {
+          arrt.push(id);
+          console.log(arrt);
+     }else{
+          remove_array_element(arrt, id);
+          console.log(arrt);
+     }
+}
+function remove_array_element(array, n)
+ {
+   var index = array.indexOf(n);
+   if (index > -1) {
+    array.splice(index, 1);
+}
+   return array;
+ }
+
+ function save_permission(agent_id) {
+    alert(agent_id);
+        $.ajax({
+            type:"post",
+            url:"{% url 'save_permission_to_agent' %}",
+            data: {
+                csrfmiddlewaretoken:"{{csrf_token}}",
+                arrt:JSON.stringify(arrt),
+                agent_id:agent_id
+            },
+            success:function (success) {
+                if (success['data'] == 'success') {
+                    $('#msg').append(success);
+                    $('#msg').show();
+                }else{
+                     $('#error_msg').append(success);
+                     $('#error_msg').show();
+                }
+            }
+        });
+   }
+
+</script>
+{% endblock %}
+
+
+
+

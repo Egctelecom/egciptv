@@ -1,0 +1,131 @@
+{% extends 'admin/layout.html' %}
+{% load static %}
+{% load admin_functions %}
+{% load get_country_function %}
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.bootstrap.min.css" />
+    <link rel="stylesheet" href="{% static 'admin/fancybox/jquery.fancybox.css' %}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static 'admin/custom.css' %}" type="text/css" media="screen" />
+    <style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 45px;
+        height: 17px;
+        top: 10px;
+    }
+    .slider:before {
+        position: absolute!important;
+        content: "" !important;
+        height: 15px!important;
+        width: 15px!important;
+        left: 3px!important;
+        bottom: 4px!important;
+        background-color: white ;
+        -webkit-transition: .4s;
+        transition: .4s;
+        top: 1px;
+}
+
+    </style>
+{% endblock %}
+{% block content %}
+
+<section class="content-header">
+   <a href="{% url 'add_province' %}" class="fancybox fancybox.iframe btn btn-info  btn-xs">Add Province</a>
+</section>
+
+<section class="content">
+
+   <div class="row">
+        <div class="col-xs-12">
+            {%  for counties in country_list %}
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                      <h3 class="box-title">{{ counties.country_name }}</h3>
+
+                      <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                        </button>
+                      </div>
+                      <!-- /.box-tools -->
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body" style="display: none;min-height:400px;">
+                       <table id="myTablelogin" class="table table-bordered table-striped" style="width:100%;!important;" >
+                            <thead>
+                                <tr>
+                                  <th>Province</th>
+                                  <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% get_province_of_country counties.id as PROVINCE %}
+                            {% for province in PROVINCE  %}
+                                <tr>
+                                  <td>{{province.province_name}}</td>
+                                  <td>
+                                      <a href="{% url 'edit_province' province.id %}" class="fancybox fancybox.iframe btn btn-info btn-xs"><i class="fa fa-edit"></i></a>
+                                      <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal{{ province.id }}"><i class="fa fa-trash"></i></button>
+                                          <div class="modal fade" id="myModal{{ province.id }}" role="dialog">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                <div class="modal-header">
+                                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                  <h4 class="modal-title">Are you sure ? </h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                 <a href="{% url 'delete_province' province.id %}" class="btn btn-success btn-xs">Delete</a>
+                                                 <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal">Cancle</button>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                      <a href="{% url 'get_city' province.id %}" class="btn btn-warning btn-xs"> City List</a>
+
+                                  </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+   </div>
+</section>
+
+
+
+
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'admin/plugins/jQuery/jQuery-2.2.0.min.js' %}"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
+<script type="text/javascript" src="{% static 'admin/fancybox/jquery.fancybox.pack.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+
+        $('#myTablelogin').DataTable();
+
+    })
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".fancybox").fancybox({
+            afterClose: function () {
+                location.reload();
+            },
+            autoSize : false,
+            width    : "50%",
+        });
+    });
+
+</script>
+{% endblock %}

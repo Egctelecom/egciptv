@@ -1,0 +1,106 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% block content %}
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+            <div class="box-header with-border">
+              <h3 class="box-title">Service Provider Plan Add</h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" id="" class="form-horizontal" action="{% url 'plan_add_special_offer_to_service_provider' id %}" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                      <div class="box-body">
+                        <input type="hidden" name="service_provider" class="form-control" value="{{ id }}"  style="width: 588px!important;">
+
+                           <p class="margin">Service Manage Category </p>
+                      <div class="input-group">
+                        <select name="manage_service_category" class="form-control" id="category" required style="width: 588px!important;" onchange="get_service_plan()">
+                         <option>Select Category</option>
+                         {% for country in manage_category %}
+                         <option value="{{ country.id }}">{{ country.service_category_name }}</option>
+                         {% endfor %}
+                        </select>
+                      </div>
+
+                      <p class="margin">Service Manage Plan list</p>
+                      <div class="input-group" id="select_service">
+                         <select name="manage_service" class="form-control" id="manageservice" required style="width: 588px!important;">
+                           <option value=""></option>
+                         </select>
+                      </div>
+
+                      <div class="input-group">
+                        <input type="hidden" name="title" id="title" class="form-control" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Retails</p>
+                      <div class="input-group">
+                        <input type="number" name="retail" id="retail" class="form-control" value="" min="0" step="0.01" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Actual</p>
+                      <div class="input-group">
+                        <input type="number" name="actual" class="form-control" value="" min="0" step="0.01" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Qty</p>
+                      <div class="input-group">
+                        <input type="number" name="qty" class="form-control" value="" min="0"  id="" required style="width: 588px!important;">
+                      </div>
+
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Add</button>
+                       </div>
+                </form>
+
+
+          <!-- /.box -->
+    </div>
+{% endblock %}
+{% block scripts %}
+<script>
+function get_service_plan(){
+     var category = document.getElementById('category').value;
+      $.ajax({
+            type: "post",
+            url: "{% url 'get_service_special_offer_via_category' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                category:category,
+            },
+            success:function (success){
+                console.log(success.data);
+                 $('#select_service').empty().append(success.data);
+            }
+        })
+ }
+ function get_title(){
+     var category = document.getElementById('manageservice').value;
+     $.ajax({
+            type: "post",
+            url: "{% url 'get_special_offer_service_name' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                service_id:category,
+            },
+            success:function (success){
+                console.log(success['result']);
+                document.getElementById('title').value=success['result'];
+                document.getElementById('retail').value=success['price'];
+                $("#title").val(success['result']);
+            }
+        })
+
+ }
+
+</script>
+{% endblock %}
+
+
+

@@ -1,0 +1,103 @@
+{% extends 'agent/fancybox.html' %}
+{% load static %}
+{% block content %}
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Hardware Add</h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" id="" class="form-horizontal" action="{% url 'agent_edit_hw_in_service_provider' id %}" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                      <div class="box-body">
+
+                      <input type="hidden" name="service_plan" class="form-control" value="{{ plan_id }}"  style="width: 588px!important;">
+
+                      <p class="margin">Title</p>
+                      <div class="input-group">
+                        <input type="text" name="hw_title"  class="form-control" value="{{ data.0.hw_title }}" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Retails</p>
+                      <div class="input-group">
+                        <input type="number" name="hw_retail" class="form-control" value="{{ data.0.hw_retail }}" min="0" step="0.01" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Actual</p>
+                      <div class="input-group">
+                        <input type="number" name="hw_actual" class="form-control" value="{{ data.0.hw_actual }}" min="0" step="0.01" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Qty</p>
+                      <div class="input-group">
+                        <input type="number" name="hw_qty" class="form-control" value="{{ data.0.hw_qty }}" min="0"   required style="width: 588px!important;">
+                      </div>
+
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Update</button>
+                       </div>
+                </form>
+
+          </div>
+          <!-- /.box -->
+    </div>
+{% endblock %}
+{% block scripts %}
+<script>
+function get_province(){
+     var country = document.getElementById('country').value;
+      $.ajax({
+            type: "post",
+            url: "{% url 'agent_get_province_via' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                country:country,
+            },
+            success:function (success){
+                console.log(success.data);
+                 $('#select_province').empty().append(success.data);
+            }
+        })
+ }
+
+ function get_ratecenters(){
+     var province = document.getElementById('province').value;
+      $.ajax({
+            type: "post",
+            url: "{% url 'agent_get_ratecenters' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                province:province,
+            },
+            success:function (success){
+                console.log(success.data);
+                 $('#select_ratecenter').empty().append(success.data);
+            }
+        })
+ }
+
+  function get_number(){
+     var ratecenter = document.getElementById('ratecenter').value;
+      $.ajax({
+            type: "post",
+            url: "{% url 'agent_get_number' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                ratecenter:ratecenter,
+            },
+            success:function (success){
+                console.log(success.data);
+                 $('#select_number').empty().append(success.data);
+            }
+        })
+ }
+ </script>
+{% endblock %}
+
+

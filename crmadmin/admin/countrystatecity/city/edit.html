@@ -1,0 +1,60 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% block content %}
+<style>
+    .input_fields_wrap{
+    max-width: 350px;
+    }
+    .input_fields_wrap input[type=text]{
+     width:100%;
+     margin:2px 0;
+    }
+</style>
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Edit City Name</h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" class="form-horizontal" action="{% url 'edit_city' city_list.0.id  %}" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                      <div class="box-body">
+
+
+                       <p class="margin">Province Name</p>
+                      <div class="input-group">
+                         <select class="form-control" name="province_id" style="width: 588px!important;" >
+                             <option>Select Province</option>
+                             {%  for provinces in province_list %}
+                               <option value="{{ provinces.id }}" {%  if provinces.id == city_list.0.province_id %}selected{% endif %}>{{ provinces.province_name }}</option>
+                             {% endfor %}
+
+                         </select>
+                      </div>
+
+                      <p class="margin">City Name</p>
+                      <div class="input-group">
+                         <input type="text" class="form-control" name="city_name" value="{{ city_list.0.city_name }}" style="width: 588px!important;" >
+                      </div>
+
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Edit </button>
+                       </div>
+                </form>
+
+          </div>
+          <!-- /.box -->
+    </div>
+{% endblock %}
+
+
+

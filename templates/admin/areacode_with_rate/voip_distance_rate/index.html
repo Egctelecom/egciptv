@@ -1,0 +1,111 @@
+{% extends 'admin/layout.html' %}
+{% load static %}
+{% load admin_functions %}
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.bootstrap.min.css" />
+    <link rel="stylesheet" href="{% static 'admin/fancybox/jquery.fancybox.css' %}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static 'admin/custom.css' %}" type="text/css" media="screen" />
+    <style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 45px;
+        height: 17px;
+        top: 10px;
+    }
+    .slider:before {
+        position: absolute!important;
+        content: "" !important;
+        height: 15px!important;
+        width: 15px!important;
+        left: 3px!important;
+        bottom: 4px!important;
+        background-color: white ;
+        -webkit-transition: .4s;
+        transition: .4s;
+        top: 1px;
+}
+
+    </style>
+{% endblock %}
+{% block content %}
+
+    <section class="content-header">
+       <a href="{% url 'voip_distance_rate_excel_import' %}" class="fancybox fancybox.iframe btn btn-info  btn-xs">Import</a>
+    </section>
+
+<section class="content">
+
+   <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Voip Long Distance Rate</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body" style="min-height:400px">
+                <table id="myTablelogin" class="table table-bordered table-striped" style="width:100%;!important;" >
+                    <thead>
+                        <tr>
+                          <th>Country</th>
+                          <td>Prefix</td>
+                          <td>Rate</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for voip_rate in data  %}
+                        {%  if voip_rate.prefix == null and voip_rate.rate == null  %}
+                        <tr style="background-color:lightskyblue!important;">
+                          <td>{{voip_rate.country}}</td>
+                          <td> - </td>
+                          <td> - </td>
+                        </tr>
+                        {%  else %}
+                          <tr>
+                          <td>{{voip_rate.country}}</td>
+                          <td>{{voip_rate.prefix}}</td>
+                          <td>{{voip_rate.rate}}</td>
+                        </tr>
+                        {%  endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            </div>
+        </div>
+   </div>
+</section>
+
+
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'admin/plugins/jQuery/jQuery-2.2.0.min.js' %}"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
+<script type="text/javascript" src="{% static 'admin/fancybox/jquery.fancybox.pack.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+
+        $('#myTablelogin').DataTable();
+
+    })
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".fancybox").fancybox({
+            afterClose: function () {
+                location.reload();
+            },
+            autoSize : false,
+            width    : "50%",
+        });
+    });
+
+
+</script>
+{% endblock %}

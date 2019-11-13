@@ -1,0 +1,64 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% block content %}
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+            <div class="box-header with-border">
+              <h3 class="box-title">Service Provider Plan Update</h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" id="" class="form-horizontal" action="{% url 'plan_edit' id %}" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                      <div class="box-body">
+                        <input type="hidden" name="service_provider" class="form-control" value="{{ data.0.service_provider_id }}"  style="width: 588px!important;">
+                        <input type="hidden" name="manage_service_category" class="form-control" value="{{ data.0.manage_service_category_id }}"  style="width: 588px!important;">
+                        <input type="hidden" name="manage_service" class="form-control" value="{{ data.0.manage_service_id }}"  style="width: 588px!important;">
+
+                      <div class="input-group">
+                        <input type="hidden" name="title" class="form-control" value="{{ data.0.title }}" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Retails</p>
+                      <div class="input-group">
+                        <input type="number" name="retail" class="form-control" value="{{ data.0.retail }}" min="0" step="0.01" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Actual</p>
+                      <div class="input-group">
+                        <input type="number" name="actual" class="form-control" value="{{ data.0.actual }}" min="0" step="0.01" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Qty</p>
+                      <div class="input-group">
+                        <input type="number" name="qty" class="form-control" value="{{data.0.qty }}" min="0"  id="" required style="width: 588px!important;">
+                      </div>
+                      <p class="margin">Status</p>
+                      <div class="input-group">
+                        <select name="status" class="form-control" id="" required style="width: 588px!important;">
+                        <option>Select Status</option>
+                        <option value="active" {% if data.0.status == 'active' %}selected{% endif %}>Active</option>
+                        <option value="inactive" {% if  data.0.status == 'inactive' %}selected{% endif %}>Inactive</option>
+                        <option value="delete" {% if  data.0.status == 'delete' %}selected{% endif %}>Delete</option>
+                        </select>
+                      </div>
+
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-clipboard" aria-hidden="true"></i> Update </button>
+                       </div>
+                </form>
+
+
+          <!-- /.box -->
+    </div>
+{% endblock %}
+
+
+

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>:- Egcip tv -:</title>
+{%  load static %}
+{%  load get_service_list %}
+{%  load special_offer_category_service %}
+{%  get_contact as Contact %}
+<!--Required styles-->
+<link href="{% static 'customer/css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'customer/css/bootsnav.css' %}" rel="stylesheet">
+<link href="{% static 'customer/css/reset.css' %}" rel="stylesheet">
+<link href="{% static 'customer/css/style.css' %}" rel="stylesheet">
+<link href="{% static 'customer/css/owl.carousel.css' %}" rel="stylesheet">
+<link href="{% static 'customer/css/owl.carousel.min.css' %}" rel="stylesheet">
+<link href="{% static 'customer/css/owl.theme.css' %}" rel="stylesheet">
+<link href="{% static 'customer/css/animate.css' %}" rel="stylesheet">
+
+<!-- Custom Fonts -->
+<link href="{% static 'customer/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+<link href="{% static 'customer/line-icons/css/helper.css' %}" rel="stylesheet">
+<link href="{% static 'customer/line-icons/css/pe-icon-7-stroke.css' %}" rel="stylesheet">
+<link href="{% static 'customer/slim-scroll/css/style.css' %}" rel="stylesheet">
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic,600,700' rel='stylesheet' type='text/css'>
+<link href="https://fonts.googleapis.com/css?family=Oswald:400,500,600,700" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Exo+2:400,400i,500,700,900,900i" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+    <script src="{% static 'customer/js/html5shiv.js' %}"></script>
+    <script src="{% static 'customer/js/respond.min.js' %}"></script>
+    <![endif]-->
+</head>
+
+<body>
+<section id="header-area-start">
+        <nav class="topBar">
+            <div class="container">
+                <ul class="topBarNav pull-left">
+                    <li><a href="#"><i class="fa fa-phone" aria-hidden="true"></i> {{ Contact.0.phone }}</a></li>
+                    <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i> {{ Contact.0.email }}</a></li>
+                </ul>
+                <ul class="topBarNav pull-right">
+                    <li class="dropdown">
+                        <a onclick="open_list()" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="false" style="cursor: pointer;">
+                            {%  if request.session.province_name %}
+                                {{ request.session.province_name }}
+                                <i class="fa fa-angle-down ml-5"></i>
+                            {% else %}
+                                Region
+                            {%  endif %}
+                        </a>
+                            {%  if request.session.city_name %}
+                                 <ul class="dropdown-menu w-100" role="menu" id="list">
+                                     <li>  <a>{{ request.session.city_name }} </a></li>
+                                </ul>
+
+                            {% else %}
+                            {%  endif %}
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="false">
+                         {%  if request.session.lang %}
+                                {%  if request.session.lang == 'en' %}
+                                    English (Canada)
+                                {% else  %}
+                                    French (Canada)
+                                {%  endif %}
+                                <i class="fa fa-angle-down ml-5"></i></a>
+                                <ul class="dropdown-menu w-150" role="menu">
+                                    <li><a href="#googtrans(en|en)" class="lang-select" data-lang="en" style="cursor:pointer;">English (Canada)</a>
+                                    </li>
+                                    <li><a href="#googtrans(en|fr)" class="lang-select" data-lang="fr" style="cursor:pointer;">French (Canada)</a>
+                                    </li>
+                                </ul>
+                            {% else %}
+                                <i class="fa fa-user mr-5"></i> &nbsp;Language <i class="fa fa-angle-down ml-5"></i></a>
+                                <ul class="dropdown-menu w-150" role="menu">
+                                    <li><a href="#googtrans(en|en)" class="lang-select" data-lang="en" style="cursor:pointer;">English (Canada)</a>
+                                    </li>
+                                    <li><a href="#googtrans(en|fr)" class="lang-select" data-lang="fr" style="cursor:pointer;">French (Canada)</a>
+                                    </li>
+                                </ul>
+                            {%  endif %}
+
+                    </li>
+                    <li><a class="fr" href='#search'>
+                        <em class="fa fa-search"></em>
+                    </a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="custom-main-menu-section">
+            <div class="container">
+                <div class="col-md-3 col-sm-3">
+                    {%  get_logo as logo%}
+                    <a class="site_logo" href="{% url 'home' %}"><img src="/media/{{ logo }}" class="img-responsive mr-top"/></a>
+                </div>
+
+            <div class="col-md-9 col-sm-9">
+                <nav class="navbar navbar-inverse">
+                    <div class="navbar-header">
+                        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".js-navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+
+
+                    <div class="collapse navbar-collapse js-navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li><a href="{% url 'home' %}">Home</a></li>
+                            {% get_service_category_data as parent_category %}
+                            {% for menu_of_parent_category in parent_category %}
+
+                            <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ menu_of_parent_category.service_parent_category_name }}<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    {% get_sub_service_category_list menu_of_parent_category.id as MenuSubList %}
+                                    {% for submenu in MenuSubList %}
+                                    <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ submenu.service_sub_parent_category_name }}
+                                        <b class="caret"></b></a>
+
+                                        <ul class="dropdown-menu">
+                                            {% get_service_category_menu_list submenu.id menu_of_parent_category.id as MenuCategoryList %}
+                                            {% for categorymenu in MenuCategoryList %}
+                                            <li>
+                                               <a href="{% url 'plans_according_city'  menu_of_parent_category.id submenu.id categorymenu.service_category_id %}">
+                                                {{ categorymenu.service_category_id__service_category_name }}
+                                               </a>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                    {% endfor %}
+
+                                </ul>
+                            </li>
+
+                            {%  endfor %}
+
+{#                            <li><a href="{% url 'other_service' %}">other services </a></li>#}
+
+{#                            {% if user.is_authenticated %}#}
+{#                            <li><a href="{% url 'my_account'  user.id %}">My Account</a></li>#}
+{#                            <li><a href="{% url 'logout' %}">Logout</a></li>#}
+{#                            {% else %}#}
+{#                            <li><a href="{% url 'login' %}">Login</a></li>#}
+{#                            {% endif %}#}
+                            <li><a href="{% url 'contact_us' %}">Contact us</a></li>
+                            <li><a href="{% url 'network_status' %}">NetWork Status</a></li>
+                            <li><a href="{% url 'faq' %}">FAQ</a></li>
+
+                        </ul>
+
+                    </div><!-- /.nav-collapse -->
+                </nav>
+            </div>
+
+        </div>
+        </div>
+    </section>
+<!-- Header Start-->
+{% block content %}
+
+{% endblock %}
+
+<section id="footer-area1">
+    <div class="footer-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <h4> about us </h4>
+                    {% get_about as About %}
+                    <div class="product-name">{{ About.0.value | safe}}</div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <h4> Link </h4>
+                    <ul>
+                        <li> <a href="#">
+                            <i class="fa fa-angle-right"></i> &nbsp; Home </a>
+                        </li>
+                        <li> <a href="{%  url 'about_us' %}">
+                            <i class="fa fa-angle-right"></i> &nbsp; About us</a>
+                        </li>
+                        <li> <a href="{%  url 'termsandconditions' %}">
+                            <i class="fa fa-angle-right"></i> &nbsp;  Terms & Conditions</a>
+                        </li>
+                        <li> <a href="{%  url 'privacyandpolicy' %}">
+                            <i class="fa fa-angle-right"></i> &nbsp;  Privacy & Policy</a>
+                        </li>
+                        <li> <a href="{%  url 'voip_rate' %}">
+                            <i class="fa fa-angle-right"></i> &nbsp;  Voip long distance rate</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <h4>CONTACT US</h4>
+
+                    <p>
+                        Tel: {{ Contact.0.phone }} <br>
+                        Fax: {{ Contact.0.fax }} <br>
+                        Email: <b>{{ Contact.0.email }}</b><br>
+                    </p>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <h4>Follow Us</h4>
+                    <ul class="social-network">
+                        {%  follow_us_function as follow_us %}
+                        {%  for fl in follow_us %}
+                        <li>
+                            <a href="{{ fl.url }}" target="_blank">
+                               {% autoescape off %}{{ fl.fa_fa_icon }}{%  endautoescape %}
+                            </a>
+                        </li>
+                        {%  endfor %}
+
+                    </ul>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+   <div id="google_translate_element" style="display:none;"></div>
+    <div class="footer-bottom-area">
+        <div class="container">
+                    <div class="footer-bottom">
+                                <div class="fba-copyright text-center">
+                                    <p> © 2018 egciptv. All rights reserved</p>
+                                </div>
+                    </div>
+        </div>
+    </div>
+</section>
+<div id="search">
+    <a href="#" id="close-btn">
+        <em class="fa fa-times"></em>
+    </a>
+    <input placeholder="type here" id="searchbox" type="search" />
+</div>
+
+
+<!-------------------------------------------------------------------------------------------- Modal Append ------------------------------------------------------------->
+
+<div id="myModalregion" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        Set Your Region
+      </div>
+      <div class="modal-body">
+        <div>
+         <select id="province" onchange="get_city()">
+         <option> ---- Select Province ----- </option>
+            {%  get_session_province_list as province_data %}
+            {%  for pd in province_data %}
+                <option value="{{ pd.id }}">{{ pd.province_name }}</option>
+            {%  endfor %}
+         </select>
+        </div>
+        <div id="city_list">
+
+        </div>
+        <div>
+            <button type="button" class="btn btn-success" onclick="set_country_state_city()"> Save your current region</button>
+        </div>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+<!--Required js -->
+<script src="{% static 'customer/js/jquery-1.11.3.js' %}"></script>
+<script src="{% static 'customer/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'customer/js/bootsnav.js' %}"></script>
+<script src="{% static 'customer/js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'customer/js/custom.js' %}"></script>
+<script>
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 214){
+            $('.custom-main-menu-section').addClass("sticky");
+        }
+        else{
+            $('.custom-main-menu-section').removeClass("sticky");
+        }
+    });
+   $(function(){
+       $(".product-name").each(function(i){
+           len=$(this).text().length;
+           if(len>60)
+           {
+                $(this).text($(this).text().substr(0,60)+'...');
+            }
+       });
+   });
+
+
+</script>
+<style>
+    .sticky {position: fixed;width: 100%;z-index:9999; top:0;background-color:#fff;}
+    .goog-te-banner-frame.skiptranslate {display: none !important;}
+     body{top: 0px !important;}
+</style>
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+}
+
+jQuery('.lang-select').click(function() {
+	  var theLang = jQuery(this).attr('data-lang');
+	  jQuery('.goog-te-combo').val(theLang);
+	  $.ajax({
+                type: "post",
+                url: "{% url 'set_lang_session' %}",
+                data: {csrfmiddlewaretoken:"{{csrf_token}}",language:theLang},
+                success:function (success){
+                    if(success['results']['status']=='Success'){
+                        window.location = jQuery(this).attr('href');
+	                    location.reload();
+                    }
+                }
+              });
+
+
+	});
+
+ function open_list(){
+         $('#myModalregion').modal('show');
+ }
+ $(document).ready(function () {
+       $.ajax({
+                type: "post",
+                url: "{% url 'check_session' %}",
+                data: {csrfmiddlewaretoken:"{{csrf_token}}"},
+                success:function (success){
+                    if(success['results']['status']=='Success'){
+                        $('#myModalregion').modal('show');
+                    }else{
+
+                    }
+
+                }
+              });
+
+ })
+     function get_city(){
+        var region = document.getElementById('province').value;
+
+        $.ajax({
+                type: "post",
+                url: "{% url 'get_city_according_region' %}",
+                data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                    province:region,
+
+                },
+                success:function (success){
+                    console.log(success.data);
+                    $('#city_list').empty().append(success.data);
+                }
+              });
+
+    }
+
+
+    function set_country_state_city(){
+        var region = document.getElementById('province').value;
+        var city = document.getElementById('city').value;
+
+        $.ajax({
+                type: "post",
+                url: "{% url 'get_city_of_region' %}",
+                data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                    province:region,
+                    city:city,
+
+                },
+                success:function (success){
+                    console.log(success);
+                    if(success['results']['status']=='Success'){
+                         $('#myModalregion').modal('hide');
+                    }
+                }
+              });
+
+    }
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+{% block scripts %}
+{% endblock %}
+</body>
+</html>

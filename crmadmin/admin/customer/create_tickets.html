@@ -1,0 +1,134 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% load return_item %}
+{% load ticket %}
+{% block content %}
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Create Tickets </h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" id="" class="form-horizontal" action="{% url 'create_tickets' id %}" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                      <div class="box-body">
+
+                      <p class="margin">Subjects</p>
+                      <div class="input-group">
+                        <input type="text" name="subject" class="form-control" value="" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Describe Full Details </p>
+                      <div class="input-group">
+                          <textarea name="threads"  class="form-control" required style="width: 588px!important;"></textarea>
+                      </div>
+
+                      <p class="margin">Ticket category </p>
+
+                      <div class="input-group">
+                        <select  name="ticketCategory" id="ticketCategory"  class="form-control" required style="width: 588px!important;"  onchange="get_service_with_ticket()">
+                            <option> Select</option>
+                            {% for  ticket in ticket_category %}
+                              <option value="{{ ticket.id }}">{{ ticket.category_title|title}}</option>
+                            {% endfor %}
+                        </select>
+                      </div>
+
+                      <p class="margin">Service Provider </p>
+
+                      <div class="input-group">
+                        <select  name="service_provider"  class="form-control" required style="width: 588px!important;" id="service_provider" onchange="get_service_hw_with_ticket()">
+
+                        </select>
+                      </div>
+
+                      <p class="margin">Service Provider H/W </p>
+
+                      <div class="input-group">
+                        <select  name="service_plan_hardware"  class="form-control" required style="width: 588px!important;" id="service_plan_hardware">
+
+                        </select>
+                      </div>
+
+                      <p class="margin">Category</p>
+                      <div class="input-group">
+                        <select  name="category"  class="form-control" required style="width: 588px!important;">
+                            <option value="administrator">Administrator</option>
+                            <option value="user">User</option>
+                        </select>
+                      </div>
+
+                      <p class="margin">Priority</p>
+                      <div class="input-group">
+                        <select  name="priority"  class="form-control" required style="width: 588px!important;">
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                      </div>
+
+                      <input type="hidden" name="customer" class="form-control" value="{{ id }}" required style="width: 588px!important;">
+                      <input type="hidden" name="working_status" class="form-control" value="Pending" required style="width: 588px!important;">
+                      <input type="hidden" name="updatedby" class="form-control" value="{{ uploaduser }}" required style="width: 588px!important;">
+
+
+
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Add</button>
+                       </div>
+                </form>
+
+          </div>
+          <!-- /.box -->
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+    function get_service_with_ticket(){
+      var ticketCategory = document.getElementById('ticketCategory').value;
+      var id = '{{ id }}';
+      $.ajax({
+            type: "post",
+            url: "{% url 'get_service_with_ticket' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                ticketCategory:ticketCategory,
+                user_id:id
+            },
+            success:function (success){
+                console.log(success.data);
+                 $('#service_provider').empty().append(success.data);
+            }
+        })
+    }
+
+    function get_service_hw_with_ticket(){
+      var service_provider = document.getElementById('service_provider').value;
+      var id = '{{ id }}';
+      $.ajax({
+            type: "post",
+            url: "{% url 'get_service_hw_with_ticket' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                service_provider:service_provider,
+                user_id:id
+            },
+            success:function (success){
+                console.log(success.data);
+                 $('#service_plan_hardware').empty().append(success.data);
+            }
+        })
+    }
+
+    </script>
+{% endblock %}
+
+
+
