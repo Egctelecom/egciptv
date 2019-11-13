@@ -18,5 +18,5 @@ def get_phone_number(id):
 @register.simple_tag()
 def get_customer_address(id):
 
-    data = AccountAddressCustomer.objects.values('id','address_1','address_2','city_id__city_name','province_id__province_name','country_id__country_name').filter(user_id=id)
+    data = AccountAddressCustomer.objects.values('id','address_1','address_2','city_id__city_name','province_id__province_name','country_id__country_name', 'postal').filter(user_id=id)
     return data
