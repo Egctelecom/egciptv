@@ -135,6 +135,7 @@ class AccountAddressCustomer(models.Model):
     city = models.ForeignKey(City, on_delete=models.CASCADE)
     province = models.ForeignKey(Province, on_delete=models.CASCADE)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
+    postal = models.IntegerField(default=None, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -150,6 +151,7 @@ class BillingAddressCustomer(models.Model):
     billing_city = models.ForeignKey(City, on_delete=models.CASCADE)
     billing_province = models.ForeignKey(Province, on_delete=models.CASCADE)
     billing_country = models.ForeignKey(Country, on_delete=models.CASCADE)
+    postal = models.IntegerField(default=None, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

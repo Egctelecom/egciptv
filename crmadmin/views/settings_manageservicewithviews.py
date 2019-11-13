@@ -134,8 +134,8 @@ def settings_manage_service_price_edit(request, pk,category_id):
                                                             kwargs={'pk': pk, 'category_id': category_id}))
                         
                 else:
-                        messages.add_message(request, messages.ERROR, form.errors)
-                        return HttpResponseRedirect(reverse('settings_manage_service_price_edit', kwargs={'pk': pk,'category_id':category_id}))
+                    messages.add_message(request, messages.ERROR, form.errors)
+                    return HttpResponseRedirect(reverse('settings_manage_service_price_edit', kwargs={'pk': pk,'category_id':category_id}))
                 
             except ManageServicePrice.DoesNotExist:
                 data = None
@@ -177,7 +177,7 @@ def settings_manage_service_price_value_update(request):
             msg = 'New password and confirm password should be matched'
             return HttpResponse(json.dumps({"data": msg}), content_type="application/json")
 
-#=============================================== Service Provider Doc ==================================================
+# =============================================== Service Provider Doc ================================================
 
 # Doc Add
 
@@ -218,7 +218,7 @@ def settings_manage_service_price_doc_delete(request,id,service_provider_id):
             messages.add_message(request, messages.SUCCESS, 'Document deleted successfully')
             return HttpResponseRedirect(reverse('settings_manage_service_price_doc_view',kwargs={'id':service_provider_id}))
         else:
-            messages.add_message(request, messages.ERROR, forms.errors)
+            # messages.add_message(request, messages.ERROR, forms.errors)
             return HttpResponseRedirect(reverse('settings_manage_service_price_doc_view',kwargs={'id':service_provider_id}))
     
 # DOC status change

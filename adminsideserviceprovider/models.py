@@ -137,7 +137,7 @@ class ManageServicePricedoc(models.Model):
 
 class CustomerWithService(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    user = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='customer_plans')
     service_provider = models.ForeignKey(ServiceProvider, on_delete=models.CASCADE)
     service_plan = models.ForeignKey(ServiceProviderPlan, on_delete=models.CASCADE)
     service_price_actual = models.FloatField(help_text='Enter Service Price')

@@ -84,7 +84,7 @@
                               <a href="{% url 'change_password' customer_list.user_id %}" class="fancybox fancybox.iframe"><img src="https://png.icons8.com/color/48/000000/key.png"></a>
                               <a href="{% url 'customer_details' customer_list.customer_id__id %}">{{customer_list.customer_id__first_name}} {{customer_list.customer_id__last_name}}</a>
                             </td>
-                            <td></td>
+                            <td>{{ customer_list.monthly }}</td>
                             <td></td>
                             <td>
                                 <a href="{% url 'edit_customer' customer_list.customer_id__id %}" class="fancybox fancybox.iframe btn btn-info btn-xs"><i class="fa fa-pencil"></i></a>

@@ -30,7 +30,7 @@
                         </div>
                         <p class="margin">Company</p>
                           <div class="input-group">
-                            <input type="text" name="company_name" class="form-control" value="{{customer.0.company_name}}" required style="width: 208px!important;">
+                            <input type="text" name="company_name" class="form-control" value="{{customer.0.company_name}}" style="width: 208px!important;">
                           </div>
                           <p class="margin">Display company Name</p>
                             <div class="input-group">
@@ -70,15 +70,15 @@
           <div class="box-body">
                       <p class="margin">Gsr</p>
                       <div class="input-group">
-                        <input type="text" name="first_name_gsr" class="form-control" value="{{customer.0.first_name_gsr}}" required style="width: 208px!important;">
+                        <input type="text" name="first_name_gsr" class="form-control" value="{{customer.0.first_name_gsr}}"  style="width: 208px!important;">
                       </div>
                       <p class="margin">Gsr</p>
                       <div class="input-group">
-                        <input type="text" name="last_name_gsr" class="form-control" value="{{customer.0.last_name_gsr}}" required style="width: 208px!important;">
+                        <input type="text" name="last_name_gsr" class="form-control" value="{{customer.0.last_name_gsr}}"  style="width: 208px!important;">
                       </div>
                       <p class="margin">Gsr</p>
                       <div class="input-group">
-                        <input type="text" name="company_name_gsr" class="form-control" value="{{customer.0.company_name_gsr}}" required style="width: 208px!important;">
+                        <input type="text" name="company_name_gsr" class="form-control" value="{{customer.0.company_name_gsr}}"  style="width: 208px!important;">
                       </div>
                       <p class="margin">Email</p>
                       <div class="input-group">
@@ -157,9 +157,11 @@
               </div>
               <p class="margin">Postal</p>
               <div class="input-group">
-                <input type="text" name="postal" id="postal" class="form-control" required value=""  style="width: 208px!important;">
+                <input type="text" name="postal" id="postal" class="form-control" required value="{{ account_address.0.postal }}"  style="width: 208px!important;">
               </div>
           </div>
+    </div>
+        <div class="col-md-3">
          <div class="box-header with-border">
               <h3 class="box-title">Billing Address , <input type="checkbox"  onclick="same_as_account_address()" id="checkadd" >  same as account address  ? </h3>
          </div>
@@ -204,68 +206,68 @@
                 <input type="text" name="billing_postal" id="billing_postal" class="form-control" required value=""  style="width: 208px!important;">
               </div>
           </div>
-    </div>
-    <div class="col-md-3">
-         <div class="box-header with-border">
-              <h3 class="box-title">Billing Details</h3>
-            </div>
-          <div class="box-body">
-              <p class="margin">Salesperson</p>
-              <div class="input-group">
-                <select name="salesperson" class="form-control" required style="width: 208px!important;" >
-                    {% for user in user_profile %}
-                    <option value="{{ user.id }}" {% if user.id == billing_details.0.salesperson_id %}selected{% endif %}>{{ user.user_id__username }}</option>
-                    {% endfor %}
-                </select>
-              </div>
-              <p class="margin">Contract Type</p>
-              <div class="input-group">
-                <select name="contract_type" class="form-control" required style="width: 208px!important;" >
-                    <option value="month" {% if billing_details.0.contract_type == 'month' %}selected{% endif %}>Monthly</option>
-                    <option value="1" {% if billing_details.0.contract_type == '1' %}selected{% endif %}>1 year</option>
-                    <option value="2" {% if billing_details.0.contract_type == '2' %}selected{% endif %}>2 year</option>
-                    <option value="3" {% if billing_details.0.contract_type == '3' %}selected{% endif %}>3 year</option>
-                    <option value="4" {% if billing_details.0.contract_type == '4' %}selected{% endif %}>4 year</option>
-                    <option value="5" {% if billing_details.0.contract_type == '5' %}selected{% endif %}>5 year</option>
-                    <option value="6" {% if billing_details.0.contract_type == '6' %}selected{% endif %}>6 year</option>
-                    <option value="7" {% if billing_details.0.contract_type == '7' %}selected{% endif %}>7 year</option>
-                </select>
-              </div>
-              <p class="margin">Billing Day</p>
-              <div class="input-group">
-                <select name="billing_day" class="form-control" required style="width: 208px!important;" >
-                    <option value="1"  {% if billing_details.0.billing_day == '1' %}selected{% endif %}>1 </option>
-                    <option value="15" {% if billing_details.0.billing_day == '15' %}selected{% endif %}>15</option>
-                </select>
-              </div>
-              <p class="margin">Payment Mode</p>
-              <div class="input-group">
-                <select name="payment_mode" class="form-control" required style="width: 208px!important;" >
-                    <option value="prepaid"  {% if billing_details.0.payment_mode == 'prepaid' %}selected{% endif %}>Prepaid</option>
-                    <option value="postpaid" {% if billing_details.0.payment_mode == 'postpaid' %}selected{% endif %}>Postpaid</option>
-                </select>
-              </div>
-              <p class="margin">Payment Method</p>
-              <div class="input-group">
-                <select name="payment_method" class="form-control" required style="width: 208px!important;" >
-                    <option>Select One</option>
-                    <option value="internet_banking" {% if billing_details.0.payment_method == 'internet_banking' %}selected{% endif %}>Internet Banking</option>
-                    <option value="credit_card"      {% if billing_details.0.payment_method == 'credit_card' %}selected{% endif %}>Credit Card</option>
-                    <option value="direct_deposal"   {% if billing_details.0.payment_method == 'direct_deposal' %}selected{% endif %}>Direct Deposal</option>
-                    <option value="cheque_money"     {% if billing_details.0.payment_method == 'cheque_money' %}selected{% endif %}>Cheque/Money Order</option>
-                    <option value="paypal"           {% if billing_details.0.payment_method == 'paypal' %}selected{% endif %}>Paypal</option>
-                </select>
-              </div>
-              <p class="margin">Yearly pre-payment <input type="checkbox" name="year_pre_payment"  value="year_pre_payment" {% if billing_details.0.year_pre_payment == 'year_pre_payment' %}checked{% endif %} required></p>
-              <p class="margin">From</p>
-              <div class="input-group">
-                 <input type="text" name="billing_from" class="form-control" value="{{ billing_details.0.billing_from }}" required  style="width: 208px!important;">
-              </div>
-               <p class="margin">To</p>
-              <div class="input-group">
-                 <input type="text" name="billing_to" class="form-control" value="{{ billing_details.0.billing_to }}" required style="width: 208px!important;">
-              </div>
-          </div>
+<!--    </div>-->
+
+<!--         <div class="box-header with-border">-->
+<!--              <h3 class="box-title">Billing Details</h3>-->
+<!--            </div>-->
+<!--          <div class="box-body">-->
+<!--              <p class="margin">Salesperson</p>-->
+<!--              <div class="input-group">-->
+<!--                <select name="salesperson" class="form-control" required style="width: 208px!important;" >-->
+<!--                    {% for user in user_profile %}-->
+<!--                    <option value="{{ user.id }}" {% if user.id == billing_details.0.salesperson_id %}selected{% endif %}>{{ user.user_id__username }}</option>-->
+<!--                    {% endfor %}-->
+<!--                </select>-->
+<!--              </div>-->
+<!--              <p class="margin">Contract Type</p>-->
+<!--              <div class="input-group">-->
+<!--                <select name="contract_type" class="form-control" required style="width: 208px!important;" >-->
+<!--                    <option value="month" {% if billing_details.0.contract_type == 'month' %}selected{% endif %}>Monthly</option>-->
+<!--                    <option value="1" {% if billing_details.0.contract_type == '1' %}selected{% endif %}>1 year</option>-->
+<!--                    <option value="2" {% if billing_details.0.contract_type == '2' %}selected{% endif %}>2 year</option>-->
+<!--                    <option value="3" {% if billing_details.0.contract_type == '3' %}selected{% endif %}>3 year</option>-->
+<!--                    <option value="4" {% if billing_details.0.contract_type == '4' %}selected{% endif %}>4 year</option>-->
+<!--                    <option value="5" {% if billing_details.0.contract_type == '5' %}selected{% endif %}>5 year</option>-->
+<!--                    <option value="6" {% if billing_details.0.contract_type == '6' %}selected{% endif %}>6 year</option>-->
+<!--                    <option value="7" {% if billing_details.0.contract_type == '7' %}selected{% endif %}>7 year</option>-->
+<!--                </select>-->
+<!--              </div>-->
+<!--              <p class="margin">Billing Day</p>-->
+<!--              <div class="input-group">-->
+<!--                <select name="billing_day" class="form-control" required style="width: 208px!important;" >-->
+<!--                    <option value="1"  {% if billing_details.0.billing_day == '1' %}selected{% endif %}>1 </option>-->
+<!--                    <option value="15" {% if billing_details.0.billing_day == '15' %}selected{% endif %}>15</option>-->
+<!--                </select>-->
+<!--              </div>-->
+<!--              <p class="margin">Payment Mode</p>-->
+<!--              <div class="input-group">-->
+<!--                <select name="payment_mode" class="form-control" required style="width: 208px!important;" >-->
+<!--                    <option value="prepaid"  {% if billing_details.0.payment_mode == 'prepaid' %}selected{% endif %}>Prepaid</option>-->
+<!--                    <option value="postpaid" {% if billing_details.0.payment_mode == 'postpaid' %}selected{% endif %}>Postpaid</option>-->
+<!--                </select>-->
+<!--              </div>-->
+<!--              <p class="margin">Payment Method</p>-->
+<!--              <div class="input-group">-->
+<!--                <select name="payment_method" class="form-control" required style="width: 208px!important;" >-->
+<!--                    <option>Select One</option>-->
+<!--                    <option value="internet_banking" {% if billing_details.0.payment_method == 'internet_banking' %}selected{% endif %}>Internet Banking</option>-->
+<!--                    <option value="credit_card"      {% if billing_details.0.payment_method == 'credit_card' %}selected{% endif %}>Credit Card</option>-->
+<!--                    <option value="direct_deposal"   {% if billing_details.0.payment_method == 'direct_deposal' %}selected{% endif %}>Direct Deposal</option>-->
+<!--                    <option value="cheque_money"     {% if billing_details.0.payment_method == 'cheque_money' %}selected{% endif %}>Cheque/Money Order</option>-->
+<!--                    <option value="paypal"           {% if billing_details.0.payment_method == 'paypal' %}selected{% endif %}>Paypal</option>-->
+<!--                </select>-->
+<!--              </div>-->
+<!--              <p class="margin">Yearly pre-payment <input type="checkbox" name="year_pre_payment"  value="year_pre_payment" {% if billing_details.0.year_pre_payment == 'year_pre_payment' %}checked{% endif %} required></p>-->
+<!--              <p class="margin">From</p>-->
+<!--              <div class="input-group">-->
+<!--                 <input type="text" name="billing_from" class="form-control" value="{{ billing_details.0.billing_from }}" required  style="width: 208px!important;">-->
+<!--              </div>-->
+<!--               <p class="margin">To</p>-->
+<!--              <div class="input-group">-->
+<!--                 <input type="text" name="billing_to" class="form-control" value="{{ billing_details.0.billing_to }}" required style="width: 208px!important;">-->
+<!--              </div>-->
+<!--          </div>-->
     </div>
 </form>
 {% endblock %}
@@ -338,4 +340,128 @@ function  test() {
 
 </script>
 <script src="{% static 'admin/plugins/datepicker/bootstrap-datepicker.js' %}"></script>
+<script>
+
+    function same_as_account_address(){
+
+         var checkadd = $('#checkadd').is(':checked');
+
+         if (checkadd == true) {
+
+             var address_1 = document.getElementById('address_1').value;
+             var address_2 = document.getElementById('address_2').value;
+             var city = document.getElementById('city').value;
+             var province = document.getElementById('province').value;
+             var country = document.getElementById('country').value;
+             var postal = document.getElementById('postal').value;
+
+             document.getElementById('billing_address_1').value = address_1;
+             document.getElementById('billing_address_2').value = address_2;
+             {#document.getElementById('billing_city').value = city;#}
+             {#document.getElementById('billing_province').value = province;#}
+             document.getElementById('billing_country').value = country;
+             document.getElementById('billing_postal').value = postal;
+
+
+             $.ajax({
+                type: "post",
+                url: "{% url 'same_as_account_address' %}",
+                data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                    country:country,
+                    province:province,
+                    city:city,
+                },
+                success:function (success){
+                    console.log(success.data);
+                     $('#billing_account').empty().append(success.data);
+                      document.getElementById('billing_city').value = city;
+                      document.getElementById('billing_province').value = province;
+                }
+            })
+
+         }else{
+
+             document.getElementById('billing_address_1').value = '';
+             document.getElementById('billing_address_2').value = '';
+             document.getElementById('billing_city').value = '';
+             document.getElementById('billing_province').value = '';
+             document.getElementById('billing_country').value = '';
+             document.getElementById('billing_postal').value = '';
+         }
+
+
+ }
+ function get_province(){
+     var country = document.getElementById('country').value;
+      $.ajax({
+            type: "post",
+            url: "{% url 'get_service_province' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                country:country,
+            },
+            success:function (success){
+                console.log(success.data);
+                 $('#select_province').empty().append(success.data);
+
+            }
+        })
+ }
+ function get_city(){
+     var province = document.getElementById('province').value;
+      $.ajax({
+            type: "post",
+            url: "{% url 'get_city' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                province:province,
+            },
+            success:function (success){
+                console.log(success.data);
+                 $('#select_city').empty().append(success.data);
+            }
+        })
+ }
+
+  function get_billing_province(){
+     var billing_country = document.getElementById('billing_country').value;
+      $.ajax({
+            type: "post",
+            url: "{% url 'get_billing_province' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                country:billing_country,
+            },
+            success:function (success){
+                console.log(success.data);
+                 $('#select_billing_province').empty().append(success.data);
+            }
+        })
+ }
+ function get_billing_city(){
+     var billing_province = document.getElementById('billing_province').value;
+      $.ajax({
+            type: "post",
+            url: "{% url 'get_billing_city' %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+                province:billing_province,
+            },
+            success:function (success){
+                console.log(success.data);
+                 $('#select_billing_city').empty().append(success.data);
+            }
+        })
+ }
+ function set_gsr(){
+     var zone = document.getElementById('zone').value;
+     if(zone == 'commercial'){
+         $('#first_name_gsr').attr('required','required');
+         $('#last_name_gsr').attr('required','required');
+         $('#company_name_gsr').attr('required','required');
+         $('#company_name').attr('required','required');
+     }else{
+          $('#first_name_gsr').removeAttr('required');
+         $('#last_name_gsr').removeAttr('required');
+         $('#company_name_gsr').removeAttr('required');
+         $('#company_name').removeAttr('required');
+     }
+ }
+</script>
 {% endblock %}

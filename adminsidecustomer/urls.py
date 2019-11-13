@@ -7,6 +7,8 @@ urlpatterns = [
 
 url(r'^customer/$', customer_views.index, name='customer'),
 url(r'^change_password/(?P<pk>[0-9]+)$', customer_views.change_password, name='change_password'),
+url(r'^send_password_mail/(?P<pk>[0-9]+)$', customer_views.send_password_mail, name='send_password_mail'),
+url(r'^send_password_sms/(?P<pk>[0-9]+)$', customer_views.send_password_sms, name='send_password_sms'),
 url(r'^customer/add/$', customer_views.add, name='add_customer'),
 url(r'^customer/edit/(?P<id>[0-9]+)$', customer_views.edit, name='edit_customer'),
 url(r'^customer/details/(?P<id>[0-9]+)$', customer_views.details, name='customer_details'),
