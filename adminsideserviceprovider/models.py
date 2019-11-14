@@ -211,7 +211,7 @@ class CustomerTicketsCategoriesMap(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     ticketCategory = models.ForeignKey(TicketsCategories, on_delete=models.CASCADE)
     service_provider = models.ForeignKey(ServiceProvider, on_delete=models.CASCADE)
-    service_plan_hardware = models.ForeignKey(ServicePlanWithHardware, on_delete=models.CASCADE)
+    # service_plan_hardware = models.ForeignKey(ServicePlanWithHardware, on_delete=models.CASCADE)
     subject = models.TextField(help_text='Enter Subjects', )
     threads = models.TextField(help_text='Enter Threads')
     category = models.CharField(help_text='Enter Category', choices=category, default='U', max_length=150)

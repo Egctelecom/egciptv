@@ -60,7 +60,21 @@
                         </li>
                         {% endfor %}
                         <li class="list-group-item">
-                            <button type="button" class="btn btn-success btn-xs-1"><a href="" style="color: #FFF;">Send Email</a></button>
+<!--                            <button type="button" class="btn btn-success btn-xs-1"><a href="" style="color: #FFF;">Send Email</a></button>-->
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Send Email
+                          </button>
+                          <div class="dropdown-menu">
+                            <a class="dropdown-item fancybox fancybox.iframe" href="{% url 'customer_custom_mail' customer.0.id %}">Custom Email</a>
+                            <div class="dropdown-divider"></div>
+                              <a class="dropdown-item" href="#">Send Password</a><div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Send Suspend Warning</a><div class="dropdown-divider"></div>
+
+                            <a class="dropdown-item" href="#">Send Payment Instructions</a><div class="dropdown-divider"></div>
+                              <a class="dropdown-item" href="#">Verify Cell #</a><div class="dropdown-divider"></div>
+                          </div>
+                        </div>
                             <button type="button" class="btn btn-info btn-xs-1"><a href="" style="color: #FFF;">Send SMS</a></button>
                             <button type="button" class="btn btn-danger btn-xs-1"><a href="" style="color: #FFF;">Client Login</a></button>
 <!--                            <a class=""><span class="label label-info">Send Sms</span></a>-->
@@ -75,7 +89,7 @@
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#service_plan" data-toggle="tab">Service Plan</a></li>
                     <li><a href="#documents" data-toggle="tab">Upload Documents</a></li>
-                    <li><a href="#tickets" data-toggle="tab">Tickets</a></li>
+                    <li><a href="#tickets" data-toggle="tab">Tickets ({{ total_tickets }})</a></li>
                     {#              <li><a href="#invoice" data-toggle="tab">Pending Invoie Details</a></li>#}
                     <li><a href="#newcontract" data-toggle="tab">Contract</a></li>
                     <li><a href="#devices" data-toggle="tab">Devices of Contract</a></li>
@@ -100,8 +114,9 @@
                                         <tr>
                                             <th>Plan ID </th>
                                             <th>Service Plan</th>
-                                            <th>Charge </th>
+
                                             <th>Monthly / One Time</th>
+                                            <th>Charge </th>
                                             <th>Status</th>
                                             <th>Action</th>
                                         </tr>
@@ -111,8 +126,9 @@
                                         <tr>
                                             <td>{{ plans.id }}</td>
                                             <td>{{ plans.service_plan_id__title }}</td>
-                                            <td>{{ plans.service_price_actual }}</td>
                                             <td>{{ plans.plan_paid_status }}</td>
+                                            <td>{{ plans.service_price_actual }}</td>
+
                                             <td>{{ plans.plan_status }}</td>
                                             <td>
                                                 <a href="{% url 'edit_customer_service_plan' plans.id %}" class="fancybox fancybox.iframe btn btn-info btn-xs"> Edit </a>
@@ -134,6 +150,27 @@
                                             </td>
                                         </tr>
                                         {% endfor %}
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="2"> Total Monthly Charge</td>
+                                            <td>{{ monthly_total }}</td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                         <tr>
+                                             <td></td>
+                                            <td colspan="2"> Tax ({{ tax_rate.tax_rate }}%)</td>
+                                            <td>{{ tax }}</td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                         <tr>
+                                             <td></td>
+                                            <td colspan="2"> Total</td>
+                                            <td>{{ total_charge }}</td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -190,6 +227,7 @@
                                             </td>
                                         </tr>
                                         {% endfor %}
+
                                         </tbody>
                                     </table>
                                 </div>

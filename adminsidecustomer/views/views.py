@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.shortcuts import render
 import json
 import requests
+from django.views.generic.base import View
+
 from adminnumberprovider.models import NumberProvinceCustomerMap,NumberMNPtoCustomer
 from crmadmin.models import CallCost
 from adminsidecustomer.forms import Customerform
@@ -10,7 +12,7 @@ from django.contrib import messages
 from django.urls import reverse
 from django.http import HttpResponseRedirect,JsonResponse,HttpResponse
 from adminsidecustomer.models import Customer, AccountAddressCustomer, BillingAddressCustomer, BillingDetailsCustomer, \
-    CutomerAttachmentMap, CustomerUserMap
+    CutomerAttachmentMap, CustomerUserMap, Sales_tax
 from adminsideserviceprovider.models import CustomerTicketsCategoriesMap
 from adminsidecustomer.models import City
 from adminsidecustomer.models import Province
@@ -355,10 +357,19 @@ def details(request, id):
         request.session['customer']=id
         customer_data = Customer.objects.values('id','account_id','status','first_name','first_name_gsr','last_name','last_name_gsr','company_name','company_name_gsr','portal_password','email_address','phone','other_phone','dob','display_name','prefferd_language','zone').filter(pk=id)
         service_plan = CustomerWithService.objects.values('id','service_plan_id__title','service_price_actual','service_price_retail','service_price_qty','plan_status','plan_paid_status').filter(user_id=id,plan_status='y')
+        monthly_total = 0
+        for i in service_plan:
+            monthly_total += i['service_price_actual']
+        province = BillingAddressCustomer.objects.get(user__id=customer_data[0]['id']).billing_province
+        tax_rate = Sales_tax.objects.get(province=province)
+        
+        tax = monthly_total * tax_rate.tax_rate / 100
+        total_charge = tax + monthly_total
         documents = CutomerAttachmentMap.objects.values('id','customer_id','filedata','file_type','file_name','created_at').filter(customer_id=id)
         utickets = CustomerTicketsCategoriesMap.objects.values('id','customer_id','subject','threads','category','priority').filter(customer_id=id,category='user')
         atickets = CustomerTicketsCategoriesMap.objects.values('id','customer_id','subject','threads','category','priority').filter(customer_id=id,category='administrator')
         
+        total_tickets = len(utickets) + len(atickets)
         customer_plan_data = CustomerServiceContract.objects.values('id',
                                                                     'user_id',
                                                                     'customerwithservice'
@@ -481,7 +492,12 @@ def details(request, id):
             'hw_list_device_rental':hw_list_device_rental,
             'hw_list_id':hw_list_id,
             'port_number_list':port_number_list,
-            'contarct_based_hw_id':contarct_based_hw_id
+            'contarct_based_hw_id':contarct_based_hw_id,
+            'monthly_total': monthly_total,
+            'tax': tax,
+            'tax_rate': tax_rate,
+            'total_charge': total_charge,
+            'total_tickets': total_tickets
         })
 
 
@@ -1048,7 +1064,21 @@ def send_password_sms(request, pk):
             'message': "Success"
         }, status=200)
 
-            
+
+
+class SendCustomMail(View):
+    def get(self, request, pk):
+        customer_obj = Customer.objects.get(id=pk)
+        return render(request, 'admin/users/custom_email.html', {'customer_obj': customer_obj})
+    
+    def post(self, request, pk):
+        customer_obj = Customer.objects.get(id=pk)
+        message = request.POST['message']
+        
+        #send Mail
+        
+        messages.success(request, "Mail Sent")
+        return HttpResponseRedirect(reverse('customer_custom_mail', kwargs={'pk': pk}))
             
             
             

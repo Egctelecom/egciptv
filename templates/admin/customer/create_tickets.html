@@ -34,7 +34,7 @@
                       <p class="margin">Ticket category </p>
 
                       <div class="input-group">
-                        <select  name="ticketCategory" id="ticketCategory"  class="form-control" required style="width: 588px!important;"  onchange="get_service_with_ticket()">
+                        <select  name="ticketCategory" id="ticketCategory"  class="form-control" required style="width: 588px!important;" >
                             <option> Select</option>
                             {% for  ticket in ticket_category %}
                               <option value="{{ ticket.id }}">{{ ticket.category_title|title}}</option>
@@ -45,18 +45,21 @@
                       <p class="margin">Service Provider </p>
 
                       <div class="input-group">
-                        <select  name="service_provider"  class="form-control" required style="width: 588px!important;" id="service_provider" onchange="get_service_hw_with_ticket()">
+                        <select  name="service_provider"  class="form-control" required style="width: 588px!important;" id="service_provider">
+                            {% for provider in providers %}
+                                <option value="{{ provider.id }}">{{ provider.service_provider_name }}</option>
+                            {% endfor %}
 
                         </select>
                       </div>
 
-                      <p class="margin">Service Provider H/W </p>
+<!--                      <p class="margin">Service Provider H/W </p>-->
 
-                      <div class="input-group">
-                        <select  name="service_plan_hardware"  class="form-control" required style="width: 588px!important;" id="service_plan_hardware">
+<!--                      <div class="input-group">-->
+<!--                        <select  name="service_plan_hardware"  class="form-control" required style="width: 588px!important;" id="service_plan_hardware">-->
 
-                        </select>
-                      </div>
+<!--                        </select>-->
+<!--                      </div>-->
 
                       <p class="margin">Category</p>
                       <div class="input-group">
