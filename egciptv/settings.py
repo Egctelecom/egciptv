@@ -162,12 +162,19 @@ STATICFILES_DIRS = [
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
-EMAIL_HOST = 'bh-ht-5.webhostbox.net'
-EMAIL_PORT = '465'
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
+# EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
+# EMAIL_HOST = 'bh-ht-5.webhostbox.net'
+# EMAIL_PORT = '465'
+# EMAIL_HOST_USER = ''
+# EMAIL_HOST_PASSWORD = ''
+# EMAIL_USE_TLS = True
+
 EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'ranit.saha@navsoft.in'
+EMAIL_HOST_PASSWORD = 'zxcvbnm!@'
+EMAIL_PORT = 587
+
 
 
 PAYPAL_MODE='sandbox'   # sandbox or live

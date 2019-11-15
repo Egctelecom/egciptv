@@ -1007,7 +1007,7 @@ def send_password_mail(request, pk):
         msg = 'Your Password has been changed'
         subject = 'Any further query please contact to admin '
         user_details = User.objects.values('first_name', 'last_name', 'email').filter(pk=pk)
-        customer = CustomerUserMap.objects.values('user_id', 'customer_id').filter(user_id=pk)
+        # customer = CustomerUserMap.objects.values('user_id', 'customer_id').filter(user_id=pk)
 
         massege = render_to_string('admin/email_template/customer_password.html',
                                    {'first_name': user_details[0]['first_name'],
@@ -1023,7 +1023,7 @@ def send_password_mail(request, pk):
                                      'portal_password': request.POST['new_password']
                                      })
 
-        send_mail(subject, massege, 'support@25airport.com', [user_details[0]['email']],
+        send_mail(subject, massege, 'ranit.saha@navsoft.in', [user_details[0]['email']],
                   fail_silently=False, html_message=html_msg)
         
         return JsonResponse(data={
@@ -1075,7 +1075,27 @@ class SendCustomMail(View):
         customer_obj = Customer.objects.get(id=pk)
         message = request.POST['message']
         
-        #send Mail
+        # send Mail
+
+        # msg = 'Your Password be changed'
+        subject = 'Any further query please contact to admin '
+
+        # massege = render_to_string('admin/email_template/customer_password.html',
+        #                            {'first_name': customer_obj.first_name,
+        #                             'last_name': customer_obj.last_name,
+        #                             'msg': msg,
+        #                             'portal_password': new_password
+        #                             })
+        #
+        # html_msg = render_to_string('admin/email_template/customer_password.html',
+        #                             {'first_name': user_details[0]['first_name'],
+        #                              'last_name': user_details[0]['last_name'],
+        #                              'msg': msg,
+        #                              'portal_password': new_password
+        #                              })
+
+        send_mail(subject, message, 'ranit.saha@navsoft.in', [customer_obj.email_address],
+                  fail_silently=False, html_message=message)
         
         messages.success(request, "Mail Sent")
         return HttpResponseRedirect(reverse('customer_custom_mail', kwargs={'pk': pk}))

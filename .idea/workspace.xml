@@ -1,21 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5cfe3e5c-8a30-4098-ae8f-2b8dfc7a7d19" name="Default" comment="update 13/11/19">
-      <change afterPath="$PROJECT_DIR$/templates/admin/ticket/ticketalldata/index_bak.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/users/custom_email.html" afterDir="false" />
+    <list default="true" id="5cfe3e5c-8a30-4098-ae8f-2b8dfc7a7d19" name="Default" comment="update 14/11/19">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adminsidecustomer/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/adminsidecustomer/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adminsidecustomer/views/upload_document.py" beforeDir="false" afterPath="$PROJECT_DIR$/adminsidecustomer/views/upload_document.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/adminsidecustomer/views/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/adminsidecustomer/views/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adminsideserviceprovider/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/adminsideserviceprovider/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crmadmin/views/ticket.py" beforeDir="false" afterPath="$PROJECT_DIR$/crmadmin/views/ticket.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/egciptvhome/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/egciptvhome/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/egciptvhome/views/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/egciptvhome/views/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/admin/customer/create_tickets.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/customer/create_tickets.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/admin/ticket/ticketalldata/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/ticket/ticketalldata/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/admin/users/details.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/users/details.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/egciptv/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/egciptv/settings.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -125,13 +114,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1532416354661</updated>
-    </task>
-    <task id="LOCAL-00296" summary="special offers">
-      <created>1555763010768</created>
-      <option name="number" value="00296" />
-      <option name="presentableId" value="LOCAL-00296" />
-      <option name="project" value="LOCAL" />
-      <updated>1555763010768</updated>
     </task>
     <task id="LOCAL-00297" summary="special offers">
       <created>1556278385895</created>
@@ -469,7 +451,14 @@
       <option name="project" value="LOCAL" />
       <updated>1573651987449</updated>
     </task>
-    <option name="localTasksCounter" value="345" />
+    <task id="LOCAL-00345" summary="update 14/11/19">
+      <created>1573737170110</created>
+      <option name="number" value="00345" />
+      <option name="presentableId" value="LOCAL-00345" />
+      <option name="project" value="LOCAL" />
+      <updated>1573737170111</updated>
+    </task>
+    <option name="localTasksCounter" value="346" />
     <servers />
   </component>
   <component name="TodoView">
@@ -483,6 +472,9 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="requirements.txt" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -499,7 +491,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="sales Tax" />
     <MESSAGE value="CDR with area code rate" />
     <MESSAGE value="Billing section" />
     <MESSAGE value="minor change" />
@@ -524,7 +515,8 @@
     <MESSAGE value="clock py edit" />
     <MESSAGE value="plan package details" />
     <MESSAGE value="update 13/11/19" />
-    <option name="LAST_COMMIT_MESSAGE" value="update 13/11/19" />
+    <MESSAGE value="update 14/11/19" />
+    <option name="LAST_COMMIT_MESSAGE" value="update 14/11/19" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
