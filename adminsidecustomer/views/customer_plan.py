@@ -5,6 +5,8 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.http import HttpResponseRedirect,HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+
 from adminsideserviceprovider.models import ServiceProvider, ServiceProviderPlan, CustomerWithService,CustomerServiceContract
 from adminsideserviceprovider.templatetags.provider_functions import multipy
 from crmadmin.models import ManageServicesPriceCategory, UserProfile
@@ -20,6 +22,7 @@ def my_check(user):
 
 @login_required(login_url="/admin")
 @user_passes_test(my_check,login_url='/admin')
+@csrf_exempt
 def add_user_service_price(request,id):
     if request.method == 'GET':
         array_of_id=[]
@@ -27,7 +30,6 @@ def add_user_service_price(request,id):
                                                 'last_name', 'last_name_gsr', 'company_name', 'company_name_gsr',
                                                 'portal_password', 'email_address', 'phone', 'other_phone', 'dob',
                                                 'display_name', 'prefferd_language', 'zone').filter(pk=id)
-
 
         city = AccountAddressCustomer.objects.values('city_id').filter(user_id=id)
         city_service = ServiceProviderCityMap.objects.values('service_provider_id').filter(city_id=city[0]['city_id'])
@@ -49,6 +51,48 @@ def add_user_service_price(request,id):
         
         return render(request, 'admin/customer/add_service_plan.html',
                       {'servies_category': services_category,'customer_data':customer_data,'services':services,'services_provider_with_plan':services_provider_with_plan,'id':id})
+    if request.method == 'POST':
+        # data = request.POST['data']
+        # actual = float(request.POST['actual'])
+        # qty = float(request.POST['qty'])
+        # retail = float(request.POST['retail'])
+        # user = request.POST['user']
+        # plan_paid_status = request.POST['plan_paid_status']
+        user = Customer.objects.get(id=id)
+        # print(request.POST)
+        provider_id_list = []
+        for i in request.POST.keys():
+            if i.startswith('data'):
+                provider_id_list.append(i.replace('data', ''))
+        
+        # print(provider_id_list)
+        
+        for provider_id in provider_id_list:
+            provider = ServiceProviderPlan.objects.filter(pk=provider_id).values('service_provider_id')
+    
+            if not CustomerWithService.objects.filter(service_plan_id=provider_id, user_id=user, plan_status='y').exists():
+                # response_data = {}
+                # response_data['plan'] = data
+                # response_data['success'] = 'false'
+                # return JsonResponse(response_data, safe=False)
+                # messages.error(request, "Active plan exists.")
+            # else:
+                CustomerWithService.objects.create(
+                    user=user,
+                    service_provider_id=provider[0]['service_provider_id'],
+                    service_plan_id=request.POST['data'+str(provider_id)],
+                    plan_paid_status=request.POST['paid_st'+str(provider_id)],
+                    service_price_actual=request.POST['actual'+str(provider_id)],
+                    service_price_retail=request.POST['retail'+str(provider_id)],
+                    service_price_qty=request.POST['qty'+str(provider_id)]
+                )
+                # response_data = {}
+                # response_data['plan'] = data
+                # response_data['success'] = 'true'
+                # return JsonResponse(response_data, safe=False)
+        messages.success(request, "Plan added to user.")
+        return HttpResponseRedirect(reverse('add_user_service_price', kwargs={'id': id}))
+    
 
 @login_required(login_url="/admin")
 @user_passes_test(my_check,login_url='/admin')
@@ -103,7 +147,7 @@ def save_plan_to_user(request):
 
               provider= ServiceProviderPlan.objects.filter(pk=data).values('service_provider_id')
 
-              if CustomerWithService.objects.filter(service_plan_id=data,user_id=user).exists():
+              if CustomerWithService.objects.filter(service_plan_id=data, user_id=user, plan_status='y').exists():
                   response_data = {}
                   response_data['plan'] = data
                   response_data['success'] = 'false'
@@ -154,7 +198,7 @@ def edit_customer_service_plan(request,pk):
         messages.add_message(request, messages.SUCCESS, 'Customer Service Plan added successfully')
         return HttpResponseRedirect(reverse('edit_customer_service_plan', kwargs={'pk': pk}))
     else:
-        messages.add_message(request, messages.ERROR, form.errors)
+        # messages.add_message(request, messages.ERROR, form.errors)
         return HttpResponseRedirect(reverse('edit_customer_service_plan', kwargs={'pk': pk}))
         
 

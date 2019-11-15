@@ -11,18 +11,19 @@
                     </tr>
                     {% for list in services_provider_with_plan %}
                     <tr>
-                      <td><input type="checkbox"  id="data{{ list.id }}" value="{{ list.id }}" onclick="set_provider({{ list.id }})"></td>
-                      <td>{{ list.title }}</td>
-                      <td><input type="hidden" id="retail{{ list.id }}"  value="{{ list.retail }}" >{{ list.retail }}</td>
-                      <td><input type="text" id="actual{{ list.id }}" value="{{ list.actual }}" onchange="changevalue({{ list.id }})"></td>
-                      <td><input type="text" id="qty{{ list.id }}" value="{{ list.qty }}" onchange="changevalue({{ list.id }})"></td>
+<!--                      <td><input type="checkbox"  id="data{{ list.id }}" value="{{ list.id }}" onclick="set_provider({{ list.id }})"></td>-->
+                      <td><input type="checkbox"  name="data{{ list.id }}" value="{{ list.id }}"></td>
+                        <td>{{ list.title }}</td>
+                      <td><input type="hidden" name="retail{{ list.id }}"  value="{{ list.retail }}" >{{ list.retail }}</td>
+                      <td><input type="text" name="actual{{ list.id }}" value="{{ list.actual }}" onchange="changevalue({{ list.id }})"></td>
+                      <td><input type="text" name="qty{{ list.id }}" value="{{ list.qty }}" onchange="changevalue({{ list.id }})"></td>
                       <td>
-                          <select id="paid_st{{ list.id }}">
+                          <select name="paid_st{{ list.id }}">
                               <option value="Monthly">Monthly</option>
                               <option value="One Time">One Time</option>
                           </select>
                       </td>
-                      <td id="total{{ list.id }}">{%  multipy list.qty list.actual %}</td>
+                      <td name="total{{ list.id }}">{%  multipy list.qty list.actual %}</td>
                     </tr>
                    {% endfor %}
                 </tbody>

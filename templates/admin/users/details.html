@@ -70,7 +70,7 @@
                             <a class="dropdown-item fancybox fancybox.iframe" href="{% url 'customer_custom_mail' customer.0.id %}">Custom Email</a>
                             <div class="dropdown-divider"></div>
                               <a class="dropdown-item" href="#" onclick="send_password()">Send Password</a><div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Send Suspend Warning</a><div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#" onclick="send_suspend_warning()">Send Suspend Warning</a><div class="dropdown-divider"></div>
 
                             <a class="dropdown-item" href="#">Send Payment Instructions</a><div class="dropdown-divider"></div>
                               <a class="dropdown-item" href="#">Verify Cell #</a><div class="dropdown-divider"></div>
@@ -646,6 +646,22 @@ function send_password() {
 
             }
         })
+}
+
+function send_suspend_warning(){
+    $.ajax({
+            type: "post",
+            url: "{% url 'send_suspend_warning' customer.0.id %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+
+            },
+            success:function (success){
+                console.log(success.data);
+                toastr.success('Suspension Mail Sent');
+
+            }
+        })
+
 }
 
 </script>

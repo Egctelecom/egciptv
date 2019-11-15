@@ -37,7 +37,7 @@ def my_check(user):
 @user_passes_test(my_check,login_url='/admin')
 def index(request):
     if request.method == 'GET':
-        customer_data = CustomerUserMap.objects.values('id', 'customer_id','user_id',
+        customer_data = CustomerUserMap.objects.values('id', 'customer_id', 'user_id',
                                                        'customer_id__id',
                                                        'customer_id__account_id',
                                                        'customer_id__status',
@@ -60,9 +60,9 @@ def index(request):
         
         for i in customer_data:
             i['monthly'] = 0
-            plans = CustomerWithService.objects.filter(user_id=i['customer_id'])
+            plans = CustomerWithService.objects.filter(user_id=i['customer_id']).filter(plan_status='y')
             for j in plans:
-                i['monthly'] += j.service_price_retail
+                i['monthly'] += j.service_price_actual
             
         return render(request, 'admin/users/index.html', {'customer': customer_data})
 
@@ -1076,7 +1076,33 @@ def send_password_sms(request, pk):
             'state': True,
             'message': "Success"
         }, status=200)
+    
+    
+def send_suspend_warning(request, pk):
+    if request.is_ajax():
+        customer_obj = Customer.objects.get(id=pk)
+        msg = 'Your account may get suspended.'
+        subject = 'Warning, Payment Due.'
 
+        massege = render_to_string('admin/email_template/customer_password.html',
+                                   {'first_name': customer_obj.first_name,
+                                    'last_name': customer_obj.last_name,
+                                    'msg': msg,
+                                    })
+
+        html_msg = render_to_string('admin/email_template/customer_password.html',
+                                    {'first_name': customer_obj.first_name,
+                                     'last_name': customer_obj.last_name,
+                                     'msg': msg,
+                                     })
+
+        send_mail(subject, massege, 'ranit.saha@navsoft.in', [customer_obj.email_address], fail_silently=False,
+                  html_message=html_msg)
+
+        return JsonResponse(data={
+            'state': True,
+            'message': "Success"
+        }, status=200)
 
 
 class SendCustomMail(View):
@@ -1087,25 +1113,7 @@ class SendCustomMail(View):
     def post(self, request, pk):
         customer_obj = Customer.objects.get(id=pk)
         message = request.POST['message']
-        
-        # send Mail
-
-        # msg = 'Your Password be changed'
         subject = 'Any further query please contact to admin '
-
-        # massege = render_to_string('admin/email_template/customer_password.html',
-        #                            {'first_name': customer_obj.first_name,
-        #                             'last_name': customer_obj.last_name,
-        #                             'msg': msg,
-        #                             'portal_password': new_password
-        #                             })
-        #
-        # html_msg = render_to_string('admin/email_template/customer_password.html',
-        #                             {'first_name': user_details[0]['first_name'],
-        #                              'last_name': user_details[0]['last_name'],
-        #                              'msg': msg,
-        #                              'portal_password': new_password
-        #                              })
 
         send_mail(subject, message, 'ranit.saha@navsoft.in', [customer_obj.email_address],
                   fail_silently=False, html_message=message)

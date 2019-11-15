@@ -2,6 +2,14 @@
 {% load static %}
 {% load provider_functions %}
 {% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<form action="{% url 'add_user_service_price' customer_data.0.id %}" method="post">
  <div class="col-md-2">
       <div class="form-group">
         <label>Service Provider</label>
@@ -12,6 +20,10 @@
             {% endfor %}
         </select>
       </div>
+     <div class="form-group">
+         <label>Provider ID</label>
+         <input type="text" class="form-control" name="provider_id" id="provider_id">
+     </div>
 
     </div>
     <div class="alert alert-success alert-dismissible" id="msgprent" style="display: none">
@@ -25,7 +37,9 @@
               <h3 class="box-title">Service Plan</h3>
             </div>
             <!-- /.box-header -->
+
             <div class="box-body" id="pricing-carousel">
+
               <table class="table table-bordered">
                 <tbody>
                     <tr>
@@ -38,31 +52,36 @@
                     </tr>
                     {% for services_provider_with_plans in  services_provider_with_plan %}
                     <tr>
-                      <td><input type="checkbox" id="data{{ services_provider_with_plans.id }}" value="{{ services_provider_with_plans.id }}" onclick="set_provider({{ services_provider_with_plans.id }})"></td>
+<!--                      <td><input type="checkbox" id="data{{ services_provider_with_plans.id }}" value="{{ services_provider_with_plans.id }}" onclick="set_provider({{ services_provider_with_plans.id }})"></td>-->
+                        <td><input type="checkbox" name="data{{ services_provider_with_plans.id }}" value="{{ services_provider_with_plans.id }}"></td>
                       <td>{{ services_provider_with_plans.title }}</td>
-                      <td><input type="hidden" id="retail{{ services_provider_with_plans.id }}"  value="{{ services_provider_with_plans.retail }}" > {{ services_provider_with_plans.retail }}</td>
-                      <td><input type="text" id="actual{{ services_provider_with_plans.id }}" value="{{ services_provider_with_plans.actual }}" onchange="changevalue({{ services_provider_with_plans.id }})"></td>
-                      <td><input type="text" id="qty{{ services_provider_with_plans.id }}" value="{{ services_provider_with_plans.qty }}" onchange="changevalue({{ services_provider_with_plans.id }})"></td>
+                      <td><input type="hidden" name="retail{{ services_provider_with_plans.id }}"  value="{{ services_provider_with_plans.retail }}" > {{ services_provider_with_plans.retail }}</td>
+                      <td><input type="text" name="actual{{ services_provider_with_plans.id }}" value="{{ services_provider_with_plans.actual }}" onchange="changevalue({{ services_provider_with_plans.id }})"></td>
+                      <td><input type="text" name="qty{{ services_provider_with_plans.id }}" value="{{ services_provider_with_plans.qty }}" onchange="changevalue({{ services_provider_with_plans.id }})"></td>
                       <td>
-                          <select id="paid_st{{ services_provider_with_plans.id }}">
+                          <select name="paid_st{{ services_provider_with_plans.id }}">
                               <option value="Monthly" {%  if services_provider_with_plans.plan_paid_status == 'Monthly'  %}selected{% endif  %}>Monthly</option>
                               <option value="One Time" {%  if services_provider_with_plans.plan_paid_status == 'One Time'  %}selected{% endif  %}>One Time</option>
                           </select>
                       </td>
-                      <td id="total{{ services_provider_with_plans.id }}">{% multipy services_provider_with_plans.qty services_provider_with_plans.actual %}</td>
+                      <td name="total{{ services_provider_with_plans.id }}">{% multipy services_provider_with_plans.qty services_provider_with_plans.actual %}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
               </table>
+
             </div>
-{#             <div class="box-footer">#}
-{#                <button type="submit" class="btn btn-primary" name="Submit" onclick="save_plan()">#}
-{#                    <i class="fa fa-clipboard" aria-hidden="true"></i>#}
-{#                    Save#}
-{#                </button>#}
-{#             </div>#}
+             <div class="box-footer">
+                <button type="submit" class="btn btn-primary" name="Submit">
+                    <i class="fa fa-clipboard" aria-hidden="true"></i>
+                    Save
+                </button>
+             </div>
+<!--       </form>-->
+
             <!-- /.box-body -->
    </div>
+</form>
 {% endblock %}
 {% block scripts %}
 <script>
@@ -156,9 +175,11 @@ function get_service_plan(){
             success:function (success){
                 console.log(success.data);
                  $('#pricing-carousel').empty().append(success.data);
+                 $('#provider_id').val(service);
             }
         })
  }
+
 
 </script>
 {% endblock %}
