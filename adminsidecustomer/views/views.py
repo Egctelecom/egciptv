@@ -37,7 +37,7 @@ def my_check(user):
 @user_passes_test(my_check,login_url='/admin')
 def index(request):
     if request.method == 'GET':
-        customer_data = CustomerUserMap.objects.values('customer_id','user_id',
+        customer_data = CustomerUserMap.objects.values('id', 'customer_id','user_id',
                                                        'customer_id__id',
                                                        'customer_id__account_id',
                                                        'customer_id__status',
@@ -1003,27 +1003,37 @@ def send_password_mail(request, pk):
         # print(pk)
         # print(request.POST['new_password'])
         # Send mail
+        # user_details = User.objects.get(pk=pk)
+        # print(pk)
+        customer_obj = Customer.objects.get(pk=pk)
+        # customer = CustomerUserMap.objects.get(user=user_details)
+        
+        if request.method == "POST" and 'new_password' in request.POST:
+            new_password = request.POST['new_password']
+        else:
+            new_password = customer_obj.portal_password
+
+        customer_obj.portal_password = new_password
+        customer_obj.save()
 
         msg = 'Your Password has been changed'
         subject = 'Any further query please contact to admin '
-        user_details = User.objects.values('first_name', 'last_name', 'email').filter(pk=pk)
-        # customer = CustomerUserMap.objects.values('user_id', 'customer_id').filter(user_id=pk)
-
+        
         massege = render_to_string('admin/email_template/customer_password.html',
-                                   {'first_name': user_details[0]['first_name'],
-                                    'last_name': user_details[0]['last_name'],
+                                   {'first_name': customer_obj.first_name,
+                                    'last_name': customer_obj.last_name,
                                     'msg': msg,
-                                    'portal_password': request.POST['new_password']
+                                    'portal_password': new_password
                                     })
 
         html_msg = render_to_string('admin/email_template/customer_password.html',
-                                    {'first_name': user_details[0]['first_name'],
-                                     'last_name': user_details[0]['last_name'],
+                                    {'first_name': customer_obj.first_name,
+                                     'last_name': customer_obj.last_name,
                                      'msg': msg,
-                                     'portal_password': request.POST['new_password']
+                                     'portal_password': new_password
                                      })
 
-        send_mail(subject, massege, 'ranit.saha@navsoft.in', [user_details[0]['email']],
+        send_mail(subject, massege, 'ranit.saha@navsoft.in', [customer_obj.email_address],
                   fail_silently=False, html_message=html_msg)
         
         return JsonResponse(data={
@@ -1038,24 +1048,27 @@ def send_password_sms(request, pk):
         # print(request.POST['new_password'])
         # Send mail
         
-        msg = 'Your Password has been changed'
-        subject = 'Any further query please contact to admin '
+        msg = "Your Password has been changed. Your new password is - {}".format(request.POST['new_password'])
+        # subject = 'Any further query please contact to admin '
         user_details = User.objects.values('first_name', 'last_name', 'email').filter(pk=pk)
+        # customer = CustomerUserMap.objects.values('user_id', 'customer_id').filter(user_id=pk)
         customer = CustomerUserMap.objects.values('user_id', 'customer_id').filter(user_id=pk)
+        customer.customer.portal_password = request.POST['new_password']
+        customer.customer.save()
         
-        massege = render_to_string('admin/email_template/customer_password.html',
-                                   {'first_name': user_details[0]['first_name'],
-                                    'last_name': user_details[0]['last_name'],
-                                    'msg': msg,
-                                    'portal_password': request.POST['new_password']
-                                    })
-        
-        html_msg = render_to_string('admin/email_template/customer_password.html',
-                                    {'first_name': user_details[0]['first_name'],
-                                     'last_name': user_details[0]['last_name'],
-                                     'msg': msg,
-                                     'portal_password': request.POST['new_password']
-                                     })
+        # massege = render_to_string('admin/email_template/customer_password.html',
+        #                            {'first_name': user_details[0]['first_name'],
+        #                             'last_name': user_details[0]['last_name'],
+        #                             'msg': msg,
+        #                             'portal_password': request.POST['new_password']
+        #                             })
+        #
+        # html_msg = render_to_string('admin/email_template/customer_password.html',
+        #                             {'first_name': user_details[0]['first_name'],
+        #                              'last_name': user_details[0]['last_name'],
+        #                              'msg': msg,
+        #                              'portal_password': request.POST['new_password']
+        #                              })
         
         # send sms
         

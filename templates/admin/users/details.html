@@ -10,6 +10,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.bootstrap.min.css" />
 <link rel="stylesheet" href="{% static 'admin/fancybox/jquery.fancybox.css'%}" type="text/css" media="screen" />
 <link rel="stylesheet" href="{% static 'admin/custom.css'%}" type="text/css" media="screen" />
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
 {% endblock %}
 {% block content %}
 
@@ -68,7 +69,7 @@
                           <div class="dropdown-menu">
                             <a class="dropdown-item fancybox fancybox.iframe" href="{% url 'customer_custom_mail' customer.0.id %}">Custom Email</a>
                             <div class="dropdown-divider"></div>
-                              <a class="dropdown-item" href="#">Send Password</a><div class="dropdown-divider"></div>
+                              <a class="dropdown-item" href="#" onclick="send_password()">Send Password</a><div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#">Send Suspend Warning</a><div class="dropdown-divider"></div>
 
                             <a class="dropdown-item" href="#">Send Payment Instructions</a><div class="dropdown-divider"></div>
@@ -603,6 +604,8 @@
 <script src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
 <script type="text/javascript" src="{% static 'admin/fancybox/jquery.fancybox.pack.js'%}"></script>
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js" ></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <script>
     $(document).ready( function () {
         $('#myTable').DataTable();
@@ -627,6 +630,22 @@ function createDownloadLink(id){
     var dlnk = document.getElementById('dwnldLnk'+id);
     dlnk.href = 'data:application/octet-stream;base64,'+str;
     dlnk.click();
+}
+
+function send_password() {
+
+    $.ajax({
+            type: "post",
+            url: "{% url 'send_password_mail' customer.0.id %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+
+            },
+            success:function (success){
+                console.log(success.data);
+                toastr.success('Password Sent');
+
+            }
+        })
 }
 
 </script>
