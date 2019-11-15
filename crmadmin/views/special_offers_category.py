@@ -79,7 +79,7 @@ def special_offers_parent_category_edit(request,id):
 def special_offers_parent_sub_category_list(request):
 	if request.method == 'GET':
 		special_offers_list = SpecialoffersSubParentCategory.objects.values('id', 'special_offers_sub_parent_category_name',
-		                                                 'special_offers_parent_category_id__special_offers_parent_category_name','desc','status')
+		                                                                    'special_offers_parent_category_id__special_offers_parent_category_name','desc','status')
 		return render(request, 'admin/frontend/special_offers/services_category/subparent/index.html', {'special_offers_list': special_offers_list})
 
 
@@ -120,7 +120,7 @@ def special_offers_sub_parent_category_edit(request, id):
 		                                                                'status').filter(pk=id)
 		
 		
-	
+		
 		
 		return render(request, 'admin/frontend/special_offers/services_category/subparent/edit.html',
 		              {'for_edited_menu': for_edited_menu, 'category_list': category_list})
@@ -145,21 +145,21 @@ def special_offers_sub_parent_category_edit(request, id):
 @user_passes_test(my_check, login_url='/admin')
 def special_offers_category_list(request):
 	if request.method == 'GET':
-		special_offers_list = SpecialoffersUnderCategory.objects.values( 'id',
-								                                         'special_offers_id',
-								                                         'special_offers_parent_category_id',
-								                                         'telecom_name',
-								                                         'telecom_logo',
-								                                         'special_offers_sub_parent_category_id',
-		                                                                 'special_offers_combo_name',
-		                                                                 'special_offers_type_name',
-		                                                                 'city_id',
-		                                                                 'city_id__city_name',
-		                                                                 'province_id',
-		                                                                 'province_id__province_name',
-								                                         'special_offers_parent_category_id__special_offers_parent_category_name',
-								                                         'special_offers_sub_parent_category_id__special_offers_sub_parent_category_name',
-								                                         'status')
+		special_offers_list = SpecialoffersUnderCategory.objects.values('id',
+		                                                                'special_offers_id',
+		                                                                'special_offers_parent_category_id',
+		                                                                'telecom_name',
+		                                                                'telecom_logo',
+		                                                                'special_offers_sub_parent_category_id',
+		                                                                'special_offers_combo_name',
+		                                                                'special_offers_type_name',
+		                                                                'city_id',
+		                                                                'city_id__city_name',
+		                                                                'province_id',
+		                                                                'province_id__province_name',
+		                                                                'special_offers_parent_category_id__special_offers_parent_category_name',
+		                                                                'special_offers_sub_parent_category_id__special_offers_sub_parent_category_name',
+		                                                                'status')
 		return render(request, 'admin/frontend/special_offers/services_category/category/index.html', {'special_offers_list': special_offers_list})
 
 # Add Special Offers Under Category
@@ -202,30 +202,30 @@ def special_offers_category_add(request):
 def special_offers_category_edit(request,id):
 	if request.method == 'GET':
 		special_offers_list =  SpecialoffersUnderCategory.objects.values('id',
-								                                         'special_offers_id',
-								                                         'special_offers_parent_category_id',
-								                                         'telecom_name',
-								                                         'telecom_logo',
-								                                         'special_offers_sub_parent_category_id',
+		                                                                 'special_offers_id',
+		                                                                 'special_offers_parent_category_id',
+		                                                                 'telecom_name',
+		                                                                 'telecom_logo',
+		                                                                 'special_offers_sub_parent_category_id',
 		                                                                 'special_offers_combo_name',
 		                                                                 'special_offers_type_name',
 		                                                                 'city_id',
 		                                                                 'city_id__city_name',
 		                                                                 'province_id',
 		                                                                 'province_id__province_name',
-								                                         'special_offers_parent_category_id__special_offers_parent_category_name',
-								                                         'special_offers_sub_parent_category_id__special_offers_sub_parent_category_name','status').filter(pk=id)
+		                                                                 'special_offers_parent_category_id__special_offers_parent_category_name',
+		                                                                 'special_offers_sub_parent_category_id__special_offers_sub_parent_category_name','status').filter(pk=id)
 		
 		provinces = Province.objects.values('id', 'province_name', 'country_id__id', 'country_id__country_name')
 		city = City.objects.values('id', 'city_name', 'province_id__province_name', 'province_id__id')
 		
 		parent_category_list = SpecialoffersParentCategory.objects.values('id', 'special_offers_parent_category_name')
 		sub_parent_category_list = SpecialoffersSubParentCategory.objects.values('id', 'special_offers_parent_category_id',
-		                                                       'special_offers_sub_parent_category_name')
+		                                                                         'special_offers_sub_parent_category_name')
 		
 		special_offers_category = SpecialOffers.objects.values('id')
 		
-
+		
 		
 		return render(request, 'admin/frontend/special_offers/services_category/category/edit.html',
 		              {'parent_category_list': parent_category_list, 'special_offers_list': special_offers_list,'id':id,
@@ -264,7 +264,7 @@ def special_offers_category_edit(request,id):
 			data.save()
 			messages.add_message(request, messages.SUCCESS, 'Special Offers Section Category Update successfully')
 			return HttpResponseRedirect(reverse('special_offers_category_edit', kwargs={'id': id}))
-			
+
 
 # Delete Special Offers Under Category
 
@@ -279,17 +279,17 @@ def special_offers_category_delete(request,id):
 		else:
 			messages.add_message(request, messages.ERROR, form.errors)
 			return HttpResponseRedirect(reverse('special_offers_category_list'))
-			
-	
-	
-	
+
+
+
+
 @login_required(login_url="/admin")
 @user_passes_test(my_check, login_url='/admin')
 def get_sub_special_offers_parent_list(request):
 	if request.is_ajax():
 		category_id = request.POST['category']
 		manage_service_price = SpecialoffersSubParentCategory.objects.values('id', 'special_offers_parent_category_id',
-		                                                       'special_offers_sub_parent_category_name').filter(special_offers_parent_category_id=category_id)
+		                                                                     'special_offers_sub_parent_category_name').filter(special_offers_parent_category_id=category_id)
 		data = render_to_string('admin/frontend/special_offers/services_category/category/list.html',
 		                        {'manage_service_price': manage_service_price})
 		return HttpResponse(json.dumps({'data': data}), content_type="application/json")
@@ -335,12 +335,49 @@ def get_set_of_special_offers(request):
 		                                               'telecom_name',
 		                                               'telecom_logo',
 		                                               'status',
-		                                               ).filter(special_offers_sub_parent_category_id=id,special_offers_parent_category_id=p_id).distinct('special_offers_combo_name')
-	
-		data = render_to_string('egciptv/special_offers/special_offers_dt_list.html',
-		                        {'sp': sp})
-		return HttpResponse(json.dumps({'data': data}), content_type="application/json")
+		                                               ).filter(special_offers_sub_parent_category_id=id,special_offers_parent_category_id=p_id)#.distinct('special_offers_combo_name')
 		
+		print(len(sp))
+		distinct_sp = SpecialoffersUnderCategory.objects.values('special_offers_combo_name').distinct('special_offers_combo_name')
+		data = []
+		print(distinct_sp)
+		for combo_name in distinct_sp:
+			combo_dict = {}
+			distinct_types = SpecialoffersUnderCategory.objects.values('special_offers_type_name').filter(
+				special_offers_sub_parent_category_id=id,
+				special_offers_parent_category_id=p_id,
+				special_offers_combo_name=combo_name['special_offers_combo_name'])
+			# print(combo_name)
+			for offer_type in distinct_types:
+				obj = SpecialoffersUnderCategory.objects.values('id',
+				                                                'special_offers_parent_category_id',
+				                                                'special_offers_parent_category_id__special_offers_parent_category_name',
+				                                                'special_offers_parent_category_id__desc',
+				                                                'special_offers_sub_parent_category_id',
+				                                                'special_offers_sub_parent_category_id__special_offers_sub_parent_category_name',
+				                                                'special_offers_sub_parent_category_id__desc',
+				                                                'special_offers_combo_name',
+				                                                'special_offers_type_name',
+				                                                'province_id',
+				                                                'province_id__province_name',
+				                                                'city_id',
+				                                                'city_id__city_name',
+				                                                'telecom_name',
+				                                                'telecom_logo',
+				                                                'status',).filter(
+					special_offers_sub_parent_category_id=id,
+					special_offers_parent_category_id=p_id,
+					special_offers_combo_name=combo_name['special_offers_combo_name'],
+					special_offers_type_name=offer_type['special_offers_type_name'])
+			combo_dict['special_offers_combo_name'] = combo_name['special_offers_combo_name']
+			combo_dict['data'] = obj
+			data.append(combo_dict)
+		rendered = render_to_string('egciptv/special_offers/special_offers_dt_list.html',
+		                            {'sp': sp, 'distinct_sp': distinct_sp, 'data': data})
+		# print('rendered')
+		print(data)
+		return HttpResponse(json.dumps({'data': rendered}), content_type="application/json")
+
 def get_details_of_special_offers(request,type_name,combo_name,parent_id,sub_parent_id):
 	if request.method=='GET':
 		sp = SpecialoffersUnderCategory.objects.values('id',
@@ -366,8 +403,8 @@ def get_details_of_special_offers(request,type_name,combo_name,parent_id,sub_par
 		                                               ).filter(special_offers_parent_category_id=parent_id,special_offers_sub_parent_category_id=sub_parent_id,special_offers_combo_name=combo_name,special_offers_type_name=type_name)
 		return render(request, 'egciptv/special_offers/special_offers_deatils.html',
 		              {'sp': sp,'combo_name':combo_name,'type_name':type_name,'parent_id':parent_id,'sub_parent_id':sub_parent_id})
-		
-		
+
+
 def get_data_according_to_type(request):
 	if request.is_ajax():
 		p_id = request.POST['p_id']
@@ -399,12 +436,12 @@ def get_data_according_to_type(request):
 		                                                        special_offers_combo_name=combo_name,
 		                                                        special_offers_type_name=type_name)
 		
-
+		
 		data = render_to_string('egciptv/special_offers/special_offers_type_dt_list.html',
 		                        {'sp': sp})
 		return HttpResponse(json.dumps({'data': data}), content_type="application/json")
-		
-		
+
+
 def get_special_offers_plan_details(request,id):
 	if request.method =='GET':
 		sp = SpecialoffersUnderCategory.objects.values('id',

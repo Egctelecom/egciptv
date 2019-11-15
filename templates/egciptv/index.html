@@ -183,12 +183,14 @@
         $('.scroll-box').slimScroll();
     });
     window.onload = document.getElementById('arf1').click();
+
     function callspeciallofferslist(id,p_id){
         $.ajax({
                 type: "post",
                 url: "{% url 'get_set_of_special_offers' %}",
                 data: {csrfmiddlewaretoken:"{{csrf_token}}",
-                    id:id,parent_id:p_id
+                    id:id,
+                    parent_id:p_id
                 },
                 success:function (success){
                     console.log(success.data);
