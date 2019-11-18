@@ -1,29 +1,34 @@
 {% load static %}
 {% load special_offer_category_service %}
-{% for ss in sp %}
+{% for special_offer in special_offer_data %}
  <div class="centered" >
       <div  class="croll-bar-wrap">
           <div class="box-part scroll-box ">
+              {% if special_offer.data|length > 0 %}
             <div class="box-heading">
+
                 <div class="imag-part">
                     <img src="{%  static 'customer/images/iocns-8.png' %}">
                 </div>
-                    <h2>{{ ss.special_offers_combo_name }}</h2>
-                    {% get_type_name ss.special_offers_combo_name as TYPE %}
-                    {% for ty in TYPE %}
+
+                    <h2>{{ special_offer.special_offers_combo_name }}</h2>
+                    {% for j in special_offer.data %}
                     <div class="cont-part">
-                        <h5>{{ ty.special_offers_type_name }}</h5>
-                        <p>
-                           </p>
+                        <h5>{{ j.type_name }}</h5>
+                        {% for k in j.data %}
+                        <p>{{ k.special_offers_sub_parent_category_id__desc }}</p>
 {#                         <div class="price-new">#}
 {#                             <h4>$ 25.89 / <small>Month</small></h4>#}
 {#                         </div>#}
                         <div class="button">
                             <a ><button>learn morne</button></a>
                         </div>
+                        {% endfor %}
                     </div>
                     {% endfor %}
+
                 </div>
+              {% endif %}
           </div>
       </div>
  </div>

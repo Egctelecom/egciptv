@@ -277,7 +277,7 @@ def special_offers_category_delete(request,id):
 			messages.add_message(request, messages.SUCCESS, 'Special Offers Section Category Deleted Successfully')
 			return HttpResponseRedirect(reverse('special_offers_category_list'))
 		else:
-			messages.add_message(request, messages.ERROR, form.errors)
+			# messages.add_message(request, messages.ERROR, form.errors)
 			return HttpResponseRedirect(reverse('special_offers_category_list'))
 
 
@@ -346,9 +346,14 @@ def get_set_of_special_offers(request):
 			distinct_types = SpecialoffersUnderCategory.objects.values('special_offers_type_name').filter(
 				special_offers_sub_parent_category_id=id,
 				special_offers_parent_category_id=p_id,
-				special_offers_combo_name=combo_name['special_offers_combo_name'])
-			# print(combo_name)
+				special_offers_combo_name=combo_name['special_offers_combo_name']).distinct('special_offers_type_name')
+			combo_dict['special_offers_combo_name'] = combo_name['special_offers_combo_name']
+			combo_dict['data'] = []
+			print(distinct_types)
 			for offer_type in distinct_types:
+				offer_dict = {}
+				offer_dict['type_name'] = offer_type['special_offers_type_name']
+				offer_dict['data'] = []
 				obj = SpecialoffersUnderCategory.objects.values('id',
 				                                                'special_offers_parent_category_id',
 				                                                'special_offers_parent_category_id__special_offers_parent_category_name',
@@ -369,11 +374,14 @@ def get_set_of_special_offers(request):
 					special_offers_parent_category_id=p_id,
 					special_offers_combo_name=combo_name['special_offers_combo_name'],
 					special_offers_type_name=offer_type['special_offers_type_name'])
-			combo_dict['special_offers_combo_name'] = combo_name['special_offers_combo_name']
-			combo_dict['data'] = obj
+				
+				offer_dict['data'] = list(obj)
+				combo_dict['data'].append(offer_dict)
+			
+			# combo_dict['data'] = list(set(combo_dict['data']))
 			data.append(combo_dict)
 		rendered = render_to_string('egciptv/special_offers/special_offers_dt_list.html',
-		                            {'sp': sp, 'distinct_sp': distinct_sp, 'data': data})
+		                            {'sp': sp, 'distinct_sp': distinct_sp, 'special_offer_data': data})
 		# print('rendered')
 		print(data)
 		return HttpResponse(json.dumps({'data': rendered}), content_type="application/json")
