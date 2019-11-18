@@ -38,7 +38,7 @@ stripe==2.6.0
 suds-jurko==0.6
 texttable==1.6.2
 tzlocal==2.0.0
-urllib3==1.23
+urllib3==1.24.2
 webencodings==0.5.1
 whitenoise==3.3.1
 xhtml2pdf==0.2.2
