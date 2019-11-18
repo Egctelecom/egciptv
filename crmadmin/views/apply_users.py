@@ -11,7 +11,7 @@ from django.http import HttpResponseRedirect,JsonResponse
 from django.contrib import messages
 from django.template.loader import render_to_string, get_template
 from django.core.mail import send_mail, EmailMessage
-from adminsidecustomer.models import Customer, AccountAddressCustomer, BillingAddressCustomer, BillingDetailsCustomer, \
+from adminsidecustomer.models import Customer, AccountAddressCustomer, BillingAddressCustomer, \
     CutomerAttachmentMap, CustomerUserMap
 from adminsidecustomer.models import City
 from adminsidecustomer.models import Province
@@ -112,7 +112,7 @@ def send_mail_to_apply_user(request):
         return HttpResponseRedirect(
             reverse('apply_user_profile', kwargs={'pk':id}))
     else:
-        messages.add_message(request, messages.ERROR, form.errors)
+        # messages.add_message(request, messages.ERROR, form.errors)
         return HttpResponseRedirect(
             reverse('apply_user_profile', kwargs={'pk':id}))
     

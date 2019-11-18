@@ -161,22 +161,7 @@ class BillingAddressCustomer(models.Model):
 
 #----------------------------------------------------------------- Customer Billing Details ----------------------------------------------------------
 
-class BillingDetailsCustomer(models.Model):
-    id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    salesperson = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    contract_type = models.CharField(help_text='Enter Contract Type', max_length=255)
-    billing_day = models.CharField(help_text='Enter Billing Day', max_length=255)
-    payment_mode = models.CharField(help_text='Enter Payment Mode', max_length=255)
-    payment_method = models.CharField(help_text='Enter Payment Method', max_length=255)
-    year_pre_payment = models.CharField(help_text='Enter Year Pre Payment', max_length=255,blank=True,null=True)
-    billing_from = models.CharField(help_text='Enter Billing From', max_length=255)
-    billing_to = models.CharField(help_text='Enter Billing To', max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return self.id
 
 #----------------------------------------------------------------- Customer Documents Upload ----------------------------------------------------------
 

@@ -11,7 +11,7 @@ from adminsideserviceprovider.models import ServiceProvider, ServiceProviderPlan
 from adminsideserviceprovider.templatetags.provider_functions import multipy
 from crmadmin.models import ManageServicesPriceCategory, UserProfile
 from django.contrib.auth.decorators import user_passes_test
-from adminsidecustomer.models import Customer, AccountAddressCustomer, BillingAddressCustomer, BillingDetailsCustomer, \
+from adminsidecustomer.models import Customer, AccountAddressCustomer, BillingAddressCustomer, \
     CutomerAttachmentMap,CustomerUserMap
 from adminsideserviceprovider.models import CustomerTicketsCategoriesMap,ServiceProviderCityMap
 from django.urls import reverse

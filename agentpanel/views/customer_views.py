@@ -7,7 +7,7 @@ from adminsidecustomer.forms import Customerform
 from django.contrib import messages
 from django.urls import reverse
 from django.http import HttpResponseRedirect
-from adminsidecustomer.models import Customer, AccountAddressCustomer, BillingAddressCustomer, BillingDetailsCustomer, \
+from adminsidecustomer.models import Customer, AccountAddressCustomer, BillingAddressCustomer, \
     CutomerAttachmentMap
 from adminsideserviceprovider.models import CustomerTicketsCategoriesMap
 from adminsidecustomer.models import City
@@ -17,6 +17,8 @@ from adminsideserviceprovider.models import ServiceProvider, CustomerWithService
 from crmadmin.models import UserProfile
 from django.contrib.auth.decorators import user_passes_test
 from agentpanel.models import Agent
+from customer_billing.models import BillingDetailsCustomer
+
 
 def my_check(user):
     if Agent.objects.filter(user_id=user.id).exists():

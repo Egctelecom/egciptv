@@ -19,6 +19,7 @@ from sitefrontendbyadmin.urls import urlpatterns as sitefrontendbyadmin_urls
 from crmadmin.applied_users_urls import urlpatterns as applied_users_urls
 from crmadmin.url_special_offer import urlpatterns as url_special_offer
 from crmadmin.urls_other_details import urlpatterns as urls_other_details
+from customer_billing.urls import urlpatterns as customer_billing_urls
 
 
 urlpatterns = urlswithadmin
@@ -42,3 +43,4 @@ urlpatterns += sitefrontendbyadmin_urls
 urlpatterns += applied_users_urls
 urlpatterns += url_special_offer
 urlpatterns += urls_other_details
+urlpatterns += customer_billing_urls

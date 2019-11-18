@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'setcountryprovincecity.apps.SetcountryprovincecityConfig',
     'settingcontractsheet.apps.SettingcontractsheetConfig',
     'sitefrontendbyadmin',
+    'customer_billing',
     'django_extensions',
 ]
 

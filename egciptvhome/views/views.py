@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from adminsidecustomer.models import Customer, AccountAddressCustomer, BillingAddressCustomer, BillingDetailsCustomer, \
+from adminsidecustomer.models import Customer, AccountAddressCustomer, BillingAddressCustomer, \
     CutomerAttachmentMap, CustomerUserMap,Country,Province,City
 from adminsideserviceprovider.models import CustomerTicketsCategoriesMap,ServiceProviderCityMap
 from adminsideserviceprovider.models import ServiceProvider, ServiceProviderPlan, CustomerWithService,CustomerServiceContract
@@ -32,12 +32,12 @@ def index(request):
                                                        'details',
                                                        'service_feature_logo',
                                                        'service_sub_parent_category_name_id__service_sub_parent_category_name').filter(status='active')
-    
-    
+        
     follow_us = Followus.objects.values('id', 'url', 'fa_fa_icon', 'status').filter(status='active')
     slider = Slider.objects.values('id', 'slider_name', 'details', 'image', 'url', 'status').filter(status='active')
     special_offers = SpecialoffersUnderCategory.objects.filter(status='active')
-    distinct_special_offers = SpecialoffersUnderCategory.objects.distinct('special_offers_type_name').values('special_offers_type_name')
+    distinct_special_offers = SpecialoffersUnderCategory.objects.distinct('special_offers_type_name').values(
+        'special_offers_type_name')
     print(distinct_special_offers)
     
     return render(request, 'egciptv/index.html', {'servies_category': servies_category,
@@ -170,12 +170,12 @@ def get_city_of_region(request):
                 }}
             return JsonResponse(data, safe=False)
         
-        except Exception in e :
+        except Exception as e :
             
             data = {
                 "results": {
                     "status": 'Error',
-                    "data":e
+                    "data": str(e)
                 }}
             
             return JsonResponse(data,safe=False)
@@ -259,7 +259,7 @@ def set_lang_session(request):
                 
                 return JsonResponse(data, safe=False)
         
-        except Exception in e:
+        except Exception as e:
             
             data = {
                 "results": {

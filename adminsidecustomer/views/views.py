@@ -11,7 +11,7 @@ from adminsidecustomer.forms import Customerform
 from django.contrib import messages
 from django.urls import reverse
 from django.http import HttpResponseRedirect,JsonResponse,HttpResponse
-from adminsidecustomer.models import Customer, AccountAddressCustomer, BillingAddressCustomer, BillingDetailsCustomer, \
+from adminsidecustomer.models import Customer, AccountAddressCustomer, BillingAddressCustomer, \
     CutomerAttachmentMap, CustomerUserMap, Sales_tax
 from adminsideserviceprovider.models import CustomerTicketsCategoriesMap
 from adminsidecustomer.models import City

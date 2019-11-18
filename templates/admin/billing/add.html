@@ -1,0 +1,109 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% block content %}
+<style>
+    .input_fields_wrap{
+    max-width: 350px;
+    }
+    .input_fields_wrap input[type=text]{
+     width:100%;
+     margin:2px 0;
+    }
+</style>
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Add Customer Billing Details</h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" class="form-horizontal" action="{% url 'customer_billing_add' %}" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                      <div class="box-body">
+
+                      <p class="margin">Customer</p>
+                      <div class="input-group">
+                         <select class="form-control" name="customer_id" style="width: 588px!important;" >
+                             <option>Select Customer</option>
+                             {%  for customer in customers %}
+                             <option value="{{ customer.id }}">{{ customer.first_name }} {{ customer.last_name }}</option>
+                             {% endfor %}
+
+                         </select>
+                      </div>
+
+                      <p class="margin">Sales Person</p>
+                      <div class="input-group">
+                         <select class="form-control" name="sale_person_id" style="width: 588px!important;" >
+                             <option>Select Sales Person</option>
+                             {%  for sale_person in sales_list %}
+                             <option value="{{ sale_person.id }}">{{ sale_person.first_name }} {{ sale_person.last_name }}</option>
+                             {% endfor %}
+
+                         </select>
+                      </div>
+
+
+                      <p class="margin">Contract Type</p>
+                      <div class="input-group">
+                         <input type="text" class="form-control" name="contract_type" style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Billing Day</p>
+                      <div class="input-group">
+                         <input type="text" class="form-control" name="billing_day" style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Payment Type</p>
+                      <div class="input-group">
+                          <select class="form-control" name="payment_type" style="width: 588px!important;" >
+                             <option value="ONLINE" >ONLINE</option>
+                              <option value="OFFLINE">OFFLINE</option>
+                         </select>
+<!--                         <input type="text" class="form-control" name="payment_type" style="width: 588px!important;">-->
+                      </div>
+
+                      <p class="margin">Payment Method</p>
+                      <div class="input-group">
+<!--                          <div class="input-group">-->
+                          <select class="form-control" name="payment_method" style="width: 588px!important;" >
+                             <option value="CASH" >CASH</option>
+                              <option value="CREDIT CARD">CREDIT CARD</option>
+                              <option value="INTERNET BANKING">INTERNET BANKING</option>
+                              <option value="BANK DEPOSIT">BANK DEPOSIT</option>
+                              <option value="PAYPAL">PAYPAL</option>
+                         </select>
+
+<!--                         <input type="text" class="form-control" name="payment_method" style="width: 588px!important;">-->
+                      </div>
+
+                          <p class="margin">Billing From</p>
+                      <div class="input-group">
+                         <input type="text" class="form-control" name="from" style="width: 588px!important;">
+                      </div>
+
+                          <p class="margin">Billing To</p>
+                      <div class="input-group">
+                         <input type="text" class="form-control" name="to" style="width: 588px!important;">
+                      </div>
+
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Add</button>
+                       </div>
+                </form>
+
+          </div>
+          <!-- /.box -->
+    </div>
+{% endblock %}
+
+
+
