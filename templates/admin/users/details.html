@@ -76,7 +76,22 @@
                               <a class="dropdown-item" href="#">Verify Cell #</a><div class="dropdown-divider"></div>
                           </div>
                         </div>
-                            <button type="button" class="btn btn-info btn-xs-1"><a href="" style="color: #FFF;">Send SMS</a></button>
+
+                            <div class="btn-group">
+                            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Send SMS
+                          </button>
+                          <div class="dropdown-menu">
+                            <a class="dropdown-item fancybox fancybox.iframe" href="{% url 'customer_custom_sms' customer.0.id %}">Custom SMS</a>
+                            <div class="dropdown-divider"></div>
+                              <a class="dropdown-item" href="#" onclick="send_password_sms()">Send Password</a><div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#" onclick="send_suspend_warning_sms()">Send Suspend Warning</a><div class="dropdown-divider"></div>
+
+                            <a class="dropdown-item" href="#">Send Payment Instructions</a><div class="dropdown-divider"></div>
+                              <a class="dropdown-item" href="#">Verify Cell #</a><div class="dropdown-divider"></div>
+                          </div>
+                        </div>
+<!--                            <button type="button" class="btn btn-info btn-xs-1"><a href="" style="color: #FFF;">Send SMS</a></button>-->
                             <button type="button" class="btn btn-danger btn-xs-1"><a href="" style="color: #FFF;">Client Login</a></button>
 <!--                            <a class=""><span class="label label-info">Send Sms</span></a>-->
 <!--                            <a class="pull-right"><span class="label label-success">Client Login</span></a>-->
@@ -648,6 +663,22 @@ function send_password() {
         })
 }
 
+function send_password_sms() {
+
+    $.ajax({
+            type: "post",
+            url: "{% url 'send_password_sms' customer.0.id %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+
+            },
+            success:function (success){
+                console.log(success.data);
+                toastr.success('Password Sent via SMS');
+
+            }
+        })
+}
+
 function send_suspend_warning(){
     $.ajax({
             type: "post",
@@ -658,6 +689,22 @@ function send_suspend_warning(){
             success:function (success){
                 console.log(success.data);
                 toastr.success('Suspension Mail Sent');
+
+            }
+        })
+
+}
+
+function send_suspend_warning_sms(){
+    $.ajax({
+            type: "post",
+            url: "{% url 'send_suspend_warning_sms' customer.0.id %}",
+            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+
+            },
+            success:function (success){
+                console.log(success.data);
+                toastr.success('Suspension Sms Sent');
 
             }
         })

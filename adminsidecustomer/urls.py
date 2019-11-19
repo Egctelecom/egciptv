@@ -15,6 +15,7 @@ url(r'^customer/edit/(?P<id>[0-9]+)$', customer_views.edit, name='edit_customer'
 url(r'^customer/details/(?P<id>[0-9]+)$', customer_views.details, name='customer_details'),
 url(r'^customer_delete/(?P<pk>[0-9]+)$', customer_views.customer_delete, name='customer_delete'),
 url(r'^customer/custom_mail/(?P<pk>[0-9]+)$', customer_views.SendCustomMail.as_view(), name='customer_custom_mail'),
+url(r'^customer/custom_sms/(?P<pk>[0-9]+)$', customer_views.SendCustomSMS.as_view(), name='customer_custom_sms'),
 
 #====================== optional =================================== #
 url(r'^country/$', country_province_city_view.add , name='country'), #
