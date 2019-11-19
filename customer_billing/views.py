@@ -9,7 +9,7 @@ from django.views.generic.base import View
 from adminsidecustomer.models import Customer
 from agentpanel.models import Agent
 from django.contrib.auth.mixins import LoginRequiredMixin
-from customer_billing.models import BillingDetailsCustomer
+from customer_billing.models import BillingDetailsCustomer, CreditCard
 
 
 class CustomerDetails(View, LoginRequiredMixin):
@@ -72,3 +72,28 @@ class CustomerBillingEdit(View, LoginRequiredMixin):
 		except Exception as e:
 			messages.error(request, "Something went wrong. - {}".format(e))
 		return HttpResponseRedirect(reverse('customer_billing_edit', kwargs={'id': id}))
+	
+	
+class CreditCardView(LoginRequiredMixin, View):
+	login_url = '/admin/'
+	
+	def get(self, request, id):
+		if CreditCard.objects.filter(user__id=id).exists():
+			credit_card_obj = CreditCard.objects.get(user__id=id)
+			return render(request, 'admin/billing/credit_card.html', {'credit_card_obj': credit_card_obj})
+		else:
+			return render(request, 'admin/billing/credit_card.html')
+		
+	def post(self, request, id):
+		if CreditCard.objects.filter(user__id=id).exists():
+			credit_card_obj = CreditCard.objects.get(user__id=id)
+			credit_card_obj.card_type = request.POST['card_type']
+			credit_card_obj.name = request.POST['card_name']
+			credit_card_obj.number = request.POST['card_number']
+			credit_card_obj.month = request.POST['month']
+			credit_card_obj.year = request.POST['year']
+			credit_card_obj.cvv = request.POST['cvv']
+			credit_card_obj.save()
+			
+		messages.success(request, "Details Saved.")
+		return render(request, 'admin/billing/credit_card.html')
