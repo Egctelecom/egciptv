@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 import os
+from decouple import config
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -101,8 +102,8 @@ DATABASES = {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'egciptv',
             'USER': 'postgres',
-            'PASSWORD': 'navsoftpsql',
-            'HOST': '192.168.0.65',
+            'PASSWORD': config('DB_PASS'),
+            'HOST': config('DB_HOST'),
             'PORT': '5432',
         }
 }
@@ -169,7 +170,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # EMAIL_HOST_USER = ''
 # EMAIL_HOST_PASSWORD = ''
 # EMAIL_USE_TLS = True
-from decouple import config
 
 
 EMAIL_USE_TLS = True
@@ -177,7 +177,6 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = config('EMAIL_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_PASS')
 EMAIL_PORT = 587
-
 
 
 PAYPAL_MODE='sandbox'   # sandbox or live

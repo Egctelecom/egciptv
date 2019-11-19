@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5cfe3e5c-8a30-4098-ae8f-2b8dfc7a7d19" name="Default" comment="update 16/11/19">
+    <list default="true" id="5cfe3e5c-8a30-4098-ae8f-2b8dfc7a7d19" name="Default" comment="update 17/11/19">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer_billing/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/customer_billing/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer_billing/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/customer_billing/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/egciptv/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/egciptv/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/admin/billing/add.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/billing/add.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/admin/billing/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/billing/edit.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -117,13 +113,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1532416354661</updated>
-    </task>
-    <task id="LOCAL-00304" summary="special offers">
-      <created>1556285089008</created>
-      <option name="number" value="00304" />
-      <option name="presentableId" value="LOCAL-00304" />
-      <option name="project" value="LOCAL" />
-      <updated>1556285089008</updated>
     </task>
     <task id="LOCAL-00305" summary="special offers">
       <created>1556286229295</created>
@@ -461,7 +450,14 @@
       <option name="project" value="LOCAL" />
       <updated>1574083143221</updated>
     </task>
-    <option name="localTasksCounter" value="353" />
+    <task id="LOCAL-00353" summary="update 17/11/19">
+      <created>1574147756573</created>
+      <option name="number" value="00353" />
+      <option name="presentableId" value="LOCAL-00353" />
+      <option name="project" value="LOCAL" />
+      <updated>1574147756574</updated>
+    </task>
+    <option name="localTasksCounter" value="354" />
     <servers />
   </component>
   <component name="TodoView">
@@ -494,7 +490,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="minor change" />
     <MESSAGE value="user add probliem solve" />
     <MESSAGE value="city" />
     <MESSAGE value="minor update" />
@@ -519,7 +514,8 @@
     <MESSAGE value="update 14/11/19" />
     <MESSAGE value="update 15/11/19" />
     <MESSAGE value="update 16/11/19" />
-    <option name="LAST_COMMIT_MESSAGE" value="update 16/11/19" />
+    <MESSAGE value="update 17/11/19" />
+    <option name="LAST_COMMIT_MESSAGE" value="update 17/11/19" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
