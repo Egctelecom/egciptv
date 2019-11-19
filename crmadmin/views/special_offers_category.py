@@ -12,6 +12,9 @@ from django.contrib import messages
 from django.urls import reverse
 import requests
 import json
+
+from django.views.decorators.csrf import csrf_exempt
+
 from sitefrontendbyadmin.models import SpecialoffersUnderCategory,SpecialoffersSubParentCategory,SpecialoffersParentCategory,SpecialOffers
 from crmadmin.forms import SpecialoffersParentCategoryForm,SpecialoffersSubParentCategoryForm,SpecialoffersUnderCategoryForm
 from adminsidecustomer.models import Province ,City
@@ -314,7 +317,7 @@ def get_city(request):
 
 # Front End
 
-
+@csrf_exempt
 def get_set_of_special_offers(request):
 	if request.is_ajax():
 		id = request.POST['id']

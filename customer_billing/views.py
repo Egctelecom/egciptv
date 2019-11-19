@@ -82,7 +82,7 @@ class CreditCardView(LoginRequiredMixin, View):
 			credit_card_obj = CreditCard.objects.get(user__id=id)
 			return render(request, 'admin/billing/credit_card.html', {'credit_card_obj': credit_card_obj})
 		else:
-			return render(request, 'admin/billing/credit_card.html')
+			return render(request, 'admin/billing/credit_card_add.html')
 		
 	def post(self, request, id):
 		if CreditCard.objects.filter(user__id=id).exists():
@@ -93,7 +93,20 @@ class CreditCardView(LoginRequiredMixin, View):
 			credit_card_obj.month = request.POST['month']
 			credit_card_obj.year = request.POST['year']
 			credit_card_obj.cvv = request.POST['cvv']
+			credit_card_obj.primary = request.POST['primary']
 			credit_card_obj.save()
+		else:
+			CreditCard.objects.create(user=Customer.objects.get(id=id), card_type=request.POST['card_type'],
+			name=request.POST['card_name'], number=request.POST['card_number'], month=request.POST['month'],
+			year=request.POST['year'], cvv=request.POST['cvv'], primary=request.POST['primary'])
 			
 		messages.success(request, "Details Saved.")
-		return render(request, 'admin/billing/credit_card.html')
+		return render(request, 'admin/billing/credit_card_add.html')
+
+
+class CreditCardListView(LoginRequiredMixin, View):
+	login_url = '/admin/'
+	
+	def get(self, request, id):
+		queryset = CreditCard.objects.filter(user__id=id)
+		return render(request, 'admin/billing/credit_card_list.html', {'queryset': queryset})

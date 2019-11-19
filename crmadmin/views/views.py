@@ -20,7 +20,7 @@ from django.contrib.auth.decorators import user_passes_test
 
 def admin_login(request):
     if request.method == 'GET':
-        if request.user.is_authenticated():
+        if request.user.is_authenticated and request.user.is_superuser:
             return HttpResponseRedirect('/admin/dashboard/')
         else:
             return render(request, 'admin/login.html')

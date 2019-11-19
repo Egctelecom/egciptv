@@ -1135,7 +1135,7 @@ def send_password_sms(request, pk):
 		                                                                                                     customer_obj.phone,
 		                                                                                                     msg)
 		response = requests.get(url)
-		
+		print("Password SMS")
 		return JsonResponse(data={
 			'state': True,
 			'message': "Success"
@@ -1145,7 +1145,7 @@ def send_password_sms(request, pk):
 def send_suspend_warning(request, pk):
 	if request.is_ajax():
 		customer_obj = Customer.objects.get(id=pk)
-		msg = 'Your account may get suspended.'
+		msg = 'Suspicious activities spotted. Your account may get suspended.'
 		subject = 'Warning, Payment Due.'
 		
 		massege = render_to_string('admin/email_template/customer_password.html',
@@ -1163,6 +1163,23 @@ def send_suspend_warning(request, pk):
 		send_mail(subject, massege, 'ranit.saha@navsoft.in', [customer_obj.email_address], fail_silently=False,
 		          html_message=html_msg)
 		
+		return JsonResponse(data={
+			'state': True,
+			'message': "Success"
+		}, status=200)
+
+
+def send_suspend_warning_sms(request, pk):
+	if request.is_ajax():
+		customer_obj = Customer.objects.get(id=pk)
+		msg = 'Suspicious activities spotted. Your account may get suspended.'
+		
+		token = "73ad3b26-88a2-4f59-90ae-9be6a256782d"
+		url = "https://sms.teleapi.net/sms/send?token={}&destination={}&message={}&source=4388082677".format(token,
+		                                                                                                     customer_obj.phone,
+		                                                                                                     msg)
+		print("Suspend Warning SMS")
+		response = requests.get(url)
 		return JsonResponse(data={
 			'state': True,
 			'message': "Success"

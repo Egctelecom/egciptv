@@ -6,7 +6,7 @@ cffi==1.11.5
 chardet==3.0.4
 cryptography==2.8
 dj-database-url==0.5.0
-Django==1.11.23
+Django==1.11
 django-excel==0.0.10
 django-extensions==2.2.5
 django-smtp-ssl==1.0
@@ -30,6 +30,7 @@ pyexcel-xlsx==0.5.7
 PyJWT==1.6.4
 pyOpenSSL==18.0.0
 PyPDF2==1.26.0
+python-decouple==3.3
 pytz==2018.5
 reportlab==3.5.6
 requests==2.19.1

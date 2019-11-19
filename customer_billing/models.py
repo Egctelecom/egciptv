@@ -51,6 +51,7 @@ class CreditCard(models.Model):
 	month = models.IntegerField()
 	year = models.IntegerField()
 	cvv = models.IntegerField()
+	primary = models.BooleanField(default=False)
 
 
 class PaypalDetails(models.Model):

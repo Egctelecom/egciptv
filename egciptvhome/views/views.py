@@ -59,8 +59,7 @@ def customer_login(request):
         if user:
             login(request, user)
             return HttpResponseRedirect(reverse(my_account,kwargs={'pk':user.id}))
-        else:
-            pass
+        
         return HttpResponseRedirect(reverse(index))
 
 
