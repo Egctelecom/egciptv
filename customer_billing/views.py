@@ -74,34 +74,44 @@ class CustomerBillingEdit(View, LoginRequiredMixin):
 		return HttpResponseRedirect(reverse('customer_billing_edit', kwargs={'id': id}))
 	
 	
-class CreditCardView(LoginRequiredMixin, View):
+class CreditCardAdd(LoginRequiredMixin, View):
 	login_url = '/admin/'
 	
 	def get(self, request, id):
-		if CreditCard.objects.filter(user__id=id).exists():
-			credit_card_obj = CreditCard.objects.get(user__id=id)
-			return render(request, 'admin/billing/credit_card.html', {'credit_card_obj': credit_card_obj})
-		else:
-			return render(request, 'admin/billing/credit_card_add.html')
+		# if CreditCard.objects.filter(user__id=id).exists():
+		# 	credit_card_obj = CreditCard.objects.get(user__id=id)
+		# 	return render(request, 'admin/billing/credit_card_add.html', {'credit_card_obj': credit_card_obj})
+		# else:
+		customer_obj = Customer.objects.get(id=id)
+		year_range = range(2019, 2051)
+		return render(request, 'admin/billing/credit_card_add.html', {'customer_obj': customer_obj,
+		                                                              'year_range': year_range})
 		
 	def post(self, request, id):
-		if CreditCard.objects.filter(user__id=id).exists():
-			credit_card_obj = CreditCard.objects.get(user__id=id)
-			credit_card_obj.card_type = request.POST['card_type']
-			credit_card_obj.name = request.POST['card_name']
-			credit_card_obj.number = request.POST['card_number']
-			credit_card_obj.month = request.POST['month']
-			credit_card_obj.year = request.POST['year']
-			credit_card_obj.cvv = request.POST['cvv']
-			credit_card_obj.primary = request.POST['primary']
-			credit_card_obj.save()
-		else:
+		# if CreditCard.objects.filter(user__id=id).exists():
+		# 	credit_card_obj = CreditCard.objects.get(user__id=id)
+		# 	credit_card_obj.card_type = request.POST['card_type']
+		# 	credit_card_obj.name = request.POST['card_name']
+		# 	credit_card_obj.number = request.POST['card_number']
+		# 	credit_card_obj.month = request.POST['month']
+		# 	credit_card_obj.year = request.POST['year']
+		# 	credit_card_obj.cvv = request.POST['cvv']
+		# 	credit_card_obj.primary = request.POST['primary']
+		# 	credit_card_obj.save()
+		# else:
+		try:
 			CreditCard.objects.create(user=Customer.objects.get(id=id), card_type=request.POST['card_type'],
 			name=request.POST['card_name'], number=request.POST['card_number'], month=request.POST['month'],
 			year=request.POST['year'], cvv=request.POST['cvv'], primary=request.POST['primary'])
 			
-		messages.success(request, "Details Saved.")
-		return render(request, 'admin/billing/credit_card_add.html')
+			messages.success(request, "Details Saved.")
+		except Exception as e:
+			messages.error(request, "Something went wrong - {}".format(e))
+		
+		customer_obj = Customer.objects.get(id=id)
+		year_range = range(2019, 2051)
+		return render(request, 'admin/billing/credit_card_add.html', {'customer_obj': customer_obj,
+		                                                              'year_range': year_range})
 
 
 class CreditCardListView(LoginRequiredMixin, View):
@@ -109,4 +119,5 @@ class CreditCardListView(LoginRequiredMixin, View):
 	
 	def get(self, request, id):
 		queryset = CreditCard.objects.filter(user__id=id)
-		return render(request, 'admin/billing/credit_card_list.html', {'queryset': queryset})
+		
+		return render(request, 'admin/billing/credit_card_list.html', {'queryset': queryset, 'id': id})
