@@ -72,8 +72,8 @@ class CustomerBillingEdit(View, LoginRequiredMixin):
 		except Exception as e:
 			messages.error(request, "Something went wrong. - {}".format(e))
 		return HttpResponseRedirect(reverse('customer_billing_edit', kwargs={'id': id}))
-	
-	
+
+
 class CreditCardAdd(LoginRequiredMixin, View):
 	login_url = '/admin/'
 	
@@ -86,7 +86,7 @@ class CreditCardAdd(LoginRequiredMixin, View):
 		year_range = range(2019, 2051)
 		return render(request, 'admin/billing/credit_card_add.html', {'customer_obj': customer_obj,
 		                                                              'year_range': year_range})
-		
+	
 	def post(self, request, id):
 		# if CreditCard.objects.filter(user__id=id).exists():
 		# 	credit_card_obj = CreditCard.objects.get(user__id=id)
@@ -100,9 +100,13 @@ class CreditCardAdd(LoginRequiredMixin, View):
 		# 	credit_card_obj.save()
 		# else:
 		try:
+			primary = False
+			if 'primary' in request.POST and request.POST['primary'] == 'True':
+				primary = True
 			CreditCard.objects.create(user=Customer.objects.get(id=id), card_type=request.POST['card_type'],
-			name=request.POST['card_name'], number=request.POST['card_number'], month=request.POST['month'],
-			year=request.POST['year'], cvv=request.POST['cvv'], primary=request.POST['primary'])
+			                          name=request.POST['card_name'], number=request.POST['card_number'],
+			                          month=request.POST['month'],
+			                          year=request.POST['year'], cvv=request.POST['cvv'], primary=primary)
 			
 			messages.success(request, "Details Saved.")
 		except Exception as e:
@@ -121,3 +125,32 @@ class CreditCardListView(LoginRequiredMixin, View):
 		queryset = CreditCard.objects.filter(user__id=id)
 		
 		return render(request, 'admin/billing/credit_card_list.html', {'queryset': queryset, 'id': id})
+
+
+class CreditCardEditView(LoginRequiredMixin, View):
+	login_url = '/admin/'
+	
+	def get(self, request, id):
+		creditcard_obj = CreditCard.objects.get(id=id)
+		year_range = range(2019, 2051)
+		return render(request, 'admin/billing/credit_card_edit.html',
+		              {'creditcard_obj': creditcard_obj, 'year_range': year_range})
+	
+	def post(self, request, id):
+		credit_card_obj = CreditCard.objects.get(id=id)
+		credit_card_obj.card_type = request.POST['card_type']
+		credit_card_obj.name = request.POST['card_name']
+		credit_card_obj.number = request.POST['card_number']
+		credit_card_obj.month = request.POST['month']
+		credit_card_obj.year = request.POST['year']
+		credit_card_obj.cvv = request.POST['cvv']
+		
+		if 'primary' in request.POST and request.POST['primary'] == 'True':
+			credit_card_obj.primary = True
+		else:
+			credit_card_obj.primary = False
+		credit_card_obj.save()
+		year_range = range(2019, 2051)
+		messages.success(request, "Data Updated")
+		return render(request, 'admin/billing/credit_card_edit.html',
+		              {'creditcard_obj': credit_card_obj, 'year_range': year_range})

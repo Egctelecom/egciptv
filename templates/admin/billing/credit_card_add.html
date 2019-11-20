@@ -23,19 +23,19 @@
                     {% endfor %}
                 </div>
                 {% endif %}
-                     <form method="post" class="form-horizontal" action="{% url 'customer_billing_add' %}" enctype="multipart/form-data">
+                     <form method="post" class="form-horizontal" action="{% url 'customer_credit_card_add' customer_obj.id %}" enctype="multipart/form-data">
 
                     {% csrf_token %}
                       <div class="box-body">
 
                       <p class="margin">Customer</p>
                       <div class="input-group">
-                         <input type="text" class="form-control" value="{{ customer_obj.first_name }} {{ customer_obj.last_name }}" style="width: 588px!important;">
+                         <input type="text" class="form-control" disabled value="{{ customer_obj.first_name }} {{ customer_obj.last_name }}" style="width: 588px!important;">
                       </div>
 
                       <p class="margin">Type</p>
                       <div class="input-group">
-                         <select class="form-control" name="sale_person_id" style="width: 588px!important;" >
+                         <select class="form-control" name="card_type" style="width: 588px!important;" >
                              <option>Select Card Type</option>
                              <option value="VISA">VISA</option>
                              <option value="MASTERCARD">MASTERCARD</option>
@@ -46,12 +46,12 @@
 
                       <p class="margin">Name</p>
                       <div class="input-group">
-                         <input type="text" class="form-control" name="name" style="width: 588px!important;">
+                         <input type="text" class="form-control" name="card_name" style="width: 588px!important;">
                       </div>
 
                       <p class="margin">Number</p>
                       <div class="input-group">
-                         <input type="text" class="form-control" name="number" style="width: 588px!important;">
+                         <input type="text" class="form-control" name="card_number" style="width: 588px!important;">
                       </div>
 
                       <p class="margin">Month</p>
@@ -90,9 +90,9 @@
                          <input type="password" class="form-control" name="cvv" style="width: 588px!important;">
                       </div>
 
-                          <p class="margin">Primary</p>
+<!--                          <p class="margin">Primary</p>-->
                       <div class="input-group">
-                         <input type="checkbox" class="form-control" name="primary" style="width: 588px!important;">
+                         <input type="checkbox" name="primary" id="primary"><label for="primary">Primary</label>
                       </div>
 
                       </div>
