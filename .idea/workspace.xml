@@ -2,14 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5cfe3e5c-8a30-4098-ae8f-2b8dfc7a7d19" name="Default" comment="update 20/11/19">
-      <change afterPath="$PROJECT_DIR$/templates/admin/billing/credit_card_edit.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer_billing/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/customer_billing/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer_billing/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/customer_billing/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/egciptv.bak" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/admin/billing/credit_card_add.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/billing/credit_card_add.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/admin/billing/credit_card_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/billing/credit_card_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/admin/billing/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/billing/list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adminsidecustomer/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/adminsidecustomer/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adminsidecustomer/views/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/adminsidecustomer/views/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ratecustomerbillingwithcdr/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/ratecustomerbillingwithcdr/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/admin/users/details.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/users/details.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/admin/users/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/users/edit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/admin/users/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/users/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/egciptv/special_offers/special_offers_dt_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/egciptv/special_offers/special_offers_dt_list.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -119,13 +119,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1532416354661</updated>
-    </task>
-    <task id="LOCAL-00310" summary="special offers">
-      <created>1556286988892</created>
-      <option name="number" value="00310" />
-      <option name="presentableId" value="LOCAL-00310" />
-      <option name="project" value="LOCAL" />
-      <updated>1556286988892</updated>
     </task>
     <task id="LOCAL-00311" summary="special offers">
       <created>1556287455576</created>
@@ -463,7 +456,14 @@
       <option name="project" value="LOCAL" />
       <updated>1574233207129</updated>
     </task>
-    <option name="localTasksCounter" value="359" />
+    <task id="LOCAL-00359" summary="update 20/11/19">
+      <created>1574253882860</created>
+      <option name="number" value="00359" />
+      <option name="presentableId" value="LOCAL-00359" />
+      <option name="project" value="LOCAL" />
+      <updated>1574253882860</updated>
+    </task>
+    <option name="localTasksCounter" value="360" />
     <servers />
   </component>
   <component name="TodoView">

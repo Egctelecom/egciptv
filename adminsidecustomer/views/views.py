@@ -6,6 +6,7 @@ import requests
 from django.views.generic.base import View
 
 from adminnumberprovider.models import NumberProvinceCustomerMap, NumberMNPtoCustomer
+from ratecustomerbillingwithcdr.models import CustomerBillingDetails
 from crmadmin.models import CallCost
 from adminsidecustomer.forms import Customerform
 from django.contrib import messages
@@ -490,6 +491,10 @@ def details(request, id):
 		port_number_list = NumberMNPtoCustomer.objects.values('id', 'user_id__id', 'updated_at', 'number',
 		                                                      'approve_upload_data').filter(user_id=id).order_by(
 			'updated_at')
+		
+		bill = CustomerBillingDetails.objects.values('id', 'user_id', 'user_id__first_name',
+		                                             'customer_service_contract', 'call_cost', 'payment_status',
+		                                             'created_at').filter(user_id=id)
 		return render(request, 'admin/users/details.html', {
 			
 			'customer': customer_data,
@@ -512,7 +517,8 @@ def details(request, id):
 			'tax': tax,
 			'tax_rate': tax_rate,
 			'total_charge': total_charge,
-			'total_tickets': total_tickets
+			'total_tickets': total_tickets,
+			'bill': bill
 		})
 
 

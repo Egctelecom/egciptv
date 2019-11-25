@@ -1,7 +1,7 @@
 from django.conf.urls import url, include
 
 from adminsidecustomer.views import views as customer_views, pending_invoice, country_province_city_view, customer_plan, \
-    upload_document, contract,comment
+    upload_document, contract, comment
 
 urlpatterns = [
 

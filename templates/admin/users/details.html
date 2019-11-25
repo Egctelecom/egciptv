@@ -22,6 +22,7 @@
             <!-- Profile Image -->
             <div class="box box-primary">
                 <div class="box-body box-profile">
+                    <a href="{% url 'edit_customer' customer.0.id %}" class="fancybox fancybox.iframe pull-right"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                     <img class="profile-user-img img-responsive img-circle" src="https://png.icons8.com/office/160/000000/administrator-male.png" alt="User profile picture">
 
                     <h3 class="profile-username text-center">{{customer.0.first_name}} {{customer.0.last_name}}</h3>
@@ -111,6 +112,8 @@
                     <li><a href="#devices" data-toggle="tab">Devices of Contract</a></li>
 
                     <li><a href="#addnumber" data-toggle="tab">Number</a></li>
+                    <li><a href="#invoice_all" data-toggle="tab">Invoice</a></li>
+                    <li><a href="#notes" data-toggle="tab">Notes</a></li>
 
                 </ul>
                 <div class="tab-content">
@@ -603,6 +606,52 @@
                             </div>
                         </div>
                     </div>
+
+                    <!----------------------------------------- Invoice all ------------------------------------------>
+                    <div class="tab-pane" id="invoice_all">
+                        <div class="post">
+                            <div class="row">
+<!--                                <div class="col-md-2" style="float:right;">-->
+<!--                                    <div class="form-group" >-->
+<!--                                        <a  href="{% url 'add_user_service_price' customer.0.id %}" class="fancybox fancybox.iframe btn btn-block btn-success btn-xs">Add a Service Plan</a>-->
+<!--                                    </div>-->
+
+<!--                                </div>-->
+                                <div class="col-xs-12 table-responsive">
+                                    <table id="myTable" class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Billing Number </th>
+                                            <th>Issue Date</th>
+                                            <th>Billing Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                          {% for b in bill %}
+                                            <tr>
+                                              <td>{{ b.id }}</td>
+                                              <td>{{ b.created_at }}</td>
+                                              <td>{{ b.payment_status }}</td>
+                                              <td>
+                                               <a href="{% url 'rate_customer_billing_cdr_billing_details' b.id %}" class="btn btn-info  btn-xs"> Show  </a>
+                                               <a href="{% url 'rate_customer_billing_cdr_billing_edit' b.id %}" class="btn btn-warning  btn-xs"> Edit  </a>
+                                               <a href="{% url 'rate_customer_billing_cdr_billing_edit_data' b.id %}" class="btn btn-warning  btn-xs"> New Invoice  </a>
+                                              </td>
+
+                                            </tr>
+                                          {% empty %}
+                                            <tr>
+                                                <td colspan="4" style="text-align:center">No data available</td>
+                                            </tr>
+                                          {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -618,14 +667,8 @@
 <script src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
 <script type="text/javascript" src="{% static 'admin/fancybox/jquery.fancybox.pack.js'%}"></script>
-<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js" ></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-<script>
-    $(document).ready( function () {
-        $('#myTable').DataTable();
-    });
-</script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js">
+
 <script type="text/javascript">
     $(document).ready(function() {
         $(".fancybox").fancybox({
@@ -639,77 +682,77 @@
         });
     });
 
-function createDownloadLink(id){
-    var str = document.getElementById('p'+id).value;
-    console.log(str);
-    var dlnk = document.getElementById('dwnldLnk'+id);
-    dlnk.href = 'data:application/octet-stream;base64,'+str;
-    dlnk.click();
-}
+    function createDownloadLink(id){
+        var str = document.getElementById('p'+id).value;
+        console.log(str);
+        var dlnk = document.getElementById('dwnldLnk'+id);
+        dlnk.href = 'data:application/octet-stream;base64,'+str;
+        dlnk.click();
+    }
 
-function send_password() {
+    function send_password() {
 
-    $.ajax({
-            type: "post",
-            url: "{% url 'send_password_mail' customer.0.id %}",
-            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+        $.ajax({
+                type: "post",
+                url: "{% url 'send_password_mail' customer.0.id %}",
+                data: {csrfmiddlewaretoken:"{{csrf_token}}",
 
-            },
-            success:function (success){
-                console.log(success.data);
-                toastr.success('Password Sent');
+                },
+                success:function (success){
+                    console.log(success.data);
+                    toastr.success('Password Sent');
 
-            }
-        })
-}
+                }
+            })
+    }
 
-function send_password_sms() {
+    function send_password_sms() {
 
-    $.ajax({
-            type: "post",
-            url: "{% url 'send_password_sms' customer.0.id %}",
-            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+        $.ajax({
+                type: "post",
+                url: "{% url 'send_password_sms' customer.0.id %}",
+                data: {csrfmiddlewaretoken:"{{csrf_token}}",
 
-            },
-            success:function (success){
-                console.log(success.data);
-                toastr.success('Password Sent via SMS');
+                },
+                success:function (success){
+                    console.log(success.data);
+                    toastr.success('Password Sent via SMS');
 
-            }
-        })
-}
+                }
+            })
+    }
 
-function send_suspend_warning(){
-    $.ajax({
-            type: "post",
-            url: "{% url 'send_suspend_warning' customer.0.id %}",
-            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+    function send_suspend_warning(){
+        $.ajax({
+                type: "post",
+                url: "{% url 'send_suspend_warning' customer.0.id %}",
+                data: {csrfmiddlewaretoken:"{{csrf_token}}",
 
-            },
-            success:function (success){
-                console.log(success.data);
-                toastr.success('Suspension Mail Sent');
+                },
+                success:function (success){
+                    console.log(success.data);
+                    toastr.success('Suspension Mail Sent');
 
-            }
-        })
+                }
+            })
 
-}
+    }
 
-function send_suspend_warning_sms(){
-    $.ajax({
-            type: "post",
-            url: "{% url 'send_suspend_warning_sms' customer.0.id %}",
-            data: {csrfmiddlewaretoken:"{{csrf_token}}",
+    function send_suspend_warning_sms(){
+        $.ajax({
+                type: "post",
+                url: "{% url 'send_suspend_warning_sms' customer.0.id %}",
+                data: {csrfmiddlewaretoken:"{{csrf_token}}",
 
-            },
-            success:function (success){
-                console.log(success.data);
-                toastr.success('Suspension Sms Sent');
+                },
+                success:function (success){
+                    console.log(success.data);
+                    toastr.success('Suspension Sms Sent');
 
-            }
-        })
+                }
+            })
 
-}
+    }
 
 </script>
 {% endblock %}

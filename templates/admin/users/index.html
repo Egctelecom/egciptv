@@ -82,7 +82,7 @@
                               <a href="{% url 'comment' customer_list.user_id %}" class="fancybox fancybox.iframe"><img src="https://png.icons8.com/office/40/000000/sms.png"></a>
                               <img src="https://png.icons8.com/office/30/000000/administrator-male.png">
                               <a href="{% url 'change_password' customer_list.user_id %}" class="fancybox fancybox.iframe"><img src="https://png.icons8.com/color/48/000000/key.png"></a>
-                              <a href="{% url 'customer_details' customer_list.customer_id__id %}">{{customer_list.customer_id__first_name}} {{customer_list.customer_id__last_name}}</a>
+                              <a href="{% url 'customer_details' customer_list.customer_id__id %}">{%if customer_list.customer_id__display_name == 'company_name' %} {{customer_list.customer_id__company_name}} {% elif customer_list.customer_id__display_name == 'user_name' %}{{customer_list.customer_id__first_name}} {{customer_list.customer_id__last_name}} {% endif %}</a>
                             </td>
                             <td>{{ customer_list.monthly }}</td>
                             <td></td>

@@ -1,5 +1,5 @@
 from django.conf.urls import url, include
-from ratecustomerbillingwithcdr.views import views as ratecustomerbillingwithcdr_views,voip_long_distance_rate_views
+from ratecustomerbillingwithcdr.views import views as ratecustomerbillingwithcdr_views, voip_long_distance_rate_views
 urlpatterns = [
 
 url(r'^rate_customer_billing_cdr/(?P<id>[0-9]+)$', ratecustomerbillingwithcdr_views.index, name='rate_customer_billing_cdr'),
