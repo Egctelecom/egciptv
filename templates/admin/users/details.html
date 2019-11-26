@@ -113,7 +113,7 @@
 
                     <li><a href="#addnumber" data-toggle="tab">Number</a></li>
                     <li><a href="#invoice_all" data-toggle="tab">Invoice</a></li>
-                    <li><a href="#notes" data-toggle="tab">Notes</a></li>
+                    <li><a href="#billing" data-toggle="tab">Billing</a></li>
 
                 </ul>
                 <div class="tab-content">
@@ -652,6 +652,199 @@
                             </div>
                         </div>
                     </div>
+
+                    <!----------------------------------------- Billing ------------------------------------------>
+                    <div class="tab-pane" id="billing">
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#billing_sub_tab_1" data-toggle="tab">Credit Cards</a></li>
+                                <li><a href="#billing_sub_tab_2" data-toggle="tab">Direct Deposit</a></li>
+                                <li><a href="#billing_sub_tab_3" data-toggle="tab">Paypal Address</a></li>
+                            </ul>
+
+                            <div class="tab-content">
+                                <!----------------------------------------- Credit Card ------------------------------------------>
+                                <div class="active tab-pane" id="billing_sub_tab_1">
+                                    <div class="post">
+                                        <div class="row">
+                                            <div class="col-md-2" style="float:right;">
+                                                <div class="form-group" >
+                                                    <section class="content-header">
+                                                    <a href="{% url 'customer_credit_card_add' customer.0.id %}" class="fancybox fancybox.iframe btn btn-info  btn-xs">Add Credit Card</a>
+                                                    </section>
+                                                    <section class="content-header">
+                                                    <a href="{% url 'customer_credit_card_import' customer.0.id %}" class="fancybox fancybox.iframe btn btn-success  btn-xs">Import Cards</a>
+                                                    </section>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 table-responsive">
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Type </th>
+                                                            <th>Card Number</th>
+                                                            <th>Expiry</th>
+                                                            <th>Default </th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for card in card_list %}
+                                                        <tr>
+                                                          <td>{{ card.card_type }}</td>
+<!--                                                            <td>{{ card.name }}</td>-->
+                                                            <td>{{ card.number }}</td>
+                                                            <td>{{ card.month }}/{{ card.year }}</td>
+                                                            <td>{{ card.primary }}</td>
+                                                          <td>
+                                                              <a href="{% url 'customer_credit_card_edit' card.id %}" class="fancybox fancybox.iframe btn btn-info btn-xs"><i class="fa fa-edit"></i></a>
+                                                              <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash"></i></button>
+                                                              <div class="modal fade" id="myModal" role="dialog">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                      <h4 class="modal-title">Are you sure ? </h4>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                     <a href="{% url 'customer_credit_card_delete' card.id %}" class="btn btn-success btn-xs">Delete</a>
+                                                                     <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal">Cancel</button>
+                                                                    </div>
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                          </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <!-- /.col -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!----------------------------------------- Direct Deposit ------------------------------------------>
+                                <div class="tab-pane" id="billing_sub_tab_2">
+                                    <div class="post">
+                                        <div class="row">
+                                            <div class="col-md-2" style="float:right;">
+                                                <div class="form-group" >
+                                                    <section class="content-header">
+                                                    <a href="{% url 'customer_direct_deposit_add' customer.0.id %}" class="fancybox fancybox.iframe btn btn-info  btn-xs">Add Direct Deposit</a>
+                                                    </section>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 table-responsive">
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Name </th>
+                                                            <th>A/C Number</th>
+                                                            <th>Branch ID </th>
+                                                            <th>Institution No.</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for bank in bank_list %}
+                                                        <tr>
+                                                            <td>{{ bank.bank_name }}</td>
+                                                            <td>{{ bank.account_no }}</td>
+                                                            <td>{{ bank.branch_id }}</td>
+                                                            <td>{{ bank.institution_no }}</td>
+                                                          <td>
+                                                              <a href="{% url 'customer_direct_deposit_edit' bank.id %}" class="fancybox fancybox.iframe btn btn-info btn-xs"><i class="fa fa-edit"></i></a>
+                                                              <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal3"><i class="fa fa-trash"></i></button>
+                                                              <div class="modal fade" id="myModal3" role="dialog">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                      <h4 class="modal-title">Are you sure ? </h4>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                     <a href="{% url 'customer_direct_deposit_delete' bank.id %}" class="btn btn-success btn-xs">Delete</a>
+                                                                     <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal">Cancel</button>
+                                                                    </div>
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                          </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <!-- /.col -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!----------------------------------------- Paypal Address ------------------------------------------>
+                                <div class="tab-pane" id="billing_sub_tab_3">
+                                    <div class="post">
+                                        <div class="row">
+                                            <div class="col-md-2" style="float:right;">
+                                                <div class="form-group" >
+                                                    <section class="content-header">
+                                                    <a href="{% url 'customer_paypal_address_add' customer.0.id %}" class="fancybox fancybox.iframe btn btn-info  btn-xs">Add Paypal Address</a>
+                                                    </section>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 table-responsive">
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>AccountID </th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for paypal in paypal_list %}
+                                                        <tr>
+                                                            <td>{{ paypal.account_id }}</td>
+                                                          <td>
+                                                              <a href="{% url 'customer_paypal_address_edit' paypal.id %}" class="fancybox fancybox.iframe btn btn-info btn-xs"><i class="fa fa-edit"></i></a>
+                                                              <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal4"><i class="fa fa-trash"></i></button>
+                                                              <div class="modal fade" id="myModal4" role="dialog">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                      <h4 class="modal-title">Are you sure ? </h4>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                     <a href="{% url 'customer_paypal_address_delete' paypal.id %}" class="btn btn-success btn-xs">Delete</a>
+                                                                     <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal">Cancel</button>
+                                                                    </div>
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                          </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <!-- /.col -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="post">
+                            <div class="row">
+<!--                                <div class="col-md-2" style="float:right;">-->
+<!--                                    <div class="form-group" >-->
+<!--                                        <a  href="{% url 'add_user_service_price' customer.0.id %}" class="fancybox fancybox.iframe btn btn-block btn-success btn-xs">Add a Service Plan</a>-->
+<!--                                    </div>-->
+
+<!--                                </div>-->
+
+                                <!-- /.col -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -668,16 +861,21 @@
 <script src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
 <script type="text/javascript" src="{% static 'admin/fancybox/jquery.fancybox.pack.js'%}"></script>
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js">
-
+<script>
+    $(document).ready( function () {
+        $('#myTable').DataTable();
+        $('#billing_table').DataTable();
+    });
+</script>
 <script type="text/javascript">
     $(document).ready(function() {
         $(".fancybox").fancybox({
              afterClose: function () {
                 location.reload();
             },
-            autoSize : false,
-            width    : "100%",
-            height    : "100%",
+            "width":"100%",
+            "height":"100%",
+            'autoSize' : false,
 
         });
     });

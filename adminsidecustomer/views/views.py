@@ -6,6 +6,7 @@ import requests
 from django.views.generic.base import View
 
 from adminnumberprovider.models import NumberProvinceCustomerMap, NumberMNPtoCustomer
+from customer_billing.models import CreditCard, BankingDetails, PaypalDetails
 from ratecustomerbillingwithcdr.models import CustomerBillingDetails
 from crmadmin.models import CallCost
 from adminsidecustomer.forms import Customerform
@@ -495,6 +496,11 @@ def details(request, id):
 		bill = CustomerBillingDetails.objects.values('id', 'user_id', 'user_id__first_name',
 		                                             'customer_service_contract', 'call_cost', 'payment_status',
 		                                             'created_at').filter(user_id=id)
+		
+		card_list = CreditCard.objects.filter(user__id=id)
+		bank_list = BankingDetails.objects.filter(user__id=id)
+		paypal_list = PaypalDetails.objects.filter(user__id=id)
+		
 		return render(request, 'admin/users/details.html', {
 			
 			'customer': customer_data,
@@ -518,7 +524,10 @@ def details(request, id):
 			'tax_rate': tax_rate,
 			'total_charge': total_charge,
 			'total_tickets': total_tickets,
-			'bill': bill
+			'bill': bill,
+			'card_list': card_list,
+			'bank_list': bank_list,
+			'paypal_list': paypal_list
 		})
 
 

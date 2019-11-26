@@ -1,0 +1,67 @@
+{% extends 'admin/fancybox.html' %}
+{% load static %}
+{% block content %}
+<style>
+    .input_fields_wrap{
+    max-width: 350px;
+    }
+    .input_fields_wrap input[type=text]{
+     width:100%;
+     margin:2px 0;
+    }
+</style>
+    <div class="col-md-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Update Direct Deposit Details</h3>
+            </div>
+               {% if messages %}
+                <div class="alert alert-success alert-dismissible">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                     <form method="post" class="form-horizontal" action="{% url 'customer_direct_deposit_edit' bank_details.id %}" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                      <div class="box-body">
+
+                      <p class="margin">Enter Branch ID</p>
+                      <div class="input-group">
+                         <input type="text" class="form-control" name="branch_id" value="{{bank_details.branch_id}}" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Enter Institution No</p>
+                      <div class="input-group">
+                         <input type="text" class="form-control" name="institution_no" value="{{bank_details.institution_no}}" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Enter Account No</p>
+                      <div class="input-group">
+                         <input type="number" class="form-control" name="account_no" value="{{bank_details.account_no}}" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Enter Account Name</p>
+                      <div class="input-group">
+                         <input type="text" class="form-control" name="account_name" value="{{bank_details.account_name}}" required style="width: 588px!important;">
+                      </div>
+
+                      <p class="margin">Enter Bank Name</p>
+                      <div class="input-group">
+                         <input type="text" class="form-control" name="bank_name" value="{{bank_details.bank_name}}" style="width: 588px!important;">
+                      </div>
+                      </div>
+                       <div class="box-footer">
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Update</button>
+                       </div>
+                </form>
+
+          </div>
+          <!-- /.box -->
+    </div>
+{% endblock %}
+
+
+

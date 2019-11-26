@@ -14,7 +14,7 @@
           <!-- Horizontal Form -->
           <div class="box box-info">
             <div class="box-header with-border">
-              <h3 class="box-title">Add Credit Card Details</h3>
+              <h3 class="box-title">Edit Credit Card Details</h3>
             </div>
                {% if messages %}
                 <div class="alert alert-success alert-dismissible">
@@ -35,8 +35,8 @@
 
                       <p class="margin">Type</p>
                       <div class="input-group">
-                         <select class="form-control" name="card_type" style="width: 588px!important;" >
-                             <option>Select Card Type</option>
+                         <select class="form-control" name="card_type" style="width: 588px!important;" required>
+                             <option value="">Select Card Type</option>
                              <option value="VISA" {% if creditcard_obj.card_type == 'VISA' %} selected {% endif %}>VISA</option>
                              <option value="MASTERCARD" {% if creditcard_obj.card_type == 'MASTERCARD' %} selected {% endif %}>MASTERCARD</option>
                              <option value="AMERICAN EXPRESS" {% if creditcard_obj.card_type == 'AMERICAN EXPRESS' %} selected {% endif %}>AMERICAN EXPRESS</option>
@@ -46,17 +46,17 @@
 
                       <p class="margin">Name</p>
                       <div class="input-group">
-                         <input type="text" class="form-control" name="card_name" value="{{ creditcard_obj.name }}" style="width: 588px!important;">
+                         <input type="text" class="form-control" name="card_name" value="{{ creditcard_obj.name }}" required style="width: 588px!important;">
                       </div>
 
                       <p class="margin">Number</p>
                       <div class="input-group">
-                         <input type="text" class="form-control" name="card_number" value="{{ creditcard_obj.number }}" style="width: 588px!important;">
+                         <input type="number" class="form-control" name="card_number" value="{{ creditcard_obj.number }}" required style="width: 588px!important;">
                       </div>
 
                       <p class="margin">Month</p>
                       <div class="input-group">
-                          <select class="form-control" name="month" style="width: 588px!important;" >
+                          <select class="form-control" name="month" required style="width: 588px!important;" >
                                 <option value="1" {% if creditcard_obj.month == 1 %} selected {% endif %}>1</option>
                                 <option value="2" {% if creditcard_obj.month == 2 %} selected {% endif %}>2</option>
                                 <option value="3" {% if creditcard_obj.month == 3 %} selected {% endif %}>3</option>
@@ -76,7 +76,7 @@
                       <p class="margin">Year</p>
                       <div class="input-group">
 <!--                          <div class="input-group">-->
-                          <select class="form-control" name="year" style="width: 588px!important;" >
+                          <select class="form-control" name="year" required style="width: 588px!important;" >
                               {% for i in year_range %}
                               {% if i == creditcard_obj.year %}
                               <option value="{{ i }}" selected>{{ i }}</option>
@@ -91,7 +91,7 @@
 
                           <p class="margin">Cvv</p>
                       <div class="input-group">
-                         <input type="password" class="form-control" name="cvv" value="{{ creditcard_obj.cvv }}" style="width: 588px!important;">
+                         <input type="password" class="form-control" name="cvv" value="{{ creditcard_obj.cvv }}" required style="width: 588px!important;">
                       </div>
 
                       <div class="input-group">
@@ -104,7 +104,7 @@
 
                       </div>
                        <div class="box-footer">
-                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Add</button>
+                           <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Update</button>
                        </div>
                 </form>
 

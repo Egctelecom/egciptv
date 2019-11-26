@@ -6,10 +6,10 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic.base import View
 
-from adminsidecustomer.models import Customer
+from adminsidecustomer.models import Customer, CustomerUserMap
 from agentpanel.models import Agent
 from django.contrib.auth.mixins import LoginRequiredMixin
-from customer_billing.models import BillingDetailsCustomer, CreditCard
+from customer_billing.models import BillingDetailsCustomer, CreditCard, BankingDetails, PaypalDetails
 
 
 class CustomerDetails(View, LoginRequiredMixin):
@@ -154,3 +154,145 @@ class CreditCardEditView(LoginRequiredMixin, View):
 		messages.success(request, "Data Updated")
 		return render(request, 'admin/billing/credit_card_edit.html',
 		              {'creditcard_obj': credit_card_obj, 'year_range': year_range})
+
+
+class CreditCardEditDelete(LoginRequiredMixin, View):
+	login_url = '/admin/'
+	
+	def get(self, request, id):
+		credit_card = CreditCard.objects.get(pk=id)
+		credit_card.delete()
+		return HttpResponseRedirect(reverse('customer_details', kwargs={'id': credit_card.user_id}))
+
+
+class CreditCardImport(LoginRequiredMixin, View):
+	login_url = '/admin/'
+	
+	def get(self, request, id):
+		return render(request, 'admin/billing/credit_card_import.html',
+		              {'user_id': id})
+	
+	def post(self, request, id):
+		account_id = request.POST.get('account_id')
+		importer_customer_user = CustomerUserMap.objects.get(customer_id=id).user_id
+		# customer = Customer.objects.get(pk=customer_user_map.customer_id)
+		
+		customer_user = CustomerUserMap.objects.filter(customer__account_id=account_id).values('user')
+		
+		print(account_id)
+		print('customer_user')
+		print(customer_user)
+		print('user')
+		print(id)
+		print('importer_customer_user')
+		print(importer_customer_user)
+		
+		customer_card_details = CreditCard.objects.filter(user_id=customer_user, primary=True)
+		print(customer_card_details.count())
+		if customer_card_details.count():
+			print(customer_card_details[0].number)
+			user_has_same_cards = CreditCard.objects.filter(user=importer_customer_user, number=customer_card_details[0].number).exists()
+			print('user_has_same_cards')
+			print(user_has_same_cards)
+			if user_has_same_cards:
+				credit_card = CreditCard.objects.get(number=customer_card_details[0].number)
+				
+				credit_card.pk = None
+				credit_card.user_id = id
+				credit_card.save()
+				
+		return HttpResponseRedirect(reverse('customer_details', kwargs={'id': id}))
+		
+		
+class DirectDeopsitAdd(LoginRequiredMixin, View):
+	login_url = '/admin/'
+	
+	def get(self, request, id):
+		return render(request, 'admin/billing/direct_deposit_add.html',
+		              {'user_id': id})
+	
+	def post(self, request, id):
+		BankingDetails.objects.create(user_id=id, branch_id=request.POST.get('branch_id'),
+		                              institution_no=request.POST.get('institution_no'), account_no=request.POST.get('account_no'),
+		                              account_name=request.POST.get('account_name'), bank_name=request.POST.get('bank_name'))
+		
+		messages.add_message(request, messages.SUCCESS, 'Details added')
+		
+		return render(request, 'admin/billing/direct_deposit_add.html',
+		              {'user_id': id})
+
+
+class DirectDeopsitEdit(LoginRequiredMixin, View):
+	login_url = '/admin/'
+	
+	def get(self, request, id):
+		bank_details = BankingDetails.objects.get(id=id)
+		return render(request, 'admin/billing/direct_deposit_edit.html',
+		              {'bank_details': bank_details})
+	
+	def post(self, request, id):
+		bank_details = BankingDetails.objects.get(id=id)
+		bank_details.branch_id = request.POST.get('branch_id')
+		bank_details.institution_no = request.POST.get('institution_no')
+		bank_details.account_no = request.POST.get('account_no')
+		bank_details.account_name = request.POST.get('account_name')
+		bank_details.bank_name = request.POST.get('bank_name')
+		bank_details.save()
+		
+		messages.add_message(request, messages.SUCCESS, 'Details updated')
+		
+		return render(request, 'admin/billing/direct_deposit_edit.html',
+		              {'bank_details': bank_details})
+	
+	
+class DirectDeopsitDelete(LoginRequiredMixin, View):
+	login_url = '/admin/'
+	
+	def get(self, request, id):
+		bank_details = BankingDetails.objects.get(pk=id)
+		bank_details.delete()
+		return HttpResponseRedirect(reverse('customer_details', kwargs={'id': bank_details.user_id}))
+
+
+class PaypalAddressAdd(LoginRequiredMixin, View):
+	login_url = '/admin/'
+	
+	def get(self, request, id):
+		return render(request, 'admin/billing/paypal_address_add.html',
+		              {'user_id': id})
+	
+	def post(self, request, id):
+		PaypalDetails.objects.create(user_id=id, account_id=request.POST.get('account_id'))
+		
+		messages.add_message(request, messages.SUCCESS, 'Details added')
+		
+		return render(request, 'admin/billing/paypal_address_add.html',
+		              {'user_id': id})
+
+
+class PaypalAddressEdit(LoginRequiredMixin, View):
+	login_url = '/admin/'
+	
+	def get(self, request, id):
+		paypal_details = PaypalDetails.objects.get(pk=id)
+		return render(request, 'admin/billing/paypal_address_edit.html',
+		              {'paypal_details': paypal_details})
+	
+	def post(self, request, id):
+		paypal_details = PaypalDetails.objects.get(pk=id)
+		paypal_details.account_id = request.POST.get('account_id')
+		paypal_details.save()
+		
+		messages.add_message(request, messages.SUCCESS, 'Details updated')
+		
+		return render(request, 'admin/billing/paypal_address_edit.html',
+		              {'paypal_details': paypal_details})
+
+
+class PaypalAddressDelete(LoginRequiredMixin, View):
+	login_url = '/admin/'
+	
+	def get(self, request, id):
+		paypal_details = PaypalDetails.objects.get(pk=id)
+		paypal_details.delete()
+		return HttpResponseRedirect(reverse('customer_details', kwargs={'id': paypal_details.user_id}))

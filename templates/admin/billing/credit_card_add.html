@@ -30,13 +30,13 @@
 
                       <p class="margin">Customer</p>
                       <div class="input-group">
-                         <input type="text" class="form-control" disabled value="{{ customer_obj.first_name }} {{ customer_obj.last_name }}" style="width: 588px!important;">
+                         <input type="text" class="form-control" disabled value="{{ customer_obj.first_name }} {{ customer_obj.last_name }}" style="width: 588px!important;" required>
                       </div>
 
                       <p class="margin">Type</p>
                       <div class="input-group">
-                         <select class="form-control" name="card_type" style="width: 588px!important;" >
-                             <option>Select Card Type</option>
+                         <select class="form-control" name="card_type" style="width: 588px!important;" required>
+                             <option value="">Select Card Type</option>
                              <option value="VISA">VISA</option>
                              <option value="MASTERCARD">MASTERCARD</option>
                              <option value="AMERICAN EXPRESS">AMERICAN EXPRESS</option>
@@ -46,17 +46,17 @@
 
                       <p class="margin">Name</p>
                       <div class="input-group">
-                         <input type="text" class="form-control" name="card_name" style="width: 588px!important;">
+                         <input type="text" class="form-control" name="card_name" required style="width: 588px!important;">
                       </div>
 
                       <p class="margin">Number</p>
                       <div class="input-group">
-                         <input type="text" class="form-control" name="card_number" style="width: 588px!important;">
+                         <input type="number" class="form-control" name="card_number" required style="width: 588px!important;">
                       </div>
 
                       <p class="margin">Month</p>
                       <div class="input-group">
-                          <select class="form-control" name="month" style="width: 588px!important;" >
+                          <select class="form-control" name="month" required style="width: 588px!important;" >
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -76,7 +76,7 @@
                       <p class="margin">Year</p>
                       <div class="input-group">
 <!--                          <div class="input-group">-->
-                          <select class="form-control" name="year" style="width: 588px!important;" >
+                          <select class="form-control" name="year" required style="width: 588px!important;" >
                               {% for i in year_range %}
                              <option value="{{ i }}">{{ i }}</option>
                               {% endfor %}
@@ -87,7 +87,7 @@
 
                           <p class="margin">Cvv</p>
                       <div class="input-group">
-                         <input type="password" class="form-control" name="cvv" style="width: 588px!important;">
+                         <input type="password" class="form-control" name="cvv" required style="width: 588px!important;">
                       </div>
 
 <!--                          <p class="margin">Primary</p>-->
