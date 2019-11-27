@@ -9,6 +9,8 @@ from django.views.generic.base import View
 from adminsidecustomer.models import Customer, CustomerUserMap
 from agentpanel.models import Agent
 from django.contrib.auth.mixins import LoginRequiredMixin
+
+from crmadmin.models import UserProfile
 from customer_billing.models import BillingDetailsCustomer, CreditCard, BankingDetails, PaypalDetails
 
 
@@ -31,18 +33,49 @@ class CustomerBillingAdd(View, LoginRequiredMixin):
 	def post(self, request):
 		try:
 			customer = Customer.objects.get(id=request.POST['customer_id'])
-			sales_person = Agent.objects.get(id=request.POST['sale_person_id'])
+			sales_person = UserProfile.objects.get(id=request.POST['sale_person_id'])
 			BillingDetailsCustomer.objects.create(user=customer, salesperson=sales_person,
 			                                      contract_type=request.POST['contract_type'],
 			                                      billing_day=request.POST['billing_day'],
 			                                      payment_mode=request.POST['payment_type'],
 			                                      payment_method=request.POST['payment_method'],
-			                                      billing_from=request.POST['from'], billing_to=request.POST['to'])
+			                                      billing_from=request.POST.get('from'), billing_to=request.POST.get('to'))
 			messages.success(request, "Data Added.")
 		except Exception as e:
 			messages.error(request, "Something went wrong - {}".format(e))
 		return HttpResponseRedirect(reverse('customer_billing_add'))
 
+
+class CustomerBillingSetting(View, LoginRequiredMixin):
+	login_url = '/admin/'
+	
+	def post(self, request):
+		customer = Customer.objects.get(id=request.POST['customer_id'])
+		sales_person = UserProfile.objects.get(user_id=request.POST['sale_person_id'])
+		billing = BillingDetailsCustomer.objects.filter(user_id=customer)
+		if billing.exists():
+			BillingDetailsCustomer.objects.filter(user=customer).update(salesperson_id=sales_person.id,
+		                                      contract_type=request.POST['contract_type'],
+		                                      billing_day=request.POST['billing_day'],
+		                                      # payment_mode=request.POST['payment_type'],
+		                                      payment_method=request.POST['payment_method']
+		                                      # billing_from=request.POST.get('from'),
+		                                      # billing_to=request.POST.get('to')
+		                                      )
+		else:
+			BillingDetailsCustomer.objects.create(user=customer, salesperson_id=sales_person.id,
+			                                                            contract_type=request.POST['contract_type'],
+			                                                            billing_day=request.POST['billing_day'],
+			                                                            # payment_mode=request.POST['payment_type'],
+			                                                            payment_method=request.POST['payment_method']
+			                                                            # billing_from=request.POST.get('from'),
+			                                                            # billing_to=request.POST.get('to')
+			                                                            )
+		
+		# messages.success(request, "Details Updated.")
+		return HttpResponseRedirect(reverse('customer_details', kwargs={'id': request.POST['customer_id']}))
+		
+		
 
 class CustomerBillingEdit(View, LoginRequiredMixin):
 	login_url = '/admin/'
@@ -101,13 +134,15 @@ class CreditCardAdd(LoginRequiredMixin, View):
 		# else:
 		try:
 			primary = False
-			if 'primary' in request.POST and request.POST['primary'] == 'True':
+			if 'primary' in request.POST and request.POST['primary'] == 'on':
 				primary = True
-			CreditCard.objects.create(user=Customer.objects.get(id=id), card_type=request.POST['card_type'],
+			
+			card = CreditCard.objects.create(user=Customer.objects.get(id=id), card_type=request.POST['card_type'],
 			                          name=request.POST['card_name'], number=request.POST['card_number'],
 			                          month=request.POST['month'],
 			                          year=request.POST['year'], cvv=request.POST['cvv'], primary=primary)
-			
+			if card.primary == True:
+				CreditCard.objects.filter(user=Customer.objects.get(id=id)).exclude(pk=card.id).update(primary=False)
 			messages.success(request, "Details Saved.")
 		except Exception as e:
 			messages.error(request, "Something went wrong - {}".format(e))
@@ -145,11 +180,14 @@ class CreditCardEditView(LoginRequiredMixin, View):
 		credit_card_obj.year = request.POST['year']
 		credit_card_obj.cvv = request.POST['cvv']
 		
-		if 'primary' in request.POST and request.POST['primary'] == 'True':
+		if 'primary' in request.POST and request.POST['primary'] == 'on':
 			credit_card_obj.primary = True
 		else:
 			credit_card_obj.primary = False
 		credit_card_obj.save()
+		
+		if credit_card_obj.primary == True:
+			CreditCard.objects.filter(user=credit_card_obj.user).exclude(pk=credit_card_obj.id).update(primary=False)
 		year_range = range(2019, 2051)
 		messages.success(request, "Data Updated")
 		return render(request, 'admin/billing/credit_card_edit.html',
@@ -174,34 +212,34 @@ class CreditCardImport(LoginRequiredMixin, View):
 	
 	def post(self, request, id):
 		account_id = request.POST.get('account_id')
-		importer_customer_user = CustomerUserMap.objects.get(customer_id=id).user_id
+		#-------------------self customer----------------
+		# importer_user_id = CustomerUserMap.objects.get(customer_id=id).user_id
 		# customer = Customer.objects.get(pk=customer_user_map.customer_id)
 		
-		customer_user = CustomerUserMap.objects.filter(customer__account_id=account_id).values('user')
+		other_customer_user = CustomerUserMap.objects.filter(customer__account_id=account_id).values('user', 'customer')
 		
-		print(account_id)
-		print('customer_user')
-		print(customer_user)
-		print('user')
-		print(id)
-		print('importer_customer_user')
-		print(importer_customer_user)
 		
-		customer_card_details = CreditCard.objects.filter(user_id=customer_user, primary=True)
-		print(customer_card_details.count())
-		if customer_card_details.count():
-			print(customer_card_details[0].number)
-			user_has_same_cards = CreditCard.objects.filter(user=importer_customer_user, number=customer_card_details[0].number).exists()
-			print('user_has_same_cards')
-			print(user_has_same_cards)
-			if user_has_same_cards:
-				credit_card = CreditCard.objects.get(number=customer_card_details[0].number)
+		customer_card_details = CreditCard.objects.filter(user_id=other_customer_user[0]['customer'], primary=True).values_list('number', flat=True)
+		
+		
+		user_has_same_cards = CreditCard.objects.filter(user=id, number__in=customer_card_details)
+		
+		customer_has_default_cards = CreditCard.objects.filter(user=id, primary=True).count()
+		
+		if not user_has_same_cards.exists():
+			credit_card = CreditCard.objects.get(number=customer_card_details[0])
+			
+			if customer_has_default_cards:
+				credit_card.primary = False
 				
-				credit_card.pk = None
-				credit_card.user_id = id
-				credit_card.save()
-				
-		return HttpResponseRedirect(reverse('customer_details', kwargs={'id': id}))
+			credit_card.pk = None
+			credit_card.user_id = id
+			credit_card.save()
+			
+			messages.add_message(request, messages.SUCCESS, 'Imported Successfully')
+		else:
+			messages.add_message(request, messages.ERROR, 'Already exists')
+		return HttpResponseRedirect(reverse('customer_credit_card_import', kwargs={'id': id}))
 		
 		
 class DirectDeopsitAdd(LoginRequiredMixin, View):

@@ -11,11 +11,13 @@ PAYMENT_MODE_CHOICES = (
 )
 
 PAYMENT_METHOD_CHOICES = (
-	('CASH', 'CASH'),
 	('CREDIT CARD', 'CREDIT CARD'),
 	# ('INTERNET BANKING', 'INTERNET BANKING'),
-	('BANK DEPOSIT', 'BANK DEPOSIT'),
-	('PAYPAL', 'PAYPAL')
+	('DIRECT DEPOSIT', 'DIRECT DEPOSIT'),
+	('CHEQUE/MONEY ORDER', 'CHEQUE/MONEY ORDER'),
+	('E-TRANSFER', 'E-TRANSFER'),
+	('PAYPAL', 'PAYPAL'),
+	('CASH', 'CASH')
 )
 
 CREDIT_CARD_CHOICES = (
@@ -28,7 +30,7 @@ CREDIT_CARD_CHOICES = (
 class BillingDetailsCustomer(models.Model):
 	id = models.AutoField(primary_key=True)
 	user = models.ForeignKey(Customer, on_delete=models.CASCADE)
-	salesperson = models.ForeignKey(Agent, on_delete=models.CASCADE)
+	salesperson = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 	contract_type = models.CharField(max_length=255)
 	billing_day = models.CharField(help_text='Enter Billing Day', max_length=255)
 	payment_mode = models.CharField(choices=PAYMENT_MODE_CHOICES, default='ONLINE', max_length=50)

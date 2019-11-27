@@ -114,6 +114,7 @@
                     <li><a href="#addnumber" data-toggle="tab">Number</a></li>
                     <li><a href="#invoice_all" data-toggle="tab">Invoice</a></li>
                     <li><a href="#billing" data-toggle="tab">Billing</a></li>
+                    <li><a href="#billing-setting" data-toggle="tab">Billing Settings</a></li>
 
                 </ul>
                 <div class="tab-content">
@@ -698,8 +699,8 @@
                                                             <td>{{ card.primary }}</td>
                                                           <td>
                                                               <a href="{% url 'customer_credit_card_edit' card.id %}" class="fancybox fancybox.iframe btn btn-info btn-xs"><i class="fa fa-edit"></i></a>
-                                                              <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash"></i></button>
-                                                              <div class="modal fade" id="myModal" role="dialog">
+                                                              <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal_{{card.id}}"><i class="fa fa-trash"></i></button>
+                                                              <div class="modal fade" id="myModal_{{card.id}}" role="dialog">
                                                                 <div class="modal-dialog">
                                                                     <div class="modal-content">
                                                                     <div class="modal-header">
@@ -755,8 +756,8 @@
                                                             <td>{{ bank.institution_no }}</td>
                                                           <td>
                                                               <a href="{% url 'customer_direct_deposit_edit' bank.id %}" class="fancybox fancybox.iframe btn btn-info btn-xs"><i class="fa fa-edit"></i></a>
-                                                              <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal3"><i class="fa fa-trash"></i></button>
-                                                              <div class="modal fade" id="myModal3" role="dialog">
+                                                              <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal3_{{bank.id}}"><i class="fa fa-trash"></i></button>
+                                                              <div class="modal fade" id="myModal3_{{bank.id}}" role="dialog">
                                                                 <div class="modal-dialog">
                                                                     <div class="modal-content">
                                                                     <div class="modal-header">
@@ -806,8 +807,8 @@
                                                             <td>{{ paypal.account_id }}</td>
                                                           <td>
                                                               <a href="{% url 'customer_paypal_address_edit' paypal.id %}" class="fancybox fancybox.iframe btn btn-info btn-xs"><i class="fa fa-edit"></i></a>
-                                                              <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal4"><i class="fa fa-trash"></i></button>
-                                                              <div class="modal fade" id="myModal4" role="dialog">
+                                                              <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal4_{{paypal.id}}"><i class="fa fa-trash"></i></button>
+                                                              <div class="modal fade" id="myModal4_{{paypal.id}}" role="dialog">
                                                                 <div class="modal-dialog">
                                                                     <div class="modal-content">
                                                                     <div class="modal-header">
@@ -846,6 +847,77 @@
                         </div>
                     </div>
                 </div>
+
+                    <!----------------------------------------- Billing Settings ------------------------------------------>
+                    <div class="tab-pane" id="billing-setting">
+                        <div class="post">
+                            <div class="row">
+<!--                                <div class="col-md-2" style="float:right;">-->
+<!--                                    <div class="form-group" >-->
+<!--                                        <a  href="{% url 'add_user_service_price' customer.0.id %}" class="fancybox fancybox.iframe btn btn-block btn-success btn-xs">Add a Service Plan</a>-->
+<!--                                    </div>-->
+
+<!--                                </div>-->
+                                <div class="col-xs-12 table-responsive">
+                                    <form method="post" class="form-horizontal" action="{% url 'customer_billing_setting'%}" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="box-body">
+
+                                          <input type="hidden" name="customer_id" value="{{customer.0.id}}">
+
+                                          <p class="margin">Sales Person</p>
+                                          <div class="input-group">
+                                             <select class="form-control" name="sale_person_id" style="width: 588px!important;" required>
+                                                 <option value="">Select Sales Person</option>
+                                                 {% for sales in sales_list %}
+                                                    <option value="{{sales.user}}" {% if sales.user == billing_settings.0.salesperson__user %} selected {% endif %}>{{sales.user__username}}</option>
+                                                 {% endfor %}
+                                             </select>
+                                          </div>
+
+                                          <p class="margin">Contract Type</p>
+                                          <div class="input-group">
+                                             <select class="form-control" name="contract_type" style="width: 588px!important;" required>
+                                                 <option value="">Select Contract Type</option>
+                                                 <option value="1" {% if billing_settings.0.contract_type == '1' %} selected {% endif %}>1 yr</option>
+                                                 <option value="2" {% if billing_settings.0.contract_type == '2' %} selected {% endif %}>2 yr</option>
+                                                 <option value="3" {% if billing_settings.0.contract_type == '3' %} selected {% endif %}>3 yr</option>
+                                                 <option value="4" {% if billing_settings.0.contract_type == '4' %} selected {% endif %}>4 yr</option>
+                                                 <option value="5" {% if billing_settings.0.contract_type == '5' %} selected {% endif %}>5 yr</option>
+                                                 <option value="6" {% if billing_settings.0.contract_type == '6' %} selected {% endif %}>6 yr</option>
+                                             </select>
+                                          </div>
+
+
+                                          <p class="margin">Billing Day</p>
+                                          <div class="input-group">
+                                             <input type="date" class="form-control" name="billing_day" value="{{billing_settings.0.billing_day}}" required style="width: 588px!important;">
+                                          </div>
+
+
+                                          <p class="margin">Payment Method</p>
+                                          <div class="input-group">
+                                             <select class="form-control" name="payment_method" style="width: 588px!important;" required>
+                                                 <option value="">Select Payment Method</option>
+                                                 <option value="CREDIT CARD" {% if billing_settings.0.payment_method == 'CREDIT CARD' %} selected {% endif %}>CREDIT CARD</option>
+                                                 <option value="DIRECT DEPOSIT" {% if billing_settings.0.payment_method == 'DIRECT DEPOSIT' %} selected {% endif %}>DIRECT DEPOSIT</option>
+                                                 <option value="PAYPAL" {% if billing_settings.0.payment_method == 'PAYPAL' %} selected {% endif %}>PAYPAL</option>
+                                                 <option value="CHEQUE/MONEY ORDER" {% if billing_settings.0.payment_method == 'CHEQUE/MONEY ORDER' %} selected {% endif %}>CHEQUE/MONEY ORDER</option>
+                                                 <option value="E-TRANSFER" {% if billing_settings.0.payment_method == 'E-TRANSFER' %} selected {% endif %}>E-TRANSFER</option>
+                                                 <option value="CASH" {% if billing_settings.0.payment_method == 'CASH' %} selected {% endif %}>CASH</option>
+                                             </select>
+                                          </div>
+
+                                        </div>
+                                        <div class="box-footer">
+                                            <button type="submit" class="btn btn-primary" name="Submit"><i class="fa fa-pencil" aria-hidden="true"></i> Add</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                        </div>
+                    </div>
             </div>
         </div>
     </div>
