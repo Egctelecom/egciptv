@@ -20,7 +20,7 @@ lml==0.0.9
 openpyxl==2.5.14
 paypalrestsdk==1.13.1
 pdfkit==0.6.0
-Pillow==5.2.0
+Pillow==9.0.1
 psycopg2==2.7.5
 pycparser==2.18
 pyexcel==0.5.13
