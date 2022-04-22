@@ -29,7 +29,7 @@ pyexcel-webio==0.1.4
 pyexcel-xlsx==0.5.7
 PyJWT==1.6.4
 pyOpenSSL==18.0.0
-PyPDF2==1.26.0
+PyPDF2==1.27.5
 python-decouple==3.3
 pytz==2018.5
 reportlab==3.5.6
