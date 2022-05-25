@@ -27,7 +27,7 @@ pyexcel==0.5.13
 pyexcel-io==0.5.17
 pyexcel-webio==0.1.4
 pyexcel-xlsx==0.5.7
-PyJWT==1.6.4
+PyJWT==2.4.0
 pyOpenSSL==18.0.0
 PyPDF2==1.26.0
 python-decouple==3.3
