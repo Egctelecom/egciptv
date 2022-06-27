@@ -32,7 +32,7 @@ pyOpenSSL==18.0.0
 PyPDF2==1.26.0
 python-decouple==3.3
 pytz==2018.5
-reportlab==3.5.6
+reportlab==3.5.55
 requests==2.19.1
 six==1.11.0
 stripe==2.6.0
